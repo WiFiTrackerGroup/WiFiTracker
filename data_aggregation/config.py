@@ -23,3 +23,7 @@ FILE_BYTES_RX = "source_files/bytes_rx.txt"
 FILE_AP_MAC = "source_files/ap_mac.txt"
 FILE_AP_WEB = "source_files/ap_web.txt"
 FILE_AP_NAME = "source_files/ap_name.txt"
+
+# Error file name
+FILE_ERRORS = "logs/error_log.txt"
+
