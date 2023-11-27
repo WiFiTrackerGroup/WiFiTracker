@@ -1,0 +1,5 @@
+FILE_USERNAME = "usernames.txt"
+FILE_RSSI = ""
+FILE_SNR = ""
+FILE_BYTE_RX = ""
+FILE_BYTE_TX = ""
