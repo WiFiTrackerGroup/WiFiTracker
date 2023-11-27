@@ -8,7 +8,7 @@ class DataAcquisition:
 
     def acquier(self):
         os.system(
-            f"DataAcquisitionwalk -v2c {COMMUNITY} {IP_WLC} {OID_MAC} > SNMP_Files/{FILE_MAC}"
+            f"snmpwalk -v2c {COMMUNITY} {IP_WLC} {OID_MAC} > SNMP_Files/{FILE_MAC}"
         )
 
         os.system(
@@ -27,11 +27,11 @@ class DataAcquisition:
             f"snmpwalk -v2c {COMMUNITY} {IP_WLC} {OID_BYTES_RX} > SNMP_Files/{FILE_BYTES_RX}"
         )
 
-    def acquier_AP(self):
         os.system(
             f"snmpwalk -v2c {COMMUNITY} {IP_WLC} {OID_AP_MAC} > SNMP_Files/{FILE_AP_MAC}"
         )
 
+    def acquier_AP(self):
         os.system(
             f"snmpwalk -v2c {COMMUNITY} {IP_WLC} {OID_AP_WEB} > SNMP_Files/{FILE_AP_WEB}"
         )

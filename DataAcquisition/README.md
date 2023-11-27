@@ -1,0 +1,2 @@
+## Data Aquisition
+DataAquisition is a class that deals with the acquisition of the data through SNMP query. A series of snmpwalk bash command is used to retrieve the data from the controller of all the acces point of Politecnico. A different set of command can be also used for the acquisition of the information of the acces point, like the mac address connected to it and their names to know their geographical position in the Politecnico.
