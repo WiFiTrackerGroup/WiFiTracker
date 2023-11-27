@@ -233,7 +233,3 @@ class DataAggregation:
             else:
                 classes.append("External")
         return classes
-
-
-elem = DataAggregation()
-elem.aggregate()
