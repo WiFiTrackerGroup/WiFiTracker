@@ -22,6 +22,8 @@ class DataAggregation:
         self.snr = pd.DataFrame(self.open_snr())
         self.byte_rx = pd.DataFrame(self.open_bytes_rx())
         self.byte_tx = pd.DataFrame(self.open_bytes_tx())
+        self.ap_mac = pd.DataFrame(self.open_ap_mac())
+        print(self.ap_mac)
 
     def open_username(self):
         data = []
@@ -95,14 +97,28 @@ class DataAggregation:
         with open(FILE_BYTES_TX, "r") as file_object:
             for line in file_object:
                 if self.file_check(line):
-                    mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.2.{} =", line)[
-                        0
-                    ]
+                    mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.2.{} =", line)[0]
                     mac_res = hex(int(mac_res.replace(".", "")))
                     bytes_tx = parse.search("Counter64: {:d}", line)[0]
                     row = {
                         "mac": mac_res,
                         "byte_tx": bytes_tx,
+                    }
+                    data.append(row)
+        return data
+    
+    def open_ap_mac(self):
+        data = []
+        regex = "([0-9A-Fa-f]{2}[\s]){5}([0-9A-Fa-f]{2})"
+        with open(FILE_AP_MAC, "r") as file_object:
+            for line in file_object:
+                if self.file_check(line):
+                    mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.4.1.4.{} =", line)[0]
+                    mac_res = hex(int(mac_res.replace(".", "")))
+                    ba_mac = re.findall(regex, line)
+                    row = {
+                        "mac": mac_res,
+                        "byte_tx": ba_mac,
                     }
                     data.append(row)
         return data
