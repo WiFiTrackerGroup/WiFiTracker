@@ -1,0 +1,2 @@
+Error in DataAggregation - file: 'source_files/ap_web.txt' bad formatted, row [0]
+Error in DataAggregation - file: 'source_files/ap_web.txt' bad formatted, row [1]
