@@ -26,3 +26,4 @@ FILE_AP_NAME = "source_files/ap_name.txt"
 
 # Error file name
 FILE_ERRORS = "logs/error_log.txt"
+
