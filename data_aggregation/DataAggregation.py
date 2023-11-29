@@ -12,8 +12,8 @@ class DataAggregation:
     def aggregate(self):
         """
         The method is used to retrieve the all data contained
-        in the files in 'souce_files' folder and to combine
-        them in a single DataFrame.
+        in the files in 'souce_files' folder related to a 
+        connection and to combine them in a DataFrame.
         -----------------------------------------------------
         Output:
             - Dataframe containing all the information
@@ -26,12 +26,10 @@ class DataAggregation:
     
     def aggregate_AP(self):
         self.ap_web = pd.DataFrame(self.open_ap_web()) 
-        print(self.ap_web)
+        self.ap_web = self.ap_web.drop_duplicates()
         self.ap_name = pd.DataFrame(self.open_ap_name())
-        print(self.ap_name)
-        tmp = pd.merge(self.ap_web, self.ap_name, on="code_ap", how="outer")
-        print(tmp)
-        return tmp
+        self.ap_name = self.ap_name.drop_duplicates()
+        return pd.merge(self.ap_web, self.ap_name, on="code_ap", how="outer")
 
     def fill_dataframes(self):
         """
@@ -209,11 +207,12 @@ class DataAggregation:
             - List of dictionaries with the data
         """
         data = []
-        regex = r"\.[0-9]{1-3}\.\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}"
+        regex = r"[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}"
         with open(FILE_AP_WEB, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    code_res = parse.search("iso.3.6.1.4.1.9.9.513.1.2.3.1.1.{}.", line)
+                    code_res = parse.search("iso.3.6.1.4.1.9.9.513.1.2.3.1.1.{} Hex", line)
+                    code_res = code_res[0][:-4]
                     ap_mac = re.findall(regex, line)[0]
                     ap_mac = ap_mac.replace(" ", ":").lower()
                     row = {
@@ -236,16 +235,15 @@ class DataAggregation:
             - List of dictionaries with the data
         """
         data = []
-        regex = re.compile(r'[A-Z][A-Z]\-[A-Z][A-Z][A-Z][A-Z][A-Z]\-[0-9][0-9]')
+        regex = re.compile(r'AP\-[A-Za-z0-9\-]{1,20}')
         with open(FILE_AP_NAME, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
                     code_res = parse.search("iso.3.6.1.4.1.9.9.513.1.1.1.1.5.{} =", line)
                     ap_name = regex.findall(line)
-                    print(line)
                     row = {
                         "code_ap": code_res[0],
-                        "name_ap": ap_name,
+                        "name_ap": ap_name[0],
                     }
                     data.append(row)
                 except:
