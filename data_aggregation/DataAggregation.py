@@ -20,8 +20,8 @@ class DataAggregation:
         """
         self.fill_dataframes()
         self.df_raw_data = self.merge_dataframes()
-        self.df_raw_data["domain"] = self.assign_class(self.df_raw_data["domain"])
-        self.df_raw_data = self.df_raw_data.rename({"domain": "class"}, axis="columns")
+        self.df_raw_data["class"] = self.assign_class(self.df_raw_data["domain"])
+        print(self.df_raw_data)
         return self.df_raw_data
     
     def aggregate_AP(self):
@@ -309,4 +309,4 @@ class DataAggregation:
 
 
 elem = DataAggregation()
-elem.aggregate_AP()
+elem.aggregate()
