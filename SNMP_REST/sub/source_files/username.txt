@@ -1,5 +1,0 @@
-iso.3.6.1.4.1.14179.2.1.4.1.3.18.173.44.176.112.199 = STRING: "s98765@studenti.polito.it"
-iso.3.6.1.4.1.14179.2.1.4.1.3.18.175.72.47.158.178 = STRING: "s67890@studenti.polito.it"
-iso.3.6.1.4.1.14179.2.1.4.1.3.18.183.198.110.238.132 = STRING: "s123456@studenti.polito.it"
-iso.3.6.1.4.1.14179.2.1.4.1.3.18.185.224.129.68.104 = STRING: "ciccio.bello@polito.it" 
-iso.3.6.1.4.1.14179.2.1.4.1.3.38.45.193.220.45.137 = STRING: "antonio.lantieri@polito.it"

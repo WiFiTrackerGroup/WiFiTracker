@@ -11,11 +11,11 @@ class DataAggregation:
 
     def aggregate(self):
         """
-        The method is used to retrieve the all data contained
-        in the files in 'souce_files' folder related to a
-        connection and to combine them in a DataFrame.
-        -----------------------------------------------------
-        Output:
+        aggregate
+        ---------
+        The method is used to retrieve the all data contained in the files stored in \\
+        'snmp_data' folder related to a connection and to combine them in a DataFrame.
+        ### Output:
             - Dataframe containing all the information
         """
         self.fill_dataframes()
@@ -36,6 +36,8 @@ class DataAggregation:
 
     def fill_dataframes(self):
         """
+        fill_dataframes
+        ---------------
         The method creates a Dataframe for each source file
         """
         self.df_usernames = pd.DataFrame(self.open_username())
@@ -47,10 +49,11 @@ class DataAggregation:
 
     def open_username(self):
         """
+        open_username
+        -------------
         The method opens the file containing the username and
         the domain of the user.
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - List of dictionaries with the data
         """
         data = []
@@ -71,10 +74,11 @@ class DataAggregation:
 
     def open_rssi(self):
         """
+        open_rssi
+        ---------
         The method opens the file containing the rssi value
         of the connection of the user.
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - List of dictionaries with the data
         """
         data = []
@@ -97,10 +101,11 @@ class DataAggregation:
 
     def open_snr(self):
         """
+        open_snr
+        --------
         The method opens the file containing the snr value of
         the connection of the user.
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - List of dictionaries with the data
         """
         data = []
@@ -123,10 +128,11 @@ class DataAggregation:
 
     def open_bytes_rx(self):
         """
+        open_bytes_rx
+        -------------
         The method opens the file containing the received
         bytes in the connection of the user.
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - List of dictionaries with the data
         """
         data = []
@@ -149,10 +155,11 @@ class DataAggregation:
 
     def open_bytes_tx(self):
         """
+        open_bytes_tx
+        -------------
         The method opens the file containing the transmitted
         bytes in the connection of the user.
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - List of dictionaries with the data
         """
         data = []
@@ -175,10 +182,11 @@ class DataAggregation:
 
     def open_ap_mac(self):
         """
+        open_ap_mac
+        -----------
         The method opens the file containing the base radio
         mac of the connection of the user.
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - List of dictionaries with the data
         """
         data = []
@@ -204,10 +212,11 @@ class DataAggregation:
 
     def open_ap_web(self):
         """
+        open_ap_web
+        -----------
         The method opens the file containing code of the AP
         inside the SNMP tree and its MAC address .
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - List of dictionaries with the data
         """
         data = []
@@ -234,10 +243,11 @@ class DataAggregation:
 
     def open_ap_name(self):
         """
+        open_ap_name
+        ------------
         The method opens the file containing the name of the
         access points.
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - List of dictionaries with the data
         """
         data = []
@@ -262,14 +272,14 @@ class DataAggregation:
 
     def convert_hex_notation(self, mac_string):
         """
+        convert_hex_notation
+        --------------------
         The method converts the mac address from format
         '\d.\d.\d.\d.\d.\d' to '([0-9a-f]:){5}[0-9a-f]' in
         hexadecimal
-        -----------------------------------------------------
-        Parameter:
+        ### Input:
             - the MAC string formatted
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - MAC address formatted
         """
         list_num = mac_string.split(".")
@@ -280,9 +290,10 @@ class DataAggregation:
 
     def merge_dataframes(self):
         """
+        merge_dataframes
+        ----------------
         The method merges the all dataframes in only one
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - the dataframe containing the all data
         """
         result = pd.merge(self.df_usernames, self.rssi, on="mac_user", how="outer")
@@ -293,13 +304,13 @@ class DataAggregation:
 
     def assign_class(self, domain_list):
         """
+        assign_class
+        ------------
         The method gives a class to each user based on the
         domain
-        -----------------------------------------------------
-        Parameter:
+        ### Input:
             - the list of domains
-        -----------------------------------------------------
-        Output:
+        ### Output:
             - the list of classes assigned
         """
         classes = []
