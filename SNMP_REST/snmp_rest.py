@@ -1,15 +1,12 @@
-import sys
-
-sys.path.append("data_anonimization")
 import cherrypy
 import schedule
 import os
 import time
 import json as js
-from config import N_BYTES, T_UPD_SALT, IP, PORT
-from data_masking import DataMasking
-import DataAggregation
-import DataAcquisition
+from sub.config import N_BYTES, T_UPD_SALT, IP, PORT
+from sub.data_acquisition import DataAcquisition
+from sub.data_masking import DataMasking
+from sub.data_aggregation import DataAggregation
 
 
 class SnmpRest:
@@ -19,7 +16,7 @@ class SnmpRest:
         self.set_salt(os.urandom(N_BYTES))
         self.data_mask = DataMasking()
         self.data_aggr = DataAggregation()
-        self.data_acq = DataAcquisition()
+        # self.data_acq = DataAcquisition()
 
     def set_salt(self, salt: bytes):
         self._salt = salt

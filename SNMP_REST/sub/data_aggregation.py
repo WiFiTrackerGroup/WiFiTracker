@@ -1,5 +1,5 @@
 import pandas as pd
-from config import *
+from .config import *
 import re
 import parse
 
@@ -12,7 +12,7 @@ class DataAggregation:
     def aggregate(self):
         """
         The method is used to retrieve the all data contained
-        in the files in 'souce_files' folder related to a 
+        in the files in 'souce_files' folder related to a
         connection and to combine them in a DataFrame.
         -----------------------------------------------------
         Output:
@@ -22,14 +22,16 @@ class DataAggregation:
         self.df_raw_data = self.merge_dataframes()
         self.df_raw_data["class"] = self.assign_class(self.df_raw_data["domain"])
         return self.df_raw_data
-    
+
     def aggregate_AP(self):
-        self.ap_web = pd.DataFrame(self.open_ap_web()) 
+        self.ap_web = pd.DataFrame(self.open_ap_web())
         self.ap_web = self.ap_web.drop_duplicates()
         self.ap_name = pd.DataFrame(self.open_ap_name())
         self.ap_name = self.ap_name.drop_duplicates()
         df_ap_aggregate = pd.merge(self.ap_web, self.ap_name, on="code_ap", how="outer")
-        self.dict_ap_aggregate = df_ap_aggregate.set_index('mac_ap')['name_ap'].to_dict()
+        self.dict_ap_aggregate = df_ap_aggregate.set_index("mac_ap")[
+            "name_ap"
+        ].to_dict()
         return self.dict_ap_aggregate
 
     def fill_dataframes(self):
@@ -202,7 +204,7 @@ class DataAggregation:
 
     def open_ap_web(self):
         """
-        The method opens the file containing code of the AP 
+        The method opens the file containing code of the AP
         inside the SNMP tree and its MAC address .
         -----------------------------------------------------
         Output:
@@ -213,7 +215,9 @@ class DataAggregation:
         with open(FILE_AP_WEB, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    code_res = parse.search("iso.3.6.1.4.1.9.9.513.1.2.3.1.1.{} Hex", line)
+                    code_res = parse.search(
+                        "iso.3.6.1.4.1.9.9.513.1.2.3.1.1.{} Hex", line
+                    )
                     code_res = code_res[0][:-4]
                     ap_mac = re.findall(regex, line)[0]
                     ap_mac = ap_mac.replace(" ", ":").lower()
@@ -227,7 +231,7 @@ class DataAggregation:
                         f"Error in {self.myself} - file: '{FILE_AP_WEB}' bad formatted, row [{i}]\n"
                     )
         return data
-    
+
     def open_ap_name(self):
         """
         The method opens the file containing the name of the
@@ -237,11 +241,13 @@ class DataAggregation:
             - List of dictionaries with the data
         """
         data = []
-        regex = re.compile(r'AP\-[A-Za-z0-9\-]{1,20}')
+        regex = re.compile(r"AP\-[A-Za-z0-9\-]{1,20}")
         with open(FILE_AP_NAME, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    code_res = parse.search("iso.3.6.1.4.1.9.9.513.1.1.1.1.5.{} =", line)
+                    code_res = parse.search(
+                        "iso.3.6.1.4.1.9.9.513.1.1.1.1.5.{} =", line
+                    )
                     ap_name = regex.findall(line)
                     row = {
                         "code_ap": code_res[0],
@@ -271,7 +277,6 @@ class DataAggregation:
             list_num[i] = hex(int(list_num[i]))
         extended_mac = ":".join(list_num)
         return extended_mac.replace("0x", "")
-    
 
     def merge_dataframes(self):
         """
@@ -308,7 +313,6 @@ class DataAggregation:
             else:
                 classes.append("External")
         return classes
-    
+
     def assign_ap_name(self, code):
         return self.dict_ap_aggregate.get(code)
-
