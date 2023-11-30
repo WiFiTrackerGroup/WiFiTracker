@@ -1,3 +1,4 @@
+# Configuration file
 IP = "0.0.0.0"
 PORT = 8080
 
@@ -6,7 +7,8 @@ N_BYTES = 16
 # Salt time window update
 T_UPD_SALT = 20
 
-# Configuration file
+# Set hour when salt is changed every day
+HOUR = "00:30"
 
 # snmpwalk command information
 COMMUNITY = "-c abcdefghi"

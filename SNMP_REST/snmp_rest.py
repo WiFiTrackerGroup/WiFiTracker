@@ -3,7 +3,7 @@ import schedule
 import os
 import time
 import json as js
-from sub.config import N_BYTES, T_UPD_SALT, IP, PORT
+from sub.config import N_BYTES, T_UPD_SALT, IP, PORT, HOUR
 from sub.data_acquisition import DataAcquisition
 from sub.data_masking import DataMasking
 from sub.data_aggregation import DataAggregation
@@ -16,10 +16,11 @@ class SnmpRest:
         self.set_salt(os.urandom(N_BYTES))
         self.data_mask = DataMasking()
         self.data_aggr = DataAggregation()
-        # self.data_acq = DataAcquisition()
+        self.data_acq = DataAcquisition()
 
     def set_salt(self, salt: bytes):
         self._salt = salt
+        print(salt)
 
     def GET(self, *uri):
         if uri[0] == "AP":
@@ -55,10 +56,10 @@ if __name__ == "__main__":
 
     cherrypy.engine.start()
     t_start = time.time()
+    schedule.schedule.every().day.at(HOUR).do(web_service.set_salt, os.urandom(N_BYTES))
     try:
         while True:
-            if (time.time() - t_start) > T_UPD_SALT:
-                web_service.set_salt(os.urandom(N_BYTES))
+            schedule.run_pending()
             time.sleep(5)
     except KeyboardInterrupt:
         cherrypy.engine.stop()
