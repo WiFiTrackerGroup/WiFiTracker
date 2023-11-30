@@ -7,23 +7,30 @@ import parse
 class DataAggregation:
     def __init__(self):
         self.myself = "DataAggregation"
-        self.error = open(FILE_ERRORS,'w')
-        pass
+        self.error = open(FILE_ERRORS, "w")
 
     def aggregate(self):
         """
         The method is used to retrieve the all data contained
-        in the files in 'souce_files' folder and to combine
-        them in a single DataFrame.
+        in the files in 'souce_files' folder related to a 
+        connection and to combine them in a DataFrame.
         -----------------------------------------------------
         Output:
-            - Dataframe containing all the information 
+            - Dataframe containing all the information
         """
         self.fill_dataframes()
         self.df_raw_data = self.merge_dataframes()
-        self.df_raw_data["domain"] = self.assign_class(self.df_raw_data["domain"])
-        self.df_raw_data = self.df_raw_data.rename({"domain": "class"}, axis="columns")
+        self.df_raw_data["class"] = self.assign_class(self.df_raw_data["domain"])
         return self.df_raw_data
+    
+    def aggregate_AP(self):
+        self.ap_web = pd.DataFrame(self.open_ap_web()) 
+        self.ap_web = self.ap_web.drop_duplicates()
+        self.ap_name = pd.DataFrame(self.open_ap_name())
+        self.ap_name = self.ap_name.drop_duplicates()
+        df_ap_aggregate = pd.merge(self.ap_web, self.ap_name, on="code_ap", how="outer")
+        self.dict_ap_aggregate = df_ap_aggregate.set_index('mac_ap')['name_ap'].to_dict()
+        return self.dict_ap_aggregate
 
     def fill_dataframes(self):
         """
@@ -46,7 +53,7 @@ class DataAggregation:
         """
         data = []
         with open(FILE_USERNAME, "r") as file_object:
-            for i,line in enumerate(file_object):
+            for i, line in enumerate(file_object):
                 try:
                     mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.4.1.3.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
@@ -55,7 +62,9 @@ class DataAggregation:
                     row = {"mac_user": mac_res, "username": username, "domain": dom_res}
                     data.append(row)
                 except:
-                    self.error.write(f"Error in {self.myself} - file: '{FILE_USERNAME}' bad formatted, row [{i}]\n")
+                    self.error.write(
+                        f"Error in {self.myself} - file: '{FILE_USERNAME}' bad formatted, row [{i}]\n"
+                    )
         return data
 
     def open_rssi(self):
@@ -68,7 +77,7 @@ class DataAggregation:
         """
         data = []
         with open(FILE_RSSI, "r") as file_object:
-            for i,line in enumerate(file_object):
+            for i, line in enumerate(file_object):
                 try:
                     mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.1.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
@@ -79,7 +88,9 @@ class DataAggregation:
                     }
                     data.append(row)
                 except:
-                    self.error.write(f"Error in {self.myself} - file: '{FILE_RSSI}' bad formatted, row [{i}]\n")
+                    self.error.write(
+                        f"Error in {self.myself} - file: '{FILE_RSSI}' bad formatted, row [{i}]\n"
+                    )
         return data
 
     def open_snr(self):
@@ -92,7 +103,7 @@ class DataAggregation:
         """
         data = []
         with open(FILE_SNR, "r") as file_object:
-            for i,line in enumerate(file_object):
+            for i, line in enumerate(file_object):
                 try:
                     mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.26.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
@@ -103,7 +114,9 @@ class DataAggregation:
                     }
                     data.append(row)
                 except:
-                    self.error.write(f"Error in {self.myself} - file: '{FILE_SNR}' bad formatted, row [{i}]\n")
+                    self.error.write(
+                        f"Error in {self.myself} - file: '{FILE_SNR}' bad formatted, row [{i}]\n"
+                    )
         return data
 
     def open_bytes_rx(self):
@@ -116,7 +129,7 @@ class DataAggregation:
         """
         data = []
         with open(FILE_BYTES_RX, "r") as file_object:
-            for i,line in enumerate(file_object):
+            for i, line in enumerate(file_object):
                 try:
                     mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.3.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
@@ -127,7 +140,9 @@ class DataAggregation:
                     }
                     data.append(row)
                 except:
-                    self.error.write(f"Error in {self.myself} - file: '{FILE_BYTES_RX}' bad formatted, row [{i}]\n")
+                    self.error.write(
+                        f"Error in {self.myself} - file: '{FILE_BYTES_RX}' bad formatted, row [{i}]\n"
+                    )
         return data
 
     def open_bytes_tx(self):
@@ -140,7 +155,7 @@ class DataAggregation:
         """
         data = []
         with open(FILE_BYTES_TX, "r") as file_object:
-            for i,line in enumerate(file_object):
+            for i, line in enumerate(file_object):
                 try:
                     mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.2.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
@@ -151,7 +166,9 @@ class DataAggregation:
                     }
                     data.append(row)
                 except:
-                    self.error.write(f"Error in {self.myself} - file: '{FILE_BYTES_TX}' bad formatted, row [{i}]\n")
+                    self.error.write(
+                        f"Error in {self.myself} - file: '{FILE_BYTES_TX}' bad formatted, row [{i}]\n"
+                    )
         return data
 
     def open_ap_mac(self):
@@ -165,25 +182,82 @@ class DataAggregation:
         data = []
         regex = r"[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}"
         with open(FILE_AP_MAC, "r") as file_object:
-            for i,line in enumerate(file_object):
+            for i, line in enumerate(file_object):
                 try:
                     mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.4.1.4.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     ap_mac = re.findall(regex, line)[0]
                     ap_mac = ap_mac.replace(" ", ":").lower()
+                    ap_name = self.assign_ap_name(ap_mac)
                     row = {
                         "mac_user": mac_res,
+                        "name_ap": ap_name,
+                    }
+                    data.append(row)
+                except:
+                    self.error.write(
+                        f"Error in {self.myself} - file: '{FILE_AP_MAC}' bad formatted, row [{i}]\n"
+                    )
+        return data
+
+    def open_ap_web(self):
+        """
+        The method opens the file containing code of the AP 
+        inside the SNMP tree and its MAC address .
+        -----------------------------------------------------
+        Output:
+            - List of dictionaries with the data
+        """
+        data = []
+        regex = r"[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}"
+        with open(FILE_AP_WEB, "r") as file_object:
+            for i, line in enumerate(file_object):
+                try:
+                    code_res = parse.search("iso.3.6.1.4.1.9.9.513.1.2.3.1.1.{} Hex", line)
+                    code_res = code_res[0][:-4]
+                    ap_mac = re.findall(regex, line)[0]
+                    ap_mac = ap_mac.replace(" ", ":").lower()
+                    row = {
+                        "code_ap": code_res,
                         "mac_ap": ap_mac,
                     }
                     data.append(row)
                 except:
-                    self.error.write(f"Error in {self.myself} - file: '{FILE_AP_MAC}' bad formatted, row [{i}]\n")
+                    self.error.write(
+                        f"Error in {self.myself} - file: '{FILE_AP_WEB}' bad formatted, row [{i}]\n"
+                    )
+        return data
+    
+    def open_ap_name(self):
+        """
+        The method opens the file containing the name of the
+        access points.
+        -----------------------------------------------------
+        Output:
+            - List of dictionaries with the data
+        """
+        data = []
+        regex = re.compile(r'AP\-[A-Za-z0-9\-]{1,20}')
+        with open(FILE_AP_NAME, "r") as file_object:
+            for i, line in enumerate(file_object):
+                try:
+                    code_res = parse.search("iso.3.6.1.4.1.9.9.513.1.1.1.1.5.{} =", line)
+                    ap_name = regex.findall(line)
+                    row = {
+                        "code_ap": code_res[0],
+                        "name_ap": ap_name[0],
+                    }
+                    data.append(row)
+                except:
+                    self.error.write(
+                        f"Error in {self.myself} - file: '{FILE_AP_NAME}' bad formatted, row [{i}]\n"
+                    )
         return data
 
     def convert_hex_notation(self, mac_string):
         """
         The method converts the mac address from format
-        '\d.\d.\d.\d.\d.\d' to '([0-9a-f]:){5}[0-9a-f]' in 
+        '\d.\d.\d.\d.\d.\d' to '([0-9a-f]:){5}[0-9a-f]' in
         hexadecimal
         -----------------------------------------------------
         Parameter:
@@ -197,6 +271,7 @@ class DataAggregation:
             list_num[i] = hex(int(list_num[i]))
         extended_mac = ":".join(list_num)
         return extended_mac.replace("0x", "")
+    
 
     def merge_dataframes(self):
         """
@@ -233,3 +308,7 @@ class DataAggregation:
             else:
                 classes.append("External")
         return classes
+    
+    def assign_ap_name(self, code):
+        return self.dict_ap_aggregate.get(code)
+
