@@ -1,4 +1,6 @@
 # Configuration file
+
+# IP and Port of the rest interface
 IP = "0.0.0.0"
 PORT = 8080
 
@@ -23,7 +25,7 @@ OID_AP_MAC = "1.3.6.1.4.1.14179.2.1.4.1.4"
 OID_AP_WEB = "1.3.6.1.4.1.9.9.513.1.2.3.1.1"
 OID_AP_NAME = "1.3.6.1.4.1.9.9.513.1.1.1.1.5"
 
-# Files names
+# SNMP files names directory
 FILE_MAC = "SNMP_REST/snmp_data/mac.txt"
 FILE_USERNAME = "SNMP_REST/snmp_data/username.txt"
 FILE_RSSI = "SNMP_REST/snmp_data/rssi.txt"
@@ -34,4 +36,5 @@ FILE_AP_MAC = "SNMP_REST/snmp_data/ap_mac.txt"
 FILE_AP_WEB = "SNMP_REST/snmp_data/ap_web.txt"
 FILE_AP_NAME = "SNMP_REST/snmp_data/ap_name.txt"
 
+# File error file directory
 FILE_ERRORS = "SNMP_REST/sub/logs/error_log.txt"
