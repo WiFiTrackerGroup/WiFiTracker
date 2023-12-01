@@ -3,7 +3,8 @@ from .config import *
 import re
 import parse
 
-#TODO: cambiare OID da config
+
+# TODO: cambiare OID da config
 class DataAggregation:
     def __init__(self):
         self.myself = "DataAggregation"
@@ -29,10 +30,9 @@ class DataAggregation:
         self.ap_name = pd.DataFrame(self.open_ap_name())
         self.ap_name = self.ap_name.drop_duplicates()
         df_ap_aggregate = pd.merge(self.ap_web, self.ap_name, on="code_ap", how="outer")
-        self.dict_ap_aggregate = df_ap_aggregate.set_index("mac_ap")[
-            "name_ap"
-        ].to_dict()
-        return self.dict_ap_aggregate
+        df_ap_aggregate = df_ap_aggregate.set_index("mac_ap")["name_ap"]
+        self.dict_ap_aggregate = df_ap_aggregate.to_dict()
+        return df_ap_aggregate
 
     def fill_dataframes(self):
         """

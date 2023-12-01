@@ -9,6 +9,7 @@ from sub.data_masking import DataMasking
 from sub.data_aggregation import DataAggregation
 
 
+# TODO: controllo: quando get/data devo avere AP più recenti (e controllare che get/AP sia già stata fatta)
 class SnmpRest:
     exposed = True
 
@@ -23,28 +24,30 @@ class SnmpRest:
 
     def GET(self, *uri):
         if uri[0] == "AP":
-            #self.data_acq.acquire_AP()
-            df = self.data_aggr.aggregate_AP()
+            # self.data_acq.acquire_AP()
+            df_ap = self.data_aggr.aggregate_AP()
 
-        if uri[0] == "data":
-            #self.data_acq.acquire()
-            df = self.data_aggr.aggregate()
+            return js.dumps(df_ap.to_dict())
+
+        elif uri[0] == "data":
+            # self.data_acq.acquire()
+            df_data = self.data_aggr.aggregate()
             l1, l2 = self.data_mask.hashing_SHA256(
-                list(df["mac_user"]), list(df["username"]), self._salt
+                list(df_data["mac_user"]), list(df_data["username"]), self._salt
             )
-            df = df.drop(columns=["mac_user", "username"])
-            df.insert(0, "MAC_masked", l1)
-            df.insert(1, "user_masked", l2)
+            df_data = df_data.drop(columns=["mac_user", "username"])
+            df_data.insert(0, "MAC_masked", l1)
+            df_data.insert(1, "user_masked", l2)
 
-        return js.dumps(df.to_dict())
+            return js.dumps(df_data.to_dict())
 
 
 if __name__ == "__main__":
-    conf={
-    	'/':{
-    		'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
-    		'tools.sessions.on': True
-    	}
+    conf = {
+        "/": {
+            "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
+            "tools.sessions.on": True,
+        }
     }
 
     web_service = SnmpRest()
