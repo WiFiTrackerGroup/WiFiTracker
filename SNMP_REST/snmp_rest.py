@@ -20,6 +20,7 @@ class SnmpRest:
         self.data_acq = DataAcquisition()
 
     def set_salt(self, salt: bytes):
+        """Set the random salt needed to the DataMasking module"""
         self._salt = salt
 
     def GET(self, *uri):
