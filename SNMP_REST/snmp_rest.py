@@ -20,7 +20,6 @@ class SnmpRest:
 
     def set_salt(self, salt: bytes):
         self._salt = salt
-        print(salt)
 
     def GET(self, *uri):
         if uri[0] == "AP":
@@ -56,7 +55,7 @@ if __name__ == "__main__":
 
     cherrypy.engine.start()
     t_start = time.time()
-    schedule.schedule.every().day.at(HOUR).do(web_service.set_salt, os.urandom(N_BYTES))
+    schedule.every().day.at(HOUR).do(web_service.set_salt, os.urandom(N_BYTES))
     try:
         while True:
             schedule.run_pending()
