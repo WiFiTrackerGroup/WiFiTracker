@@ -23,29 +23,28 @@ class SnmpRest:
 
     def GET(self, *uri):
         if uri[0] == "AP":
-            self.data_acq.acquire_AP()
+            #self.data_acq.acquire_AP()
             df = self.data_aggr.aggregate_AP()
 
         if uri[0] == "data":
-            self.data_acq.acquire()
+            #self.data_acq.acquire()
             df = self.data_aggr.aggregate()
             l1, l2 = self.data_mask.hashing_SHA256(
-                list(df["MAC"]), list(df["user"]), self._salt
+                list(df["mac_user"]), list(df["username"]), self._salt
             )
-            df.drop(columns=["MAC"])
-            df.drop(columns=["user"])
+            df = df.drop(columns=["mac_user", "username"])
             df.insert(0, "MAC_masked", l1)
             df.insert(1, "user_masked", l2)
 
-        return js.dumps(df)
+        return js.dumps(df.to_dict())
 
 
 if __name__ == "__main__":
-    conf = {
-        "/": {
-            "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
-            "tools.session.on": True,
-        }
+    conf={
+    	'/':{
+    		'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
+    		'tools.sessions.on': True
+    	}
     }
 
     web_service = SnmpRest()
@@ -54,7 +53,6 @@ if __name__ == "__main__":
     cherrypy.config.update({"server.socket_port": PORT})
 
     cherrypy.engine.start()
-    t_start = time.time()
     schedule.every().day.at(HOUR).do(web_service.set_salt, os.urandom(N_BYTES))
     try:
         while True:

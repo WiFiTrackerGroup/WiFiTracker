@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import hashlib
-
+import numpy as np
 
 class DataMasking:
     def __init__(self):
@@ -14,8 +14,14 @@ class DataMasking:
         macs_digest = []
         users_digest = []
         for i in range(len(mac_lst)):
-            mac = mac_lst[i].encode()
-            user = user_lst[i].encode()
-            macs_digest.append(hashlib.sha256(mac + salt).hexdigest())
-            users_digest.append(hashlib.sha256(user + salt).hexdigest())
+            if type(mac_lst[i]) == str:
+                mac = mac_lst[i].encode()
+                macs_digest.append(hashlib.sha256(mac + salt).hexdigest())
+            else:
+                macs_digest.append(float('nan'))
+            if type(user_lst[i]) == str:
+                user = user_lst[i].encode()
+                users_digest.append(hashlib.sha256(user + salt).hexdigest())
+            else:
+                users_digest.append(float('nan'))
         return macs_digest, users_digest

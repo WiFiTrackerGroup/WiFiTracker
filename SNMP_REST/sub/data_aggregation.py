@@ -3,7 +3,7 @@ from .config import *
 import re
 import parse
 
-
+#TODO: cambiare OID da config
 class DataAggregation:
     def __init__(self):
         self.myself = "DataAggregation"
