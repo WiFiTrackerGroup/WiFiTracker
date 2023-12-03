@@ -19,6 +19,11 @@ class DataAggregation:
         ### Output:
             - Dataframe containing all the information
         """
+        try:
+            self.dict_ap_aggregate
+        except AttributeError:
+            self.aggregate_AP()
+
         self.fill_dataframes()
         self.df_raw_data = self.merge_dataframes()
         self.df_raw_data["class"] = self.assign_class(self.df_raw_data["domain"])
@@ -60,7 +65,7 @@ class DataAggregation:
         with open(FILE_USERNAME, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.{OID_USERNAME}.{} =", line)
+                    mac_res = parse.search(f"iso.{OID_USERNAME}.{{}} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     dom_res = parse.search('@{}"', line)[0]
                     username = parse.search('"{}@', line)[0]
@@ -85,7 +90,7 @@ class DataAggregation:
         with open(FILE_RSSI, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.{OID_RSSI}.{} =", line)
+                    mac_res = parse.search(f"iso.{OID_RSSI}.{{}} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     rssi_res = parse.search("INTEGER: {:d}", line)[0]
                     row = {
@@ -112,7 +117,7 @@ class DataAggregation:
         with open(FILE_SNR, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.{OID_SNR}.{} =", line)
+                    mac_res = parse.search(f"iso.{OID_SNR}.{{}} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     snr_res = parse.search("INTEGER: {:d}", line)[0]
                     row = {
@@ -139,7 +144,7 @@ class DataAggregation:
         with open(FILE_BYTES_RX, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.{OID_BYTES_RX}.{} =", line)
+                    mac_res = parse.search(f"iso.{OID_BYTES_RX}.{{}} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     bytes_rx = parse.search("Counter64: {:d}", line)[0]
                     row = {
@@ -166,7 +171,7 @@ class DataAggregation:
         with open(FILE_BYTES_TX, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.{OID_BYTES_TX}.{} =", line)
+                    mac_res = parse.search(f"iso.{OID_BYTES_TX}.{{}} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     bytes_tx = parse.search("Counter64: {:d}", line)
                     row = {
@@ -194,7 +199,7 @@ class DataAggregation:
         with open(FILE_AP_MAC, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.{OID_AP_MAC}.{} =", line)
+                    mac_res = parse.search(f"iso.{OID_AP_MAC}.{{}} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     ap_mac = re.findall(regex, line)[0]
                     ap_mac = ap_mac.replace(" ", ":").lower()
@@ -226,7 +231,7 @@ class DataAggregation:
                 # FIXME: non so perchè quando metto {OID_AP_WEB} quando fa il merge il nome dell'AP è Nan
                 try:
                     code_res = parse.search(
-                        "iso.3.6.1.4.1.9.9.513.1.2.3.1.1.{} Hex", line
+                        f"iso.{OID_AP_WEB}.{{}} Hex", line
                     )
                     code_res = code_res[0][:-4]
                     ap_mac = re.findall(regex, line)[0]
@@ -257,7 +262,7 @@ class DataAggregation:
             for i, line in enumerate(file_object):
                 try:
                     code_res = parse.search(
-                        "iso.3.6.1.4.1.9.9.513.1.1.1.1.5.{} =", line
+                        f"iso.{OID_AP_NAME}.{{}} =", line
                     )
                     ap_name = regex.findall(line)
                     row = {
