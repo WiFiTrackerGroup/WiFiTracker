@@ -1,8 +1,8 @@
 # Configuration file
 
 # IP and Port of the rest interface
-IP = "0.0.0.0"
-PORT = 8080
+IP = "127.0.0.1"
+PORT = 8282
 
 # Bytes dimension of salt used in hashing
 N_BYTES = 16

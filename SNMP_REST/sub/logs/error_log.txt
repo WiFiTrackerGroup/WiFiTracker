@@ -1,4 +1,3 @@
-Error in DataAggregation - file: 'SNMP_REST/snmp_data/ap_name.txt' bad formatted, row [519]
 Error in DataAggregation - file: 'SNMP_REST/snmp_data/username.txt' bad formatted, row [10]
 Error in DataAggregation - file: 'SNMP_REST/snmp_data/username.txt' bad formatted, row [62]
 Error in DataAggregation - file: 'SNMP_REST/snmp_data/username.txt' bad formatted, row [76]
@@ -172,3 +171,4 @@ Error in DataAggregation - file: 'SNMP_REST/snmp_data/username.txt' bad formatte
 Error in DataAggregation - file: 'SNMP_REST/snmp_data/username.txt' bad formatted, row [9516]
 Error in DataAggregation - file: 'SNMP_REST/snmp_data/username.txt' bad formatted, row [9541]
 Error in DataAggregation - file: 'SNMP_REST/snmp_data/username.txt' bad formatted, row [9591]
+Error in DataAggregation - file: 'SNMP_REST/snmp_data/username.txt' bad formatted, row [9614]

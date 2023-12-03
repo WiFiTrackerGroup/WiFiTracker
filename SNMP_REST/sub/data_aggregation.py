@@ -4,7 +4,6 @@ import re
 import parse
 
 
-# TODO:GIO: fai un controllo in merge_dataframes() nel caso in cui non si abbia ancora fatto la get/AP
 class DataAggregation:
     def __init__(self):
         self.myself = "DataAggregation"
@@ -14,7 +13,7 @@ class DataAggregation:
         """
         aggregate
         ---------
-        The method is used to retrieve the all data contained in the files stored in \\
+        The method is used to retrieve the data contained in the files stored in \\
         'snmp_data' folder related to a connection and to combine them in a DataFrame.
         ### Output:
             - Dataframe containing all the information
@@ -30,6 +29,15 @@ class DataAggregation:
         return self.df_raw_data
 
     def aggregate_AP(self):
+        """
+        aggregate_AP
+        ------------
+        The method retrieves the data related to the access 
+        points of PoliTO and combines them in a dictionary.
+        ### Output
+            - The Dataframe containing the mac and the name 
+            of the APs
+        """
         self.ap_web = pd.DataFrame(self.open_ap_web())
         self.ap_web = self.ap_web.drop_duplicates()
         self.ap_name = pd.DataFrame(self.open_ap_name())
@@ -69,6 +77,8 @@ class DataAggregation:
                     mac_res = self.convert_hex_notation(mac_res[0])
                     dom_res = parse.search('@{}"', line)[0]
                     username = parse.search('"{}@', line)[0]
+                    if re.match(r"^[gG]\d+$",username) and dom_res == "polito.it":
+                        dom_res = "polito.guest"
                     row = {"mac_user": mac_res, "username": username, "domain": dom_res}
                     data.append(row)
                 except:
@@ -228,7 +238,6 @@ class DataAggregation:
         regex = r"[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}"
         with open(FILE_AP_WEB, "r") as file_object:
             for i, line in enumerate(file_object):
-                # FIXME: non so perchè quando metto {OID_AP_WEB} quando fa il merge il nome dell'AP è Nan
                 try:
                     code_res = parse.search(
                         f"iso.{OID_AP_WEB}.{{}} Hex", line
@@ -257,7 +266,7 @@ class DataAggregation:
             - List of dictionaries with the data
         """
         data = []
-        regex = re.compile(r"AP\-[A-Za-z0-9\-]{1,20}")
+        regex = re.compile(r"AP[A-Za-z0-9\-]{1,20}")
         with open(FILE_AP_NAME, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
@@ -324,12 +333,24 @@ class DataAggregation:
             if domain != domain:
                 classes.append("Unknown")
             elif domain == "studenti.polito.it":
-                classes.append("Students")
+                classes.append("Student")
             elif domain == "polito.it":
                 classes.append("Professor")
+            elif domain == "polito.guest":
+                classes.append("Guest")            
             else:
                 classes.append("External")
         return classes
 
     def assign_ap_name(self, code):
+        """
+        assign_ap_name
+        --------------
+        Given the code of the access point the
+        method returns its name.
+        ### Input:
+            - the code of the AP
+        ### Output:
+            - the name of the AP
+        """
         return self.dict_ap_aggregate.get(code)
