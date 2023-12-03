@@ -3,7 +3,8 @@ from .config import *
 import re
 import parse
 
-#TODO: cambiare OID da config
+
+# TODO:GIO: fai un controllo in merge_dataframes() nel caso in cui non si abbia ancora fatto la get/AP
 class DataAggregation:
     def __init__(self):
         self.myself = "DataAggregation"
@@ -29,10 +30,9 @@ class DataAggregation:
         self.ap_name = pd.DataFrame(self.open_ap_name())
         self.ap_name = self.ap_name.drop_duplicates()
         df_ap_aggregate = pd.merge(self.ap_web, self.ap_name, on="code_ap", how="outer")
-        self.dict_ap_aggregate = df_ap_aggregate.set_index("mac_ap")[
-            "name_ap"
-        ].to_dict()
-        return self.dict_ap_aggregate
+        df_ap_aggregate = df_ap_aggregate.set_index("mac_ap")["name_ap"]
+        self.dict_ap_aggregate = df_ap_aggregate.to_dict()
+        return df_ap_aggregate
 
     def fill_dataframes(self):
         """
@@ -60,7 +60,7 @@ class DataAggregation:
         with open(FILE_USERNAME, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.4.1.3.{} =", line)
+                    mac_res = parse.search("iso.{OID_USERNAME}.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     dom_res = parse.search('@{}"', line)[0]
                     username = parse.search('"{}@', line)[0]
@@ -85,7 +85,7 @@ class DataAggregation:
         with open(FILE_RSSI, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.1.{} =", line)
+                    mac_res = parse.search("iso.{OID_RSSI}.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     rssi_res = parse.search("INTEGER: {:d}", line)[0]
                     row = {
@@ -112,7 +112,7 @@ class DataAggregation:
         with open(FILE_SNR, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.26.{} =", line)
+                    mac_res = parse.search("iso.{OID_SNR}.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     snr_res = parse.search("INTEGER: {:d}", line)[0]
                     row = {
@@ -139,7 +139,7 @@ class DataAggregation:
         with open(FILE_BYTES_RX, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.3.{} =", line)
+                    mac_res = parse.search("iso.{OID_BYTES_RX}.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     bytes_rx = parse.search("Counter64: {:d}", line)[0]
                     row = {
@@ -166,7 +166,7 @@ class DataAggregation:
         with open(FILE_BYTES_TX, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.6.1.2.{} =", line)
+                    mac_res = parse.search("iso.{OID_BYTES_TX}.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     bytes_tx = parse.search("Counter64: {:d}", line)
                     row = {
@@ -194,7 +194,7 @@ class DataAggregation:
         with open(FILE_AP_MAC, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search("iso.3.6.1.4.1.14179.2.1.4.1.4.{} =", line)
+                    mac_res = parse.search("iso.{OID_AP_MAC}.{} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
                     ap_mac = re.findall(regex, line)[0]
                     ap_mac = ap_mac.replace(" ", ":").lower()
@@ -223,6 +223,7 @@ class DataAggregation:
         regex = r"[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}\s[0-9A-Fa-f]{2}"
         with open(FILE_AP_WEB, "r") as file_object:
             for i, line in enumerate(file_object):
+                # FIXME: non so perchè quando metto {OID_AP_WEB} quando fa il merge il nome dell'AP è Nan
                 try:
                     code_res = parse.search(
                         "iso.3.6.1.4.1.9.9.513.1.2.3.1.1.{} Hex", line
