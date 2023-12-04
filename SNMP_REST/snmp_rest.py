@@ -24,23 +24,24 @@ class SnmpRest:
         self._salt = salt
 
     def GET(self, *uri):
-        if uri[0] == "AP":
-            # self.data_acq.acquire_AP()
-            df_ap = self.data_aggr.aggregate_AP()
+        if len(uri) > 0:
+            if uri[0] == "AP":
+                # self.data_acq.acquire_AP()
+                df_ap = self.data_aggr.aggregate_AP()
 
-            return js.dumps(df_ap.to_dict())
+                return js.dumps(df_ap.to_dict())
 
-        elif uri[0] == "data":
-            # self.data_acq.acquire()
-            df_data = self.data_aggr.aggregate()
-            l1, l2 = self.data_mask.hashing_SHA256(
-                list(df_data["mac_user"]), list(df_data["username"]), self._salt
-            )
-            df_data = df_data.drop(columns=["mac_user", "username"])
-            df_data.insert(0, "MAC_masked", l1)
-            df_data.insert(1, "user_masked", l2)
+            elif uri[0] == "data":
+                # self.data_acq.acquire()
+                df_data = self.data_aggr.aggregate()
+                l1, l2 = self.data_mask.hashing_SHA256(
+                    list(df_data["mac_user"]), list(df_data["username"]), self._salt
+                )
+                df_data = df_data.drop(columns=["mac_user", "username"])
+                df_data.insert(0, "MAC_masked", l1)
+                df_data.insert(1, "user_masked", l2)
 
-            return js.dumps(df_data.to_dict())
+                return js.dumps(df_data.to_dict())
 
 
 if __name__ == "__main__":
