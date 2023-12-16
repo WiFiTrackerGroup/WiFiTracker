@@ -311,11 +311,11 @@ class DataAggregation:
         ### Output:
             - the dataframe containing the all data
         """
-        result = pd.merge(self.df_usernames, self.rssi, on="mac_user", how="outer")
-        result = pd.merge(result, self.snr, on="mac_user", how="outer")
-        result = pd.merge(result, self.byte_rx, on="mac_user", how="outer")
-        result = pd.merge(result, self.byte_tx, on="mac_user", how="outer")
-        return pd.merge(result, self.ap_mac, on="mac_user", how="outer")
+        result = pd.merge(self.df_usernames, self.rssi, on="mac_user")
+        result = pd.merge(result, self.snr, on="mac_user", how="right")
+        result = pd.merge(result, self.byte_rx, on="mac_user", how="right")
+        result = pd.merge(result, self.byte_tx, on="mac_user", how="right")
+        return pd.merge(result, self.ap_mac, on="mac_user")
 
     def assign_class(self, domain_list):
         """
@@ -335,7 +335,7 @@ class DataAggregation:
             elif domain == "studenti.polito.it":
                 classes.append("Student")
             elif domain == "polito.it":
-                classes.append("Professor")
+                classes.append("Staff")
             elif domain == "polito.guest":
                 classes.append("Guest")            
             else:
