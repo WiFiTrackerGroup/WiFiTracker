@@ -4,10 +4,11 @@ import schedule
 import os
 import time
 import json as js
-from sub.config import N_BYTES, T_UPD_SALT, IP, PORT, HOUR
+from sub.config import *
 from sub.data_acquisition import DataAcquisition
 from sub.data_masking import DataMasking
 from sub.data_aggregation import DataAggregation
+import pandas as pd
 
 
 # TODO: schedule the AP retieval
@@ -50,28 +51,52 @@ class SnmpRest:
                 df_data.insert(0, "MAC_masked", l1)
                 df_data.insert(1, "user_masked", l2)
                 return js.dumps(df_data.to_dict())
+            
+            elif uri[0] == "test":
+                # self.data_acq.acquier()
+                user  = pd.DataFrame(self.data_aggr.open_username())
+                rssi = pd.DataFrame(self.data_aggr.open_rssi())
+                snr = pd.DataFrame(self.data_aggr.open_snr())
+                byte_rx = pd.DataFrame(self.data_aggr.open_bytes_rx())
+                byte_tx = pd.DataFrame(self.data_aggr.open_bytes_tx())
+                ap_mac = pd.DataFrame(self.data_aggr.open_ap_mac())
 
 
-USERS = {"jon": "secret"}
+                l1, l2 = self.data_mask.hashing_SHA256(
+                    list(user["mac_user"]), list(user["username"]), self._salt
+                )
+
+                output = {"MAC_masked": list(l1),
+                          "user_masked": list(l2),
+                          "rssi": list(rssi.rssi),
+                          "snr": list(snr.snr),
+                          "byte_rx": list(byte_rx.byte_rx),
+                          "byte_tx": list(byte_tx.byte_tx),
+                          "ap_name":list(ap_mac.name_ap)}
+                
+                return js.dumps(output)
+
+
+#USERS = {"jon": "secret"}
 
 if __name__ == "__main__":
-    # conf = {
-    #     "/": {
-    #         "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
-    #         "tools.sessions.on": True,
-    #     }
-    # }
-
     conf = {
         "/": {
             "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
-            "tools.auth_digest.on": True,
-            "tools.auth_digest.realm": "localhost",
-            "tools.auth_digest.get_ha1": auth_digest.get_ha1_dict_plain(USERS),
-            "tools.auth_digest.key": "a565c27146791cfb",
-            "tools.auth_digest.accept_charset": "UTF-8",
-        },
+            "tools.sessions.on": True,
+        }
     }
+
+#   conf = {
+#       "/": {
+#           "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
+#           "tools.auth_digest.on": True,
+#           "tools.auth_digest.realm": "localhost",
+#           "tools.auth_digest.get_ha1": auth_digest.get_ha1_dict_plain(USERS),
+#           "tools.auth_digest.key": "a565c27146791cfb",
+#           "tools.auth_digest.accept_charset": "UTF-8",
+#       },
+#   }
 
     web_service = SnmpRest()
     cherrypy.tree.mount(web_service, "/", conf)
