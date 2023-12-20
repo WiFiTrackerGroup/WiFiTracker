@@ -28,7 +28,7 @@ class SnmpRest:
     def GET(self, *uri):
         if len(uri) > 0:
             if uri[0] == "AP":
-                # self.data_acq.acquier_AP()
+                self.data_acq.acquier_AP()
                 try:
                     df_ap = self.data_aggr.aggregate_AP()
                 except:
@@ -36,7 +36,7 @@ class SnmpRest:
                 return js.dumps(df_ap.to_dict())
 
             elif uri[0] == "data":
-                # self.data_acq.acquier()
+                self.data_acq.acquier()
                 try:
                     df_data = self.data_aggr.aggregate()
                 except:
@@ -53,7 +53,7 @@ class SnmpRest:
                 return js.dumps(df_data.to_dict())
             
             elif uri[0] == "test":
-                # self.data_acq.acquier()
+                self.data_acq.acquier()
                 user  = pd.DataFrame(self.data_aggr.open_username())
                 rssi = pd.DataFrame(self.data_aggr.open_rssi())
                 snr = pd.DataFrame(self.data_aggr.open_snr())
