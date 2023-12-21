@@ -1,6 +1,10 @@
 # SNMP REST Interface
 This REST webservice is used to query the AP controller using the SNMP protocol, aggregate the data in a database, and to anonymize MAC address and username of each entry.
 
+## Configuration
+To configure the server properly make sure to change the **COMMUNITY** and **IP_WLC** field in the *config.py* file.
+Once this is done the server is ready to use.
+
 ## Usage
 ### Running the webservice
 Make sure to run the code from the *SNMP_REST* folder.
