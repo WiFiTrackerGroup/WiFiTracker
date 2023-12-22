@@ -26,6 +26,9 @@ class DataAcquisition:
             f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_USERNAME} > {FILE_USERNAME}"
         )
 
+        os.system(f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_SNR} > {FILE_SNR}")
+
+
         os.system(f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_RSSI} > {FILE_RSSI}")
 
         os.system(
