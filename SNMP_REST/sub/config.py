@@ -1,7 +1,7 @@
 # Configuration file
 
 # IP and Port of the rest interface
-IP = "0.0.0.0"
+IP = "127.0.0.1"
 PORT = 8282
 
 # Bytes dimension of salt used in hashing
@@ -11,6 +11,9 @@ T_UPD_SALT = 20
 
 # Set hour when salt is changed every day
 HOUR = "00:30"
+
+# Buffer value for near response
+TIME_BUFF = 59
 
 # snmpwalk command information
 COMMUNITY = "-c abcdefghi"
