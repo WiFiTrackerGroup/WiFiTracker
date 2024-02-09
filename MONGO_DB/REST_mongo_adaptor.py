@@ -10,7 +10,10 @@ class adaptor_mongo_interface(object):
     def __init__(self):
         self.ip = IP_REST_ADAPTOR_DB
         self.port = PORT_REST_ADAPTOR_DB
-        self.db = mDB(IP_MONGODB, PORT_MONGODB)
+
+        # -- Counting collection
+        self.db_counting = mDB(IP_MONGODB, PORT_MONGODB)
+        self.coll_name = NAME_MONGODB
         
 
     def getPort(self):
@@ -19,11 +22,24 @@ class adaptor_mongo_interface(object):
     def getIP(self):
         return self.ip()
     
-    def GET(self, *uri):
-        pass
+    def GET(self, *uri, **params):
+        list_parameters = params.keys()
+        if uri[0] == self.coll_name:
+            if all(par in ["class", "init_date", "final_date"] for par in list_parameters):
+                return self.db_counting.findBy_class_period(
+                                                        int(params['class']),
+                                                        int(params['init_date']),
+                                                        int(params['final_date']))
+            if all(par in ["init_date", "final_date"] for par in list_parameters):
+                return self.db_counting.findBy_period(
+                                                    int(params['init_date']),
+                                                    int(params['final_date']))
 
     def POST(self, *uri):
         body_string = cherrypy.request.body.read()
         new_data_dict = js.loads(body_string)
-        if uri[0] == "":
-            self.db.insert_one_dict(new_data_dict)
+        if uri[0] == self.coll_name:
+            if uri[1] == "one":
+                self.db_counting.insert_record(new_data_dict)
+            if uri[1] == "more":
+                self.db_counting.insert_more_records(new_data_dict)

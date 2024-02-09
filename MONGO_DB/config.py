@@ -1,10 +1,12 @@
 
 
 IP_REST_ADAPTOR_DB = "0.0.0.0"
-
 PORT_REST_ADAPTOR_DB = 432
 
-IP_MONGODB = ""
-PORT_MONGODB = 33
 PSW_MONGODB = "H2Mz2JYwKNbcEXBb"
 USER_MONGODB = "wifitracker2024"
+
+# --> Counting collection
+IP_MONGODB = ""
+PORT_MONGODB = 33
+NAME_MONGODB = "counting"
