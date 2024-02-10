@@ -1,4 +1,5 @@
 import cherrypy
+import requests
 from cherrypy.lib import auth_digest
 import schedule
 import os
@@ -114,7 +115,8 @@ if __name__ == "__main__":
     cherrypy.config.update({"server.socket_port": PORT})
 
     cherrypy.engine.start()
-    schedule.every().day.at(HOUR).do(web_service.set_salt, os.urandom(N_BYTES))
+    schedule.every().day.at(HOUR_SALT).do(web_service.set_salt, os.urandom(N_BYTES))
+    schedule.every().day.at(HOUR_AP).do(requests.get, "http://127.0.0.1:8282/AP")
     try:
         while True:
             schedule.run_pending()
