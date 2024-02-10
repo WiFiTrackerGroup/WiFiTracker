@@ -10,9 +10,6 @@ class Acquisition:
     def __init__(self):
         self.SNMPaddr = "http://" + IP + ":" + PORT
 
-        # When started the first thing to do is obtain APdata
-        self.requestAP()
-
         # Initialization
         self.countP = Counting_P()
 
@@ -44,7 +41,7 @@ class Acquisition:
             raise Exception
 
     def main(self):
-        schedule.every().day.at(HOUR).do(self.requestAP)
+
         schedule.every(SCHEDULE).seconds.do(self.request)
         try:
             while True:
