@@ -22,7 +22,7 @@ class SnmpRest:
         self.data_acq = DataAcquisition()
         self.ts = [time.time() - TIME_BUFF]
 
-        requests.get("http://127.0.0.1:8282/AP")
+        self.SNMPaddr = "http://" + IP + ":" + str(PORT)
 
     def set_salt(self, salt: bytes):
         """Set the random salt needed to the DataMasking module"""
@@ -118,7 +118,11 @@ if __name__ == "__main__":
 
     cherrypy.engine.start()
     schedule.every().day.at(HOUR_SALT).do(web_service.set_salt, os.urandom(N_BYTES))
-    schedule.every().day.at(HOUR_AP).do(requests.get, "http://127.0.0.1:8282/AP")
+    schedule.every().day.at(HOUR_AP).do(requests.get, web_service.SNMPaddr + "/AP")
+
+    # First AP name initialization (start run)
+    requests.get(web_service.SNMPaddr + "/AP")
+
     try:
         while True:
             schedule.run_pending()

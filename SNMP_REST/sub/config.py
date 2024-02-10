@@ -13,7 +13,7 @@ T_UPD_SALT = 20
 HOUR_SALT = "00:30"
 
 # Set hout when AP names are retrieved every day
-HOUR_AP = "00:35"
+HOUR_AP = "00:30"
 
 # Buffer value for near response
 TIME_BUFF = 59
