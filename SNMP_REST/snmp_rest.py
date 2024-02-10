@@ -28,7 +28,7 @@ class SnmpRest:
     def GET(self, *uri):
         if len(uri) > 0:
             if uri[0] == "AP":
-                self.data_acq.acquier_AP()
+                # self.data_acq.acquier_AP()
                 try:
                     df_ap = self.data_aggr.aggregate_AP()
                 except:
@@ -37,7 +37,7 @@ class SnmpRest:
 
             elif uri[0] == "data":
                 if self.ts[0] < (time.time() - TIME_BUFF):
-                    self.data_acq.acquier()
+                    # self.data_acq.acquier()
                     try:
                         df_data = self.data_aggr.aggregate()
                     except:
