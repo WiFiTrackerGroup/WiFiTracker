@@ -22,6 +22,8 @@ class SnmpRest:
         self.data_acq = DataAcquisition()
         self.ts = [time.time() - TIME_BUFF]
 
+        requests.get("http://127.0.0.1:8282/AP")
+
     def set_salt(self, salt: bytes):
         """Set the random salt needed to the DataMasking module"""
         self._salt = salt
