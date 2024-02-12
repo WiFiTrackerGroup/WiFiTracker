@@ -2,8 +2,10 @@ import time
 import pandas as pd
 import schedule
 import requests
+import pymongo as pm
 from sub.config import *
 from sub.counting_people import *
+from sub.mongoDB_library import *
 
 
 class Acquisition:
@@ -12,6 +14,11 @@ class Acquisition:
 
         # Initialization
         self.countP = Counting_P()
+        self.myclient = pm.MongoClient(URL_DB)
+
+        # DB
+        self.myDB = self.myclient[DBNAME]
+        self.myCount = mongo_library(self.myDB[COUNTNAME], COUNTNAME)
 
     def requestAP(self):
         """
@@ -36,7 +43,8 @@ class Acquisition:
             req_data = requests.get(self.SNMPaddr + "/data")
             if req_data.ok:
                 dataRoom = pd.DataFrame.from_dict(req_data.json())
-                self.countP.main(dataRoom)
+                dataCount = self.countP.main(dataRoom)
+                self.myCount.insert_records(dataCount)
         except:
             raise Exception
 
