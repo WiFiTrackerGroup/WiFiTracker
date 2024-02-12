@@ -11,7 +11,7 @@ class adaptor_mongo_interface(object):
         self.ip = IP_REST_ADAPTOR_DB
         self.port = PORT_REST_ADAPTOR_DB
 
-        # -- Counting collection
+        
         self.db_counting = mDB(IP_MONGODB, PORT_MONGODB)
         self.coll_name = NAME_MONGODB
         
@@ -39,7 +39,4 @@ class adaptor_mongo_interface(object):
         body_string = cherrypy.request.body.read()
         new_data_dict = js.loads(body_string)
         if uri[0] == self.coll_name:
-            if uri[1] == "one":
-                self.db_counting.insert_record(new_data_dict)
-            if uri[1] == "more":
-                self.db_counting.insert_more_records(new_data_dict)
+            self.db_counting.insert_records(new_data_dict)
