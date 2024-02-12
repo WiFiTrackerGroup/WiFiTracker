@@ -1,4 +1,5 @@
 import pandas as pd
+import requests
 from .config import *
 
 
@@ -24,11 +25,16 @@ class Counting_P:
         return dataRoom
 
     def counting_basic(self, dataRoom):
+        timestamp = dataRoom["Timestamp"].iloc[0]
         dataRoom = dataRoom.drop_duplicates("user_masked").groupby("Room").count()
-        dataRoom = dataRoom["Timestamp"]
+        dataRoom = dataRoom["AP"]
         dataRoom = dataRoom.to_frame()
-        dataRoom.rename(columns={"Timestamp": "N_people"}, inplace=True)
+        dataRoom["Timestamp"] = timestamp
+        dataRoom.rename(columns={"AP": "N_people"}, inplace=True)
         return dataRoom
+
+    def send_data_mongoDB(self, dataRoom):
+        requests.post()
 
     def main(self, dataRoom):
         dataRoom = self.room_division(dataRoom)
