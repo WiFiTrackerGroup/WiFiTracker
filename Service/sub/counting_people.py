@@ -33,7 +33,15 @@ class Counting_P:
         dataRoom.rename(columns={"AP": "N_people"}, inplace=True)
         return dataRoom
 
+    def filter(self, dataRoom):
+        # Remove devices that may be connected from different rooms
+        dataRoom = dataRoom[dataRoom["snr"] > 20]
+        # Remove devices that are categorized as sensors
+        dataRoom = dataRoom[dataRoom["class"] != "Unknown"]
+        return dataRoom
+
     def main(self, dataRoom):
         dataRoom = self.room_division(dataRoom)
+        dataRoom = self.filter(dataRoom)
         dataRoom = self.counting_basic(dataRoom)
         return dataRoom
