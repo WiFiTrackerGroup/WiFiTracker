@@ -6,11 +6,11 @@ PORT = "8282"
 SCHEDULE = 10
 
 # MONGODB config
-PSW_MONGODB = "test"
-USER_MONGODB = "test"
+PSW_MONGODB = "hcgFRD3G!f"
+USER_MONGODB = "wifitracker2024"
 
-DBNAME = "test"
-COUNTNAME = "test"
+DBNAME = "WifiTracker2024"
+COUNTNAME = "counting"
 TRACKNAME = "tracking"
 
 URL_DB = (

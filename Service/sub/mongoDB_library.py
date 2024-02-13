@@ -17,10 +17,8 @@ class mongo_library:
         if self.name == COUNTNAME:
             if len(df) > 1:
                 try:
-                    dict = {"Room": "3P", "N_people": 4}
-                    self.collection.insert_one(dict)
-                    # dict = df.to_dict()
-                    # self.collection.insert_many(dict)
+                    dict = df.T.to_dict().values()
+                    self.collection.insert_many(dict)
                 except:
                     self.error.write(
                         f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
