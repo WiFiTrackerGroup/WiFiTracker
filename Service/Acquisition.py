@@ -16,7 +16,7 @@ class Acquisition:
         self.countP = Counting_P()
         self.myclient = pm.MongoClient(URL_DB)
 
-        # DB
+        # Collection
         self.myDB = self.myclient[DBNAME]
         self.myCount = mongo_library(self.myDB[COUNTNAME], COUNTNAME)
 
