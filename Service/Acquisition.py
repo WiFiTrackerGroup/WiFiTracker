@@ -22,6 +22,7 @@ class Acquisition:
         # Collection
         self.myDB = self.myclient[DBNAME]
         self.myCount = mongo_library(self.myDB[COUNTNAME], COUNTNAME)
+        self.myTrack = mongo_library(self.myDB[TRACKNAME], TRACKNAME)
 
     def requestAP(self):
         """
@@ -52,11 +53,12 @@ class Acquisition:
             # Counting people
             dataCount = self.countP.main(dataRoom)
             self.myCount.insert_records(dataCount)
-            # Tracking
+            # Tracking people
             if not self.df_t_1.empty:
-                self.track.eval_od_matrix(self.df_t_1, dataRoom)
+                dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
+                self.myTrack.insert_records(dataTrack)
+            # DF at t-1 needed for tracking purpose
             self.df_t_1 = dataRoom.copy()
-            # TODO: save OD to mongoDB
 
     def main(self):
 
