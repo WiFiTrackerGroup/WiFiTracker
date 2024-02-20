@@ -1,5 +1,5 @@
 # IP and PORT od the SNMP rest interface
-IP = "127.0.0.1"
+IP = "192.168.67.41"
 PORT = "8282"
 
 # Seconds to wait before asking anothe acquisition
