@@ -44,6 +44,7 @@ class Acquisition:
         Request every SCHEDULE seconds the rooms information
         """
         try:
+            print("Starting data retrieval...")
             req_data = requests.get(self.SNMPaddr + "/data")
             print("Data retrieved successfully!")
         except:
