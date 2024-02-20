@@ -14,7 +14,7 @@ class mongo_library:
         return self.collection
 
     def insert_records(self, df):
-        if self.name == COUNTNAME:
+        if self.name == COUNTNAME or self.name == TRACKNAME:
             if len(df) > 1:
                 try:
                     dict = df.T.to_dict().values()

@@ -6,6 +6,7 @@ import pymongo as pm
 from sub.config import *
 from sub.counting_people import *
 from sub.mongoDB_library import *
+from sub.tracking import tracking
 
 
 class Acquisition:
@@ -14,11 +15,14 @@ class Acquisition:
 
         # Initialization
         self.countP = Counting_P()
+        self.track = tracking()
         self.myclient = pm.MongoClient(URL_DB)
+        self.df_t_1 = pd.DataFrame()  # containing data of the previous request
 
         # Collection
         self.myDB = self.myclient[DBNAME]
         self.myCount = mongo_library(self.myDB[COUNTNAME], COUNTNAME)
+        self.myTrack = mongo_library(self.myDB[TRACKNAME], TRACKNAME)
 
     def requestAP(self):
         """
@@ -41,12 +45,21 @@ class Acquisition:
         """
         try:
             req_data = requests.get(self.SNMPaddr + "/data")
-            if req_data.ok:
-                dataRoom = pd.DataFrame.from_dict(req_data.json())
-                dataCount = self.countP.main(dataRoom)
-                self.myCount.insert_records(dataCount)
+            print("Data retrieved successfully!")
         except:
-            raise Exception
+            raise Exception("Error occured during server request!")
+
+        if req_data.ok:
+            dataRoom = pd.DataFrame.from_dict(req_data.json())
+            # Counting people
+            dataCount = self.countP.main(dataRoom)
+            self.myCount.insert_records(dataCount)
+            # Tracking people
+            if not self.df_t_1.empty:
+                dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
+                self.myTrack.insert_records(dataTrack)
+            # DF at t-1 needed for tracking purpose
+            self.df_t_1 = dataRoom.copy()
 
     def main(self):
 
