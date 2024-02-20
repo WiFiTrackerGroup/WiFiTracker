@@ -45,6 +45,7 @@ class Acquisition:
         """
         try:
             req_data = requests.get(self.SNMPaddr + "/data")
+            print("Data retrieved successfully!")
         except:
             raise Exception("Error occured during server request!")
 
