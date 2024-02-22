@@ -1,9 +1,9 @@
 # IP and PORT od the SNMP rest interface
-IP = "192.168.67.41"
+IP = "127.0.0.1"
 PORT = "8282"
 
 # Seconds to wait before asking anothe acquisition
-SCHEDULE = 120
+SCHEDULE = 10
 
 # MONGODB config
 PSW_MONGODB = "hcgFRD3G!f"
@@ -17,4 +17,4 @@ URL_DB = (
     f"mongodb+srv://{USER_MONGODB}:{PSW_MONGODB}@wifitracker2024.fqyv89v.mongodb.net/"
 )
 
-FILE_ERRORS = "sub/log/mongoDB_log.txt"
+FILE_ERRORS = "Service/sub/log/mongoDB_log.txt"

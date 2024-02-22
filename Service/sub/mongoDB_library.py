@@ -1,6 +1,7 @@
 import pandas
 from .config import *
 import datetime
+import time
 
 
 class mongo_library:
@@ -14,7 +15,7 @@ class mongo_library:
         return self.collection
 
     def insert_records(self, df):
-        if self.name == COUNTNAME or self.name == TRACKNAME:
+        if self.name == COUNTNAME:
             if len(df) > 1:
                 try:
                     dict = df.T.to_dict().values()
@@ -27,6 +28,24 @@ class mongo_library:
                 try:
                     dict = df.to_dict()
                     self.collection.insert_one(dict)
+                except:
+                    self.error.write(
+                        f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
+                    )
+        elif self.name == TRACKNAME:
+            if len(df) > 1:
+                try:
+                    destination = []
+                    for index, row in df.iterrows():
+                        for room, people in row.items():
+                            if people != 0:
+                                destination.append((room, people))
+                        dict = {
+                            "From": index,
+                            "To": destination,
+                            "Timestamp": time.time(),
+                        }
+                        self.collection.insert_one(dict)
                 except:
                     self.error.write(
                         f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
