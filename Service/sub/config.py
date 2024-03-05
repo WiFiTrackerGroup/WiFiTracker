@@ -18,3 +18,9 @@ URL_DB = (
 )
 
 FILE_ERRORS = "Service/sub/log/mongoDB_log.txt"
+FILE_HISTORY = "Service/history/"
+
+# "day" is the number of seconds in a day
+DAY = 100
+# Number of day to keep the files
+N_DAY = 1
