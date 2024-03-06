@@ -25,12 +25,21 @@ class Counting_P:
 
     def counting_basic(self, dataRoom):
         timestamp = dataRoom["Timestamp"].iloc[0]
-        dataRoom = dataRoom.drop_duplicates("user_masked").groupby("Room").count()
-        dataRoom = dataRoom["AP"]
-        dataRoom = dataRoom.to_frame()
+        dataRoom = (
+            dataRoom.drop_duplicates("user_masked")
+            .groupby(["Room", "class"])["AP"]
+            .count()
+        )
+        dataRoom = dataRoom.unstack(level="class")
+        dataRoom.fillna(0, inplace=True)
+        dataRoom["N_people"] = (
+            dataRoom["External"]
+            + dataRoom["Guest"]
+            + dataRoom["Staff"]
+            + dataRoom["Student"]
+        )
         dataRoom = dataRoom.reset_index()
         dataRoom["Timestamp"] = timestamp
-        dataRoom.rename(columns={"AP": "N_people"}, inplace=True)
         return dataRoom
 
     def filter(self, dataRoom):
