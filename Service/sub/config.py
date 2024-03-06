@@ -6,23 +6,18 @@ PORT = "8282"
 SCHEDULE = 10
 
 # MONGODB config
-PSW_MONGODB = "hcgFRD3G!f"
-USER_MONGODB = "wifitracker2024"
 
 DBNAME = "WifiTracker2024"
 COUNTNAME = "counting"
 TRACKNAME = "tracking"
 
-URL_DB = (
-    f"mongodb+srv://{USER_MONGODB}:{PSW_MONGODB}@wifitracker2024.fqyv89v.mongodb.net/"
-)
 # ----------------------------------------------------------------------------------------
 # Config for local mongoDB
-# PSW_MONGODB = "hcgFRD3G!f"
-# USER_MONGODB = "wifitracker"
-# HOST_MONGODB = "127.0.0.1"
-# PORT_MONGODB = "27017"
-# URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}/{DBNAME}"
+PSW_MONGODB = "hcgFRD3G!f"
+USER_MONGODB = "wifitracker"
+HOST_MONGODB = "127.0.0.1"
+PORT_MONGODB = "27017"
+URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}/{DBNAME}"
 # ----------------------------------------------------------------------------------------
 
 FILE_ERRORS = "Service/sub/log/mongoDB_log.txt"
