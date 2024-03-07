@@ -5,6 +5,7 @@ from folium.plugins import HeatMap
 from datetime import datetime
 import config
 from PIL import Image
+import pandas as pd
 import io
 import os
 
@@ -17,15 +18,15 @@ def selection(rooms):
     choice = st.selectbox("Select a room", rooms)
 
     # Time selection
-    current = st.checkbox("Use current date and hour")
-    if current:
+    current = st.checkbox("See previous data")
+    if not current:
         # To use current date and time 
         date = datetime.now().date()
         time = datetime.now().time()
     else:
         # To select date and time 
         date = st.date_input("Select date")
-        time = st.time_input("Select hour")
+        time = st.time_input("Select time")
 
     return choice, date, time
 
@@ -37,7 +38,7 @@ def visualization(choice, date, time):
 
     # Visualization
     st.write(f"<strong>Selected Room:</strong> {choice}", unsafe_allow_html=True)
-    st.write(f"<strong>Selected date and hour:</strong> {date} {time}", unsafe_allow_html=True)
+    st.write(f"<strong>Selected date and time:</strong> {date} {time}", unsafe_allow_html=True)
 
 def check(date, time):
 
@@ -55,6 +56,18 @@ def check(date, time):
             return True
     else:
         return True
+    
+def visualizeTable(choice):
+
+    # Check if the choice has been made
+    if not choice in PATHS:
+        return
+
+    data = {'Nome': ['Alice', 'Bob', 'Charlie'],
+            'Età': [25, 30, 35],
+            'Città': ['Roma', 'Milano', 'Firenze']}
+    df = pd.DataFrame(data)
+    st.table(df)
         
 def visualizeMap(choice):
 
@@ -72,9 +85,6 @@ def visualizeMap(choice):
     image_bmp.save(png_byte_array, format='PNG')
     st.image(png_byte_array, use_column_width=True)
 
-
-
-
 def main():
 
     # Sreate the application and give a title
@@ -91,11 +101,10 @@ def main():
     if not check(date, time):
         st.write('<span style="color:red">Data not available!</span>', unsafe_allow_html=True)
         st.write('<span style="color:red">Please inserta a valid date!</span>', unsafe_allow_html=True)
-
-    visualizeMap(choice)
-
-
-    
+    else:
+        # Visualize data and map about the choesn room
+        visualizeTable(choice)
+        visualizeMap(choice)
 
 if __name__ == "__main__":
     main()
