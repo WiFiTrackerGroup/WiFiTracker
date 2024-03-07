@@ -9,7 +9,7 @@ import pandas as pd
 import io
 import os
 
-PATHS = config.image_path
+PATHS = config.rooms
 
 def selection(rooms):
 
@@ -37,7 +37,7 @@ def visualization(choice, date, time):
     time = time.strftime("%I:%M")
 
     # Visualization
-    st.write(f"<strong>Selected Room:</strong> {choice}", unsafe_allow_html=True)
+    st.write(f"<strong>Selected room:</strong> {choice}", unsafe_allow_html=True)
     st.write(f"<strong>Selected date and time:</strong> {date} {time}", unsafe_allow_html=True)
 
 def check(date, time):
@@ -77,7 +77,7 @@ def visualizeMap(choice):
     
     # Select path
     path = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(path, PATHS[choice])
+    path = os.path.join(path, PATHS[choice]["image_path"])
 
     # Convert image to PNG and visualize
     image_bmp = Image.open(path)
