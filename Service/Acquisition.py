@@ -25,6 +25,7 @@ class Acquisition:
         self.myDB = self.myclient[DBNAME]
         self.myCount = mongo_library(self.myDB[COUNTNAME], COUNTNAME)
         self.myTrack = mongo_library(self.myDB[TRACKNAME], TRACKNAME)
+        self.myRaw = mongo_library(self.myDB[RAWNAME], RAWNAME)
 
     def requestAP(self):
         """
@@ -38,28 +39,6 @@ class Acquisition:
                 APdata = req_AP.json()
         except:
             print("SNMP server not accessible")
-
-    def save_history(self, data):
-        """
-        save_history
-        ------------
-        save as history all the data obtained from the rest interface
-        """
-        x = dt.fromtimestamp(data["Timestamp"].iloc[0])
-        path = FILE_HISTORY + x.strftime("%d_%m_%Y_%H_%M_%S") + ".csv"
-        data.to_csv(path)
-
-    def data_clean(self):
-        """
-        data_clean
-        ----------
-        clean routine for old files
-        """
-        current_time = time.time()
-        for i, file in enumerate(os.listdir(FILE_HISTORY)):
-            file_time = os.stat(FILE_HISTORY + file).st_mtime
-            if file_time < current_time - DAY * N_DAY:
-                os.remove(FILE_HISTORY + file)
 
     def request(self):
         """
@@ -76,7 +55,7 @@ class Acquisition:
 
         if req_data.ok:
             dataRoom = pd.DataFrame.from_dict(req_data.json())
-            self.save_history(data=dataRoom)
+            self.myRaw.insert_records(dataRoom)
             # Counting people
             dataCount = self.countP.main(dataRoom)
             self.myCount.insert_records(dataCount)
@@ -90,7 +69,6 @@ class Acquisition:
     def main(self):
 
         schedule.every(SCHEDULE).seconds.do(self.request)
-        schedule.every().day.at("02:00").do(self.data_clean)
         try:
             while True:
                 schedule.run_pending()

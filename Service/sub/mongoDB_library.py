@@ -15,41 +15,69 @@ class mongo_library:
         return self.collection
 
     def insert_records(self, df):
+        """
+        insert_records
+        --------------
+        Insert the data received in the specific collection of the mongoDB instance
+        """
         if self.name == COUNTNAME:
-            if len(df) > 1:
-                try:
-                    dict = df.T.to_dict().values()
-                    self.collection.insert_many(dict)
-                except:
-                    self.error.write(
-                        f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
-                    )
-            else:
-                try:
-                    dict = df.to_dict()
-                    self.collection.insert_one(dict)
-                except:
-                    self.error.write(
-                        f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
-                    )
+            self.insert_count(df)
         elif self.name == TRACKNAME:
-            if len(df) > 1:
-                try:
-                    destination = []
-                    for index, row in df.iterrows():
-                        for room, people in row.items():
-                            if people != 0:
-                                destination.append((room, people))
-                        dict = {
-                            "From": index,
-                            "To": destination,
-                            "Timestamp": time.time(),
-                        }
-                        self.collection.insert_one(dict)
-                except:
-                    self.error.write(
-                        f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
-                    )
+            self.insert_track(df)
+        elif self.name == RAWNAME:
+            self.insert_raw(df)
+
+    def insert_count(self, df):
+        if len(df) > 1:
+            try:
+                dict = df.T.to_dict().values()
+                self.collection.insert_many(dict)
+            except:
+                self.error.write(
+                    f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
+                )
+        else:
+            try:
+                dict = df.to_dict()
+                self.collection.insert_one(dict)
+            except:
+                self.error.write(
+                    f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
+                )
+
+    def insert_track(self, df):
+        if len(df) > 1:
+            try:
+                destination = []
+                for index, row in df.iterrows():
+                    for room, people in row.items():
+                        if people != 0:
+                            destination.append((room, people))
+                    dict = {
+                        "From": index,
+                        "To": destination,
+                        "Timestamp": time.time(),
+                    }
+                    self.collection.insert_one(dict)
+            except:
+                self.error.write(
+                    f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
+                )
+
+    def insert_raw(self, df):
+        """Since raw data will weight a lot, MongoDB will delete the old files
+            saved after a specific time set to 2 month. To change this time is
+            necessary to connect to the VM running the code and change it via
+            the mongo Shell of the local mongoDB server."""
+        if len(df) > 1:
+            try:
+                dict = df.T.to_dict().values()
+                self.collection.insert_one({"Timestamp":datetime.datetime.now(),
+                                            "Raw_data": dict})
+            except:
+                self.error.write(
+                    f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
+                )
         else:
             self.error.write(
                 f"Wrong collection contacted: wifiTracker.{self.name} - {datetime.datetime.now()}\n"
