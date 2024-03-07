@@ -6,6 +6,8 @@ from datetime import datetime
 from config import *
 from PIL import Image
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot  as plt
 import io
 import os
 import numpy as np
@@ -100,8 +102,8 @@ def visualizeTable(choice, current, date, time):
     x = list()
     y = list()
     for room in room_list:
-        x.append(PATHS[choice]["room_list"][room]["X"])
-        y.append(PATHS[choice]["room_list"][room]["Y"])
+        x.append(int(PATHS[choice]["room_list"][room]["X"]))
+        y.append(int(PATHS[choice]["room_list"][room]["Y"]))
         
 
     data = {'Room': room_list,
@@ -127,9 +129,25 @@ def visualizeMap(choice, df):
 
     # Convert image to PNG and visualize
     image_bmp = Image.open(path)
-    png_byte_array = io.BytesIO()
-    image_bmp.save(png_byte_array, format='PNG')
-    st.image(png_byte_array, use_column_width=True)
+    max_x, max_y = image_bmp.size
+    image_png = Image.new("RGBA", image_bmp.size, (255, 255, 255, 255))
+    image_png.paste(image_bmp.convert("RGBA"), (0, 0), image_bmp.convert("RGBA"))
+
+    heatmap_data = pd.DataFrame(0, index=range(max_y + 1), columns=range(max_x + 1))
+    for index, row in df.iterrows():
+        x = df.at[index, 'x']
+        y = df.at[index, 'y']
+        occ = df.at[index, 'Occupancy']
+        heatmap_data.at[x, y] = occ
+    
+    fig, ax = plt.subplots()
+    ax.imshow(np.asarray(image_png), extent=[0, image_bmp.width, 0, image_bmp.height])
+    ax.imshow(heatmap_data, cmap="viridis", alpha=0.5, extent=[0, image_bmp.width, 0, image_bmp.height])
+    ax.axis("off")
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format="png")
+    buffer.seek(0)
+    st.image(buffer, use_column_width=True)
 
 def main():
 
