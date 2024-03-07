@@ -29,7 +29,7 @@ class SnmpRest:
         self._salt = salt
 
     def GET(self, *uri):
-        if len(uri) > 0:
+        if len(uri) == 1:
             if uri[0] == "AP":
                 # self.data_acq.acquier_AP()
                 try:
@@ -88,6 +88,19 @@ class SnmpRest:
                 }
 
                 return js.dumps(output)
+            elif uri[0] == "APChannelInfo":
+                # self.data_acq.acquier_AP_info()
+                try:
+                    df_APdata = self.data_aggr.aggregate_channel_info()
+                except:
+                    raise cherrypy.HTTPError(
+                        500, f"Error in retrieving connected devices data!"
+                    )
+
+                # Adding Timestamp
+                ts = [time.time()] * len(df_APdata)
+                df_APdata.insert(0, "Timestamp", ts)
+                return js.dumps(df_APdata.to_dict())
 
 
 # USERS = {"jon": "secret"}
