@@ -74,21 +74,26 @@ class DataAggregation:
         df_aggr_buff = pd.merge(
             df_aggr_buff, self.chann_utilization, on="code_ap", how="outer"
         )
-        """ self.noise = pd.DataFrame(self.open_noise())
+        self.noise = pd.DataFrame(self.open_noise()).fillna(0)
+        ch1 = self.noise[self.noise["channel_1"] != 0]
+        ch1.drop(columns=["channel_2"], inplace=True)
+        ch2 = self.noise[self.noise["channel_2"] != 0]
+        ch2.drop(columns=["channel_1"], inplace=True)
         df_aggr_buff = pd.merge(
             df_aggr_buff,
-            self.noise,
+            ch1,
             on=["code_ap", "channel_1"],
-            how="outer",
+            how="left",
         )
         df_aggr_buff = pd.merge(
             df_aggr_buff,
-            self.noise,
+            ch2,
             on=["code_ap", "channel_2"],
-            how="outer",
-        ) """
+            how="left",
+        )
+        # TODO: change the name of the noise column
         self.tx_power = pd.DataFrame(self.open_tx_power())
-        # TODO:ignorare valore se banda non attiva
+        # TODO:check the outer join, maybe they are not correct
         df_aggr_buff = pd.merge(df_aggr_buff, self.tx_power, on="code_ap", how="outer")
         self.clients_on_channel = pd.DataFrame(self.open_client_on_channel())
         df_aggr_buff = pd.merge(
@@ -442,20 +447,19 @@ class DataAggregation:
                     mac_res = [x for i, x in enumerate(list1) if i < 6]
                     ch_res = [x for i, x in enumerate(list1) if i >= 6]
                     mac_res = reduce(lambda x, y: x + "." + y, mac_res)
-                    mac_res = self.convert_hex_notation(mac_res)
                     noise_res = parse.search("INTEGER: {:d}", line)[0]
-                    if ch_res[0] == 0:
+                    if ch_res[0] == "0":
                         row = {
                             "code_ap": mac_res,
-                            "channel_1": ch_res[1],
+                            "channel_1": float(ch_res[1]),
                             "channel_2": None,
                             "noise": noise_res,
                         }
-                    elif ch_res[0] == 1:
+                    elif ch_res[0] == "1":
                         row = {
                             "code_ap": mac_res,
                             "channel_1": None,
-                            "channel_2": ch_res[1],
+                            "channel_2": float(ch_res[1]),
                             "noise": noise_res,
                         }
                     data.append(row)
