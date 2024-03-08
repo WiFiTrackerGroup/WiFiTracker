@@ -40,6 +40,10 @@ class DataAcquisition:
 
         os.system(f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_AP_MAC} > {FILE_AP_MAC}")
 
+        os.system(
+            f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_CLIENT_TYPE} > {FILE_CLIENT_TYPE}"
+        )
+
     def acquier_AP(self):
         """
         acquier_AP
@@ -75,8 +79,4 @@ class DataAcquisition:
 
         os.system(
             f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_N_CLIENT} > {FILE_N_CLIENT}"
-        )
-
-        os.system(
-            f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_CLIENT_TYPE} > {FILE_CLIENT_TYPE}"
         )

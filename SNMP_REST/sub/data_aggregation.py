@@ -91,7 +91,7 @@ class DataAggregation:
             on=["code_ap", "channel_2"],
             how="left",
         )
-        df_aggr_buff.rename(
+        df_aggr_buff = df_aggr_buff.rename(
             columns={
                 "channel_1": "ch_2_4",
                 "channel_2": "ch_5",
@@ -425,8 +425,8 @@ class DataAggregation:
 
                     row = {
                         "code_ap": code_ap,
-                        "ch_utilization_1": channel1,
-                        "ch_utilization_2": channel2,
+                        "ch_utilization_2_4": channel1,
+                        "ch_utilization_5": channel2,
                     }
                     data.append(row)
                     i += 1
@@ -498,8 +498,8 @@ class DataAggregation:
 
                     row = {
                         "code_ap": code_ap,
-                        "tx_power_1": channel1,
-                        "tx_power_2": channel2,
+                        "tx_power_2_4": channel1,
+                        "tx_power_5": channel2,
                     }
                     data.append(row)
                     i += 1
