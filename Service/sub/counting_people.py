@@ -32,12 +32,7 @@ class Counting_P:
         )
         dataRoom = dataRoom.unstack(level="class")
         dataRoom.fillna(0, inplace=True)
-        dataRoom["N_people"] = (
-            dataRoom["External"]
-            + dataRoom["Guest"]
-            + dataRoom["Staff"]
-            + dataRoom["Student"]
-        )
+        dataRoom["N_people"] = dataRoom.sum(axis="columns", numeric_only=True)
         dataRoom = dataRoom.reset_index()
         dataRoom["Timestamp"] = timestamp
         return dataRoom

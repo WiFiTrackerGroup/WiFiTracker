@@ -31,7 +31,7 @@ class SnmpRest:
     def GET(self, *uri):
         if len(uri) == 1:
             if uri[0] == "AP":
-                self.data_acq.acquier_AP()
+                # self.data_acq.acquier_AP()
                 try:
                     df_ap = self.data_aggr.aggregate_AP()
                 except:
@@ -40,7 +40,7 @@ class SnmpRest:
 
             elif uri[0] == "data":
                 if self.ts[0] < (time.time() - TIME_BUFF):
-                    self.data_acq.acquier()
+                    # self.data_acq.acquier()
                     try:
                         df_data = self.data_aggr.aggregate()
                     except:
@@ -64,7 +64,7 @@ class SnmpRest:
                 return js.dumps(self.df_data.to_dict())
 
             elif uri[0] == "test":
-                self.data_acq.acquier()
+                # self.data_acq.acquier()
                 df_ap = self.data_aggr.aggregate_AP()
                 user = pd.DataFrame(self.data_aggr.open_username())
                 rssi = pd.DataFrame(self.data_aggr.open_rssi())
@@ -90,7 +90,7 @@ class SnmpRest:
                 return js.dumps(output)
 
             elif uri[0] == "APChannelInfo":
-                self.data_acq.acquier_AP_info()
+                # self.data_acq.acquier_AP_info()
                 try:
                     df_APdata = self.data_aggr.aggregate_channel_info()
                 except:
