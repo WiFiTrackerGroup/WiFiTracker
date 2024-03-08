@@ -3,7 +3,7 @@ import streamlit as st
 import folium
 from folium.plugins import HeatMap
 from datetime import datetime
-from config import *
+from config2 import *
 from PIL import Image
 import pandas as pd
 import seaborn as sns
@@ -13,7 +13,7 @@ import os
 import numpy as np
 from mongoDB_library import *
 import DummyTestForHeatMap
-
+from shapely.geometry import Point, Polygon
 PATHS = ROOMS
 CLIENT = MongoClient(URL_DB)
 MYDB = CLIENT[DBNAME]
@@ -98,23 +98,17 @@ def visualizeTable(choice, current, date, time):
     room_list = list(PATHS[choice]["room_list"].keys())
 
     occupancy = getOccupancy(room_list, current, date, time)
-
-    x = list()
-    y = list()
-    for room in room_list:
-        x.append(int(PATHS[choice]["room_list"][room]["X"]))
-        y.append(int(PATHS[choice]["room_list"][room]["Y"]))
-        
-
     data = {'Room': room_list,
             'Occupancy': occupancy}
     df = pd.DataFrame(data)
     st.table(df)
-    data = {'Room': room_list,
-            'Occupancy': occupancy,
-            'x': x,
-            'y': y}
-    return pd.DataFrame(data)
+
+    return df
+
+def int_coord(poly):
+    minx, miny, maxx, maxy = map(int, poly.bounds)
+    points = [(x,y) for x in range(minx, maxx+1) for y in range(miny, maxy+1) if Point(x,y).within(poly)]
+    return points
     
         
 def visualizeMap(choice, df):
@@ -127,22 +121,41 @@ def visualizeMap(choice, df):
     path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(path, PATHS[choice]["image_path"])
 
+    # Get room list and dictionary containing for each room the coordinates of the boundaries
+    room_list = list(PATHS[choice]["room_list"].keys())
+    room_dict = PATHS[choice]["room_list"]
+
     # Convert image to PNG and visualize
     image_bmp = Image.open(path)
     max_x, max_y = image_bmp.size
     image_png = Image.new("RGBA", image_bmp.size, (255, 255, 255, 255))
-    image_png.paste(image_bmp.convert("RGBA"), (0, 0), image_bmp.convert("RGBA"))
+    image_png.paste(image_bmp.convert("RGBA"), (0, 0), image_bmp.convert("RGBA")) 
 
-    heatmap_data = pd.DataFrame(0, index=range(max_y + 1), columns=range(max_x + 1))
-    for index, row in df.iterrows():
-        x = df.at[index, 'x']
-        y = df.at[index, 'y']
-        occ = df.at[index, 'Occupancy']
-        heatmap_data.at[x, y] = occ
+    heatmap_data = np.zeros((max_y+1, max_x+1))
+
+    loading = st.progress(0)
+    delta = 1/(len(room_list))
+    for n in range(len(room_list)):
+
+        room = room_list[n]
+        print(room_dict)
+        print(room)
+        x = room_dict[room]["X"]
+        y = room_dict[room]["Y"]
+        print(x, y)
+        val = int(df.at[n, "Occupancy"])
+        poly = Polygon(zip(x, y))
+        internal = int_coord(poly)
+        delta_min = delta/len(internal)
+        for p in range(len(internal)):
+            loading.progress(n*delta + delta_min*p)
+            heatmap_data[internal[p][1], internal[p][0]] = val
+        loading.progress(delta*(n+1)) 
+    loading.progress(1)
     
     fig, ax = plt.subplots()
     ax.imshow(np.asarray(image_png), extent=[0, image_bmp.width, 0, image_bmp.height])
-    ax.imshow(heatmap_data, cmap="viridis", alpha=0.5, extent=[0, image_bmp.width, 0, image_bmp.height])
+    ax.imshow(pd.DataFrame(heatmap_data), cmap="viridis", alpha=0.5, extent=[0, image_bmp.width, 0, image_bmp.height])
     ax.axis("off")
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")

@@ -1,5 +1,5 @@
 import pandas
-from config import *
+from config2 import *
 from datetime import datetime
 import time
 import os
