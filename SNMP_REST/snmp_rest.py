@@ -64,7 +64,7 @@ class SnmpRest:
                 return js.dumps(self.df_data.to_dict())
 
             elif uri[0] == "test":
-                self.data_acq.acquier()
+                # self.data_acq.acquier()
                 df_ap = self.data_aggr.aggregate_AP()
                 user = pd.DataFrame(self.data_aggr.open_username())
                 rssi = pd.DataFrame(self.data_aggr.open_rssi())
@@ -88,6 +88,7 @@ class SnmpRest:
                 }
 
                 return js.dumps(output)
+
             elif uri[0] == "APChannelInfo":
                 # self.data_acq.acquier_AP_info()
                 try:

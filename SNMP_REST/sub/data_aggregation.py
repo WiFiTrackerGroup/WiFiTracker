@@ -43,7 +43,7 @@ class DataAggregation:
         self.ap_web = self.ap_web.drop_duplicates()
         self.ap_name = pd.DataFrame(self.open_ap_name())
         self.ap_name = self.ap_name.drop_duplicates()
-        df_ap_aggregate = pd.merge(self.ap_web, self.ap_name, on="code_ap", how="outer")
+        df_ap_aggregate = pd.merge(self.ap_web, self.ap_name, on="code_ap", how="inner")
         df_ap_aggregate = df_ap_aggregate.set_index("mac_ap")[["name_ap", "code_ap"]]
         self.dict_ap_aggregate = df_ap_aggregate.to_dict()
         return df_ap_aggregate
@@ -68,17 +68,17 @@ class DataAggregation:
             pd.DataFrame.from_dict(self.dict_ap_aggregate),
             self.prim_channels,
             on="code_ap",
-            how="outer",
+            how="left",
         )
         self.chann_utilization = pd.DataFrame(self.open_channel_utilization())
         df_aggr_buff = pd.merge(
-            df_aggr_buff, self.chann_utilization, on="code_ap", how="outer"
+            df_aggr_buff, self.chann_utilization, on="code_ap", how="left"
         )
         self.noise = pd.DataFrame(self.open_noise()).fillna(0)
         ch1 = self.noise[self.noise["channel_1"] != 0]
-        ch1.drop(columns=["channel_2"], inplace=True)
+        ch1 = ch1.drop(columns=["channel_2"])
         ch2 = self.noise[self.noise["channel_2"] != 0]
-        ch2.drop(columns=["channel_1"], inplace=True)
+        ch2 = ch2.drop(columns=["channel_1"])
         df_aggr_buff = pd.merge(
             df_aggr_buff,
             ch1,
@@ -91,14 +91,21 @@ class DataAggregation:
             on=["code_ap", "channel_2"],
             how="left",
         )
-        # TODO: change the name of the noise column
+        df_aggr_buff.rename(
+            columns={
+                "channel_1": "ch_2_4",
+                "channel_2": "ch_5",
+                "noise_x": "noise_2_4",
+                "noise_y": "noise_5",
+            }
+        )
         self.tx_power = pd.DataFrame(self.open_tx_power())
-        # TODO:check the outer join, maybe they are not correct
-        df_aggr_buff = pd.merge(df_aggr_buff, self.tx_power, on="code_ap", how="outer")
+        df_aggr_buff = pd.merge(df_aggr_buff, self.tx_power, on="code_ap", how="left")
         self.clients_on_channel = pd.DataFrame(self.open_client_on_channel())
         df_aggr_buff = pd.merge(
-            df_aggr_buff, self.clients_on_channel, on="code_ap", how="outer"
+            df_aggr_buff, self.clients_on_channel, on="code_ap", how="left"
         )
+
         return df_aggr_buff
 
     def fill_dataframes(self):
@@ -260,12 +267,12 @@ class DataAggregation:
         with open(FILE_CLIENT_TYPE, "r") as file_object:
             for i, line in enumerate(file_object):
                 try:
-                    mac_res = parse.search(f"iso.{OID_BYTES_RX}.{{}} =", line)
+                    mac_res = parse.search(f"iso.{OID_CLIENT_TYPE}.{{}} =", line)
                     mac_res = self.convert_hex_notation(mac_res[0])
-                    bytes_rx = parse.search("INTEGER: {:d}", line)[0]
+                    client_type = parse.search("INTEGER: {:d}", line)[0]
                     row = {
                         "mac_user": mac_res,
-                        "client_type": bytes_rx,
+                        "client_type": client_type,
                     }
                     data.append(row)
                 except:
@@ -524,8 +531,8 @@ class DataAggregation:
 
                     row = {
                         "code_ap": code_ap,
-                        "ch_clients_1": channel1,
-                        "ch_clients_2": channel2,
+                        "n_clients_2_4": channel1,
+                        "n_clients_5": channel2,
                     }
                     data.append(row)
                     i += 1
@@ -561,11 +568,11 @@ class DataAggregation:
         ### Output:
             - the dataframe containing the all data
         """
-        result = pd.merge(self.df_usernames, self.rssi, on="mac_user")
-        result = pd.merge(result, self.snr, on="mac_user", how="right")
-        result = pd.merge(result, self.byte_rx, on="mac_user", how="right")
-        result = pd.merge(result, self.byte_tx, on="mac_user", how="right")
-        result = pd.merge(result, self.client_type, on="mac_user", how="right")
+        result = pd.merge(self.df_usernames, self.rssi, on="mac_user", how="inner")
+        result = pd.merge(result, self.snr, on="mac_user", how="left")
+        result = pd.merge(result, self.byte_rx, on="mac_user", how="left")
+        result = pd.merge(result, self.byte_tx, on="mac_user", how="left")
+        result = pd.merge(result, self.client_type, on="mac_user", how="left")
         return pd.merge(result, self.ap_mac, on="mac_user")
 
     def assign_class(self, domain_list):
@@ -604,4 +611,4 @@ class DataAggregation:
         ### Output:
             - the name of the AP
         """
-        return self.dict_ap_aggregate.get(code)
+        return self.dict_ap_aggregate["name_ap"].get(code)
