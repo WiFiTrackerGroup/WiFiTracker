@@ -15,6 +15,7 @@ class Counting_P:
             - the dataframe with the room divided
         """
         Ap = "AP-AULA"
+        dataRoom = dataRoom[dataRoom["name_ap"].notnull()]
         dataRoom = dataRoom[dataRoom["name_ap"].str.contains(Ap)]
         rooms = pd.DataFrame()
         rooms[["AP", "Room", "APnum", "NaN"]] = dataRoom["name_ap"].str.split(
