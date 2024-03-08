@@ -18,11 +18,12 @@ PSW_MONGODB = "hcgFRD3G!f"
 USER_MONGODB = "wifitracker"
 HOST_MONGODB = "127.0.0.1"
 PORT_MONGODB = "27017"
-URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}/{DBNAME}"
+URL_DB = (
+    f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}/{DBNAME}"
+)
 # ----------------------------------------------------------------------------------------
 
 FILE_ERRORS = "Service/sub/log/mongoDB_log.txt"
-FILE_HISTORY = "Service/history/"
 
 # "day" is the number of seconds in a day
 DAY = 100
