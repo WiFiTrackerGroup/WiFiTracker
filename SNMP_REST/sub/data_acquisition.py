@@ -17,7 +17,7 @@ class DataAcquisition:
         """
         acquier
         -------
-        Obtain the data that will be obtained more frequently, like\\
+        Save the data that will be used more frequently, like
         MAC, username, snr of device connected in this moment at the AP.
         """
         os.system(f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_MAC} > {FILE_MAC}")
@@ -27,7 +27,6 @@ class DataAcquisition:
         )
 
         os.system(f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_SNR} > {FILE_SNR}")
-
 
         os.system(f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_RSSI} > {FILE_RSSI}")
 
@@ -41,6 +40,10 @@ class DataAcquisition:
 
         os.system(f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_AP_MAC} > {FILE_AP_MAC}")
 
+        os.system(
+            f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_CLIENT_TYPE} > {FILE_CLIENT_TYPE}"
+        )
+
     def acquier_AP(self):
         """
         acquier_AP
@@ -52,4 +55,28 @@ class DataAcquisition:
 
         os.system(
             f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_AP_NAME} > {FILE_AP_NAME}"
+        )
+
+    def acquier_AP_info(self):
+        """
+        acquier_AP_info
+        ---------------
+        Additional data info of the AP channels
+        """
+        os.system(
+            f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_PRIMARY_CH} > {FILE_PRIMARY_CH}"
+        )
+
+        os.system(
+            f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_CHANNEL_UTIL} > {FILE_CHANNEL_UTIL}"
+        )
+
+        os.system(f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_NOISE} > {FILE_NOISE}")
+
+        os.system(
+            f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_POWER_TX} > {FILE_POWER_TX}"
+        )
+
+        os.system(
+            f"snmpwalk -v2c {COMMUNITY} {IP_WLC} 1.{OID_N_CLIENT} > {FILE_N_CLIENT}"
         )

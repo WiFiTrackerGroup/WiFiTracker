@@ -1,8 +1,10 @@
+import os
 import time
 import pandas as pd
 import schedule
 import requests
 import pymongo as pm
+from datetime import datetime as dt
 from sub.config import *
 from sub.counting_people import *
 from sub.mongoDB_library import *
@@ -23,6 +25,7 @@ class Acquisition:
         self.myDB = self.myclient[DBNAME]
         self.myCount = mongo_library(self.myDB[COUNTNAME], COUNTNAME)
         self.myTrack = mongo_library(self.myDB[TRACKNAME], TRACKNAME)
+        self.myRaw = mongo_library(self.myDB[RAWNAME], RAWNAME)
 
     def requestAP(self):
         """
@@ -52,6 +55,7 @@ class Acquisition:
 
         if req_data.ok:
             dataRoom = pd.DataFrame.from_dict(req_data.json())
+            self.myRaw.insert_records(dataRoom)
             # Counting people
             dataCount = self.countP.main(dataRoom)
             self.myCount.insert_records(dataCount)

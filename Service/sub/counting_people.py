@@ -15,6 +15,7 @@ class Counting_P:
             - the dataframe with the room divided
         """
         Ap = "AP-AULA"
+        dataRoom = dataRoom[dataRoom["name_ap"].notnull()]
         dataRoom = dataRoom[dataRoom["name_ap"].str.contains(Ap)]
         rooms = pd.DataFrame()
         rooms[["AP", "Room", "APnum", "NaN"]] = dataRoom["name_ap"].str.split(
@@ -25,12 +26,16 @@ class Counting_P:
 
     def counting_basic(self, dataRoom):
         timestamp = dataRoom["Timestamp"].iloc[0]
-        dataRoom = dataRoom.drop_duplicates("user_masked").groupby("Room").count()
-        dataRoom = dataRoom["AP"]
-        dataRoom = dataRoom.to_frame()
+        dataRoom = (
+            dataRoom.drop_duplicates("user_masked")
+            .groupby(["Room", "class"])["AP"]
+            .count()
+        )
+        dataRoom = dataRoom.unstack(level="class")
+        dataRoom.fillna(0, inplace=True)
+        dataRoom["N_people"] = dataRoom.sum(axis="columns", numeric_only=True)
         dataRoom = dataRoom.reset_index()
         dataRoom["Timestamp"] = timestamp
-        dataRoom.rename(columns={"AP": "N_people"}, inplace=True)
         return dataRoom
 
     def filter(self, dataRoom):
