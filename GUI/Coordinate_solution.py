@@ -1,14 +1,14 @@
 import cv2
 import matplotlib.pyplot as plt
 import os 
-from config2 import *
+from config import *
 
 PATHS = ROOMS
 x = list()
 y = list()
 
 # Load image 
-choice = "Odd"
+choice = "R_1"
 path = os.path.dirname(os.path.abspath(__file__))
 path = os.path.join(path, PATHS[choice]["image_path"])
 image = cv2.imread(path)

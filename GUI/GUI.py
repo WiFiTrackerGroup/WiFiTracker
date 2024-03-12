@@ -3,17 +3,19 @@ import streamlit as st
 import folium
 from folium.plugins import HeatMap
 from datetime import datetime
-from config2 import *
+from config import *
 from PIL import Image
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot  as plt
+import pickle
 import io
 import os
 import numpy as np
 from mongoDB_library import *
 import DummyTestForHeatMap
 from shapely.geometry import Point, Polygon
+
 PATHS = ROOMS
 CLIENT = MongoClient(URL_DB)
 MYDB = CLIENT[DBNAME]
@@ -87,7 +89,6 @@ def getOccupancy(room_list, current, date, time):
     for i in range(len(occupancy)):
         occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
     return occupancy
-
     
 def visualizeTable(choice, current, date, time):
 
@@ -109,8 +110,7 @@ def int_coord(poly):
     minx, miny, maxx, maxy = map(int, poly.bounds)
     points = [(x,y) for x in range(minx, maxx+1) for y in range(miny, maxy+1) if Point(x,y).within(poly)]
     return points
-    
-        
+            
 def visualizeMap(choice, df):
 
     # Check if the choice has been made
@@ -132,30 +132,22 @@ def visualizeMap(choice, df):
     image_png.paste(image_bmp.convert("RGBA"), (0, 0), image_bmp.convert("RGBA")) 
 
     heatmap_data = np.zeros((max_y+1, max_x+1))
+    file_name = os.path.dirname(os.path.abspath(__file__))
+    file_name = os.path.join(file_name, "Image", choice + ".pkl")
+    with open(file_name, 'rb') as file:
+        coord = pickle.load(file)
 
-    loading = st.progress(0)
-    delta = 1/(len(room_list))
     for n in range(len(room_list)):
-
-        room = room_list[n]
-        print(room_dict)
-        print(room)
-        x = room_dict[room]["X"]
-        y = room_dict[room]["Y"]
-        print(x, y)
         val = int(df.at[n, "Occupancy"])
-        poly = Polygon(zip(x, y))
-        internal = int_coord(poly)
-        delta_min = delta/len(internal)
-        for p in range(len(internal)):
-            loading.progress(n*delta + delta_min*p)
-            heatmap_data[internal[p][1], internal[p][0]] = val
-        loading.progress(delta*(n+1)) 
-    loading.progress(1)
+        current = coord[room_list[n]]
+        for el in current:
+            heatmap_data[el[1], el[0]] = val
+
     
     fig, ax = plt.subplots()
-    ax.imshow(np.asarray(image_png), extent=[0, image_bmp.width, 0, image_bmp.height])
-    ax.imshow(pd.DataFrame(heatmap_data), cmap="viridis", alpha=0.5, extent=[0, image_bmp.width, 0, image_bmp.height])
+    h = ax.imshow(np.asarray(image_png), extent=[0, image_bmp.width, 0, image_bmp.height])
+    h = ax.imshow(pd.DataFrame(heatmap_data), cmap="inferno", alpha=0.5, extent=[0, image_bmp.width, 0, image_bmp.height])
+    cbar = plt.colorbar(h, shrink=0.5, orientation='horizontal')
     ax.axis("off")
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")
