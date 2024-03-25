@@ -52,20 +52,21 @@ class Acquisition:
                 req_data = requests.get(self.SNMPaddr + "/data")
                 print("Data retrieved successfully!")
             except:
-                raise Exception("Error occured during server request!")
+                print("Exception! Error occured during server request!")
 
             if req_data.ok:
                 dataRoom = pd.DataFrame.from_dict(req_data.json())
-                self.myRaw.insert_records(dataRoom)
-                # Counting people
-                dataCount = self.countP.main(dataRoom)
-                self.myCount.insert_records(dataCount)
-                # Tracking people
-                if not self.df_t_1.empty:
-                    dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
-                    self.myTrack.insert_records(dataTrack)
-                # DF at t-1 needed for tracking purpose
-                self.df_t_1 = dataRoom.copy()
+                if len(dataRoom) > 0:
+                    self.myRaw.insert_records(dataRoom)
+                    # Counting people
+                    dataCount = self.countP.main(dataRoom)
+                    self.myCount.insert_records(dataCount)
+                    # Tracking people
+                    if not self.df_t_1.empty:
+                        dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
+                        self.myTrack.insert_records(dataTrack)
+                    # DF at t-1 needed for tracking purpose
+                    self.df_t_1 = dataRoom.copy()
 
     def check_time(self):
         """
