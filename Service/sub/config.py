@@ -4,6 +4,7 @@ PORT = "8282"
 
 # Seconds to wait before asking another acquisition
 SCHEDULE = 10
+PRINT = False
 
 # MONGODB config
 DBNAME = "WifiTracker2024"
@@ -26,6 +27,6 @@ FILE_ERRORS = "Service/sub/log/mongoDB_log.txt"
 
 # Set the hours when to reduce the acquisition
 # Default : 21
-TIME_REDUCE = 21 
+TIME_REDUCE = 21
 # Default : 7
 TIME_INCREASE = 7

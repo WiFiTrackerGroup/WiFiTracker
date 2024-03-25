@@ -10,6 +10,7 @@ from sub.counting_people import *
 from sub.mongoDB_library import *
 from sub.tracking import tracking
 
+
 class Acquisition:
     def __init__(self):
         self.SNMPaddr = "http://" + IP + ":" + PORT
@@ -48,9 +49,11 @@ class Acquisition:
         """
         if self.check_time():
             try:
-                print("Starting data retrieval...")
+                if PRINT:
+                    print("Starting data retrieval...")
                 req_data = requests.get(self.SNMPaddr + "/data")
-                print("Data retrieved successfully!")
+                if PRINT:
+                    print("Data retrieved successfully!")
             except:
                 print("Exception! Error occured during server request!")
 
@@ -73,7 +76,7 @@ class Acquisition:
         check_time
         ----------
         Check the time to compare it with config parameters.
-        During night we want that the acquisition will work less.  
+        During night we want that the acquisition will work less.
         """
         hour = time.localtime().tm_hour
         if hour >= TIME_REDUCE or hour <= TIME_INCREASE:
