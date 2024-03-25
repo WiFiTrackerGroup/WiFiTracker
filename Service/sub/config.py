@@ -2,11 +2,10 @@
 IP = "127.0.0.1"
 PORT = "8282"
 
-# Seconds to wait before asking anothe acquisition
+# Seconds to wait before asking another acquisition
 SCHEDULE = 10
 
 # MONGODB config
-
 DBNAME = "WifiTracker2024"
 COUNTNAME = "counting"
 TRACKNAME = "tracking"
@@ -25,7 +24,8 @@ URL_DB = (
 
 FILE_ERRORS = "Service/sub/log/mongoDB_log.txt"
 
-# "day" is the number of seconds in a day
-DAY = 100
-# Number of day to keep the files
-N_DAY = 1
+# Set the hours when to reduce the acquisition
+# Default : 21
+TIME_REDUCE = 21 
+# Default : 7
+TIME_INCREASE = 7

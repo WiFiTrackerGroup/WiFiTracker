@@ -10,7 +10,6 @@ from sub.counting_people import *
 from sub.mongoDB_library import *
 from sub.tracking import tracking
 
-
 class Acquisition:
     def __init__(self):
         self.SNMPaddr = "http://" + IP + ":" + PORT
@@ -20,6 +19,7 @@ class Acquisition:
         self.track = tracking()
         self.myclient = pm.MongoClient(URL_DB)
         self.df_t_1 = pd.DataFrame()  # containing data of the previous request
+        self.old_hour = -1
 
         # Collection
         self.myDB = self.myclient[DBNAME]
@@ -46,25 +46,43 @@ class Acquisition:
         -------
         Request every SCHEDULE seconds the rooms information
         """
-        try:
-            print("Starting data retrieval...")
-            req_data = requests.get(self.SNMPaddr + "/data")
-            print("Data retrieved successfully!")
-        except:
-            raise Exception("Error occured during server request!")
+        if self.check_time():
+            try:
+                print("Starting data retrieval...")
+                req_data = requests.get(self.SNMPaddr + "/data")
+                print("Data retrieved successfully!")
+            except:
+                raise Exception("Error occured during server request!")
 
-        if req_data.ok:
-            dataRoom = pd.DataFrame.from_dict(req_data.json())
-            self.myRaw.insert_records(dataRoom)
-            # Counting people
-            dataCount = self.countP.main(dataRoom)
-            self.myCount.insert_records(dataCount)
-            # Tracking people
-            if not self.df_t_1.empty:
-                dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
-                self.myTrack.insert_records(dataTrack)
-            # DF at t-1 needed for tracking purpose
-            self.df_t_1 = dataRoom.copy()
+            if req_data.ok:
+                dataRoom = pd.DataFrame.from_dict(req_data.json())
+                self.myRaw.insert_records(dataRoom)
+                # Counting people
+                dataCount = self.countP.main(dataRoom)
+                self.myCount.insert_records(dataCount)
+                # Tracking people
+                if not self.df_t_1.empty:
+                    dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
+                    self.myTrack.insert_records(dataTrack)
+                # DF at t-1 needed for tracking purpose
+                self.df_t_1 = dataRoom.copy()
+
+    def check_time(self):
+        """
+        check_time
+        ----------
+        Check the time to compare it with config parameters.
+        During night we want that the acquisition will work less.  
+        """
+        hour = time.localtime().tm_hour
+        if hour >= TIME_REDUCE or hour <= TIME_INCREASE:
+            if hour == self.old_hour:
+                return False
+            else:
+                self.old_hour = hour
+                return True
+        else:
+            return True
 
     def main(self):
 
