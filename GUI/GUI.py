@@ -38,24 +38,34 @@ def contactMongoDummy(room, current, date, time):
 
 def selection(rooms):
 
+    # Title for Menu
+    st.sidebar.title("Settings")
+
+    # Select Action
+    act = ["--select--", "Room occupancy", "Flows"]
+    action = st.sidebar.selectbox("Select action", act)
+
     # Possible room choice and selection
-    rooms.insert(0, "--select--")
-    choice = st.selectbox("Select a room", rooms)
+    if action == "Room occupancy":
+        rooms.insert(0, "--select--")
+        choice = st.sidebar.selectbox("Select a room", rooms)
+    else:
+        choice = ""
 
     # Time selection
-    current = st.checkbox("See previous data")
-    if not current:
-        # To use current date and time 
-        current = True
-        date = datetime.now().date()
-        time = datetime.now().time()
-    else:
-        # To select date and time 
-        current= False
-        date = st.date_input("Select date")
-        time = st.time_input("Select time")
+    current = True
+    date = datetime.now().date()
+    time = datetime.now().time()
 
-    return choice, current, date, time
+    if action != "--select--":
+        current = st.sidebar.checkbox("See previous data")
+        current = not current
+        if not current:
+            # To select date and time 
+            date = st.sidebar.date_input("Select date")
+            time = st.sidebar.time_input("Select time")
+
+    return action, choice, current, date, time
 
 def visualization(choice, date, time):
 
@@ -152,18 +162,30 @@ def visualizeMap(choice, df):
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")
     buffer.seek(0)
-    st.image(buffer, use_column_width=True)
+    st.image(buffer,use_column_width=True)
 
 def main():
 
-    # Sreate the application and give a title
-    st.title("Room occupancy visualization")
+    # Start the application and give a title
+    st.title("Wi-Fi Tracker")
+
+    st.markdown(
+        """
+        <style>
+        .sidebar .sidebar-content {
+            background-color: #333;
+            color: white;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     # Select available rooms from constants file
     rooms = list(PATHS.keys())
 
     # take the choice of the user and visualize it
-    choice, current, date, time = selection(rooms)
+    action, choice, current, date, time = selection(rooms)
     # visualization(choice, date, time)
 
     # Wrong date and time warning
@@ -171,9 +193,13 @@ def main():
         st.write('<span style="color:red">Data not available!</span>', unsafe_allow_html=True)
         st.write('<span style="color:red">Please inserta a valid date!</span>', unsafe_allow_html=True)
     else:
-        # Visualize data and map about the choesn room
-        df = visualizeTable(choice, current, date, time)
-        visualizeMap(choice, df)
+
+        if action == "Room occupancy":
+            # Visualize data and map about the choesn room
+            df = visualizeTable(choice, current, date, time)
+            visualizeMap(choice, df)
+        elif action == "Flows":
+            st.write("Arriving soon")
 
 if __name__ == "__main__":
     main()
