@@ -14,17 +14,16 @@ class Counting_P:
         ### Output:
             - the dataframe with the room divided
         """
-        Ap = "AP-AULA"
-        dataRoom = dataRoom[dataRoom["name_ap"].notnull()]
-        dataRoom = dataRoom[dataRoom["name_ap"].str.contains(Ap)]
         rooms = pd.DataFrame()
         max_l = max([len(sublist.split("-")) for sublist in dataRoom["name_ap"]])
-        if max_l == 4:
-            rooms[["AP", "Room", "APnum", "NaN"]] = dataRoom["name_ap"].str.split(
-                "-", expand=True
-            )
+        if max_l == 2:
+            rooms[["AP", "Room"]] = dataRoom["name_ap"].str.split("-", expand=True)
         elif max_l == 3:
             rooms[["AP", "Room", "APnum"]] = dataRoom["name_ap"].str.split(
+                "-", expand=True
+            )
+        elif max_l == 4:
+            rooms[["AP", "Room", "APnum", "NaN"]] = dataRoom["name_ap"].str.split(
                 "-", expand=True
             )
         elif max_l == 5:
@@ -59,7 +58,11 @@ class Counting_P:
         return dataRoom
 
     def main(self, dataRoom):
-        dataRoom = self.room_division(dataRoom)
-        dataRoom = self.filter(dataRoom)
-        dataRoom = self.counting_basic(dataRoom)
+        Ap = "AP-AULA"
+        dataRoom = dataRoom[dataRoom["name_ap"].notnull()]
+        dataRoom = dataRoom[dataRoom["name_ap"].str.contains(Ap)]
+        if len(dataRoom) > 0:
+            dataRoom = self.room_division(dataRoom)
+            dataRoom = self.filter(dataRoom)
+            dataRoom = self.counting_basic(dataRoom)
         return dataRoom

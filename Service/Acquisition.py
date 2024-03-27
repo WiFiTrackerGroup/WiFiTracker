@@ -63,13 +63,17 @@ class Acquisition:
                     self.myRaw.insert_records(dataRoom)
                     # Counting people
                     dataCount = self.countP.main(dataRoom)
-                    self.myCount.insert_records(dataCount)
-                    # Tracking people
-                    if not self.df_t_1.empty:
-                        dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
-                        self.myTrack.insert_records(dataTrack)
-                    # DF at t-1 needed for tracking purpose
-                    self.df_t_1 = dataRoom.copy()
+                    # The saving is done only if there are people in the rooms
+                    if len(dataCount) > 0:
+                        self.myCount.insert_records(dataCount)
+                        # Tracking people
+                        if not self.df_t_1.empty:
+                            dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
+                            self.myTrack.insert_records(dataTrack)
+                        # DF at t-1 needed for tracking purpose
+                        self.df_t_1 = dataRoom.copy()
+                    else:
+                        self.df_t_1 = self.df_t_1.iloc[0:0]
 
     def check_time(self):
         """
