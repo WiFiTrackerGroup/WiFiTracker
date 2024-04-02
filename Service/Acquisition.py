@@ -52,16 +52,20 @@ class Acquisition:
                 if PRINT:
                     print("Starting data retrieval...")
                 req_data = requests.get(self.SNMPaddr + "/data")
+                req_ap_info = requests.get(self.SNMPaddr + "/APChannelInfo")
                 if PRINT:
                     print("Data retrieved successfully!")
             except:
                 print("Exception! Error occured during server request!")
 
-            if req_data.ok:
+            if req_data.ok and req_ap_info.ok:
                 dataRoom = pd.DataFrame.from_dict(req_data.json())
+                ap_info = pd.DataFrame.from_dict(req_ap_info.json())
                 if len(dataRoom) > 0:
+                    # TODO: vogliamo inserire anche le info sugli AP?
                     self.myRaw.insert_records(dataRoom)
                     # Counting people
+                    dataRoom = dataRoom.merge(ap_info, on="name_ap", how="left")
                     dataCount = self.countP.main(dataRoom)
                     # The saving is done only if there are people in the rooms
                     if len(dataCount) > 0:
