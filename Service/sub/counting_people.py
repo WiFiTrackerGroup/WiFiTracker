@@ -120,5 +120,5 @@ class Counting_P:
     def main(self, dataRoom):
         dataRoom = self.room_division(dataRoom)
         dataRoom = self.filter(dataRoom)
-        dataRoom = self.baseline(dataRoom)
+        dataRoom = self.random_forest_regr(dataRoom)
         return dataRoom
