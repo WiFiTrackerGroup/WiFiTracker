@@ -66,14 +66,15 @@ class mongo_library:
 
     def insert_raw(self, df):
         """Since raw data will weight a lot, MongoDB will delete the old files
-            saved after a specific time set to 2 month. To change this time is
-            necessary to connect to the VM running the code and change it via
-            the mongo Shell of the local mongoDB server."""
+        saved after a specific time set to 2 month. To change this time is
+        necessary to connect to the VM running the code and change it via
+        the mongo Shell of the local mongoDB server."""
         if len(df) > 1:
             try:
-                dict = df.T.to_dict().values()
-                self.collection.insert_one({"Timestamp":datetime.datetime.now(),
-                                            "Raw_data": dict})
+                dict = df.T.to_dict()
+                self.collection.insert_many(
+                    {"Timestamp": datetime.datetime.now(), "Raw_data": dict}
+                )
             except:
                 self.error.write(
                     f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
