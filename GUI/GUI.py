@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import streamlit as st
 import folium
 from folium.plugins import HeatMap
-from datetime import datetime
+from datetime import datetime, timedelta
 from config import *
 from PIL import Image
 import pandas as pd
@@ -25,7 +25,7 @@ TEST = DummyTestForHeatMap.TEST
 def contactMongo(room, current, date, time):
 
     timestamp2 = datetime.combine(date, time)
-    timestamp1 = timestamp2 - datetime.timedelta(minutes=10)
+    timestamp1 = timestamp2 - timedelta(minutes=10)
     if current:
         df = MYCOUNT.findLastBy_room(room)
     else:
@@ -112,6 +112,7 @@ def visualizeTable(choice, current, date, time):
     data = {'Room': room_list,
             'Occupancy': occupancy}
     df = pd.DataFrame(data)
+    df['Occupancy'] = df['Occupancy'].astype(int)
     st.table(df)
 
     return df
@@ -158,7 +159,7 @@ def visualizeMap(choice, df):
     
     # Select path
     path = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(path, PATHS[choice]["image_path"])
+    path = os.path.join(path,"Image", PATHS[choice]["image_path"])
 
     # Get room list and dictionary containing for each room the coordinates of the boundaries
     room_list = list(PATHS[choice]["room_list"].keys())
