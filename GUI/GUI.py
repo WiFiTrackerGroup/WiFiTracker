@@ -120,7 +120,36 @@ def int_coord(poly):
     minx, miny, maxx, maxy = map(int, poly.bounds)
     points = [(x,y) for x in range(minx, maxx+1) for y in range(miny, maxy+1) if Point(x,y).within(poly)]
     return points
-            
+
+def getOD(current, date, time):
+    pass
+
+def visualizeOD(current, date, time):
+
+    #df = getOD(current, date, time)
+    rooms = list(PATHS.keys())
+
+    list_of_rooms = list()
+    groups = dict()
+
+    for r in rooms:
+        list_of_rooms.extend(list(PATHS[r]["room_list"]))
+        groups[r]=list(PATHS[r]["room_list"])
+    
+    list_of_rooms = list(set(list_of_rooms))
+
+    dati =  np.random.randint(0, 11, size=(len(list_of_rooms), len(list_of_rooms)))
+    df = pd.DataFrame(dati, index=list_of_rooms, columns=list_of_rooms)
+
+    od = pd.DataFrame(index=groups.keys(), columns=groups.keys(), dtype=int)
+
+    for o_zone, o_rooms in groups.items():
+        for d_zone, d_rooms in groups.items():
+            od.loc[o_zone, d_zone] = df.loc[o_rooms, d_rooms].sum().sum()
+    
+    od = od.astype(int)
+    st.table(od)  
+
 def visualizeMap(choice, df):
 
     # Check if the choice has been made
@@ -199,7 +228,7 @@ def main():
             df = visualizeTable(choice, current, date, time)
             visualizeMap(choice, df)
         elif action == "Flows":
-            st.write("Arriving soon")
+            visualizeOD(current, date, time)
 
 if __name__ == "__main__":
     main()
