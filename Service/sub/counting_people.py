@@ -116,7 +116,9 @@ class Counting_P:
         X = df_features.loc[:, df_features.columns != "room"].to_numpy()
         y = self.rndForest_regr.predict(X)
         df_features["N_people"] = y
-        dataRoom = dataRoom.join(df_features[["room", "N_people"]], on="Room")
+        dataRoom = pd.merge(
+            dataRoom, df_features[["room", "N_people"]], left_on="Room", right_on="room"
+        )
         dataRoom = dataRoom.reset_index()
         dataRoom["Timestamp"] = timestamp
         return dataRoom
