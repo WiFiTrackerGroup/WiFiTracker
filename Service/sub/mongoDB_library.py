@@ -49,6 +49,7 @@ class mongo_library:
         if len(df) > 1:
             try:
                 destination = []
+                timestamp = time.time()
                 for index, row in df.iterrows():
                     for room, people in row.items():
                         if people != 0:
@@ -56,7 +57,7 @@ class mongo_library:
                     dict = {
                         "From": index,
                         "To": destination,
-                        "Timestamp": time.time(),
+                        "Timestamp": timestamp,
                     }
                     self.collection.insert_one(dict)
             except:
