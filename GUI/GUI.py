@@ -25,7 +25,7 @@ TEST = DummyTestForHeatMap.TEST
 def contactMongo(room, current, date, time):
 
     timestamp2 = datetime.combine(date, time)
-    timestamp1 = timestamp1 - datetime.timedelta(minutes=10)
+    timestamp1 = timestamp2 - datetime.timedelta(minutes=10)
     if current:
         df = MYCOUNT.findLastBy_room(room)
     else:
@@ -97,7 +97,7 @@ def check(date, time):
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
     for i in range(len(occupancy)):
-        occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
+        occupancy[i] = contactMongo(room_list[i], current, date, time)
     return occupancy
     
 def visualizeTable(choice, current, date, time):
