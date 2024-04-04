@@ -11,7 +11,7 @@ class mongo_library:
         self.collection = coll
         self.name = name
         path = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(path,FILE_ERRORS)
+        path = os.path.join(path, FILE_ERRORS)
         self.error = open(path, "w")
 
     def getName(self):
@@ -75,21 +75,14 @@ class mongo_library:
                 f"Connection error: wifiTracker.{self.name} unreachable - {datetime.now()}\n"
             )
         return df_response
-    
+
     def findLastBy_room(self, room):
         try:
             pipeline = [
-                {
-                    "$match": {"Room": room}
-                },
-                { 
-                    "$sort": { "Timestamp": -1 } 
-                },
-                {
-                    "$limit":1
-                }
-
-                ]
+                {"$match": {"Room": room}},
+                {"$sort": {"Timestamp": -1}},
+                {"$limit": 1},
+            ]
             df_response = pandas.DataFrame(list(self.collection.aggregate(pipeline)))
         except:
             self.error.write(
@@ -97,6 +90,23 @@ class mongo_library:
             )
         return df_response
 
+    def findLast_forTracking(self):
+        try:
+            pipeline = [
+                {"$sort": {"_id": -1}},
+                {"$limit": 1},
+                {"$project": {"last_time", "$Timestamp"}},
+            ]
+            df_response = pandas.DataFrame(list(self.collection.aggregate(pipeline)))
+            last_timestamp = df_response["last_time"].iloc[0]
+            df_response = pandas.DataFrame(
+                list(self.collection.find({"Timestamp": last_timestamp}))
+            )
+        except:
+            self.error.write(
+                f"Connection error: wifiTracker.{self.name} unreachable - {datetime.now()}\n"
+            )
+        return df_response
 
     def findBy_period(self, init_date, final_date):
         try:
