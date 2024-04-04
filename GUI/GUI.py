@@ -8,11 +8,13 @@ from PIL import Image
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot  as plt
+import plotly.graph_objects as go
 import pickle
 import io
 import os
 import numpy as np
 from mongoDB_library import *
+from tracking import *
 import DummyTestForHeatMap
 from shapely.geometry import Point, Polygon
 
@@ -97,7 +99,7 @@ def check(date, time):
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
     for i in range(len(occupancy)):
-        occupancy[i] = contactMongo(room_list[i], current, date, time)
+        occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
     return occupancy
     
 def visualizeTable(choice, current, date, time):
@@ -123,11 +125,11 @@ def int_coord(poly):
     return points
 
 def getOD(current, date, time):
-    pass
+    return TRACKING_TEST
 
 def visualizeOD(current, date, time):
 
-    #df = getOD(current, date, time)
+    list_od = getOD(current, date, time)
     rooms = list(PATHS.keys())
 
     list_of_rooms = list()
@@ -139,8 +141,18 @@ def visualizeOD(current, date, time):
     
     list_of_rooms = list(set(list_of_rooms))
 
-    dati =  np.random.randint(0, 11, size=(len(list_of_rooms), len(list_of_rooms)))
+    dati =  np.zeros([len(list_of_rooms), len(list_of_rooms)])
     df = pd.DataFrame(dati, index=list_of_rooms, columns=list_of_rooms)
+
+    for i in list_od:
+        origin = i["From"]
+        if origin in list_of_rooms:
+            destination_list = i["To"]
+            for j in destination_list:
+                destination = j[0]
+                if destination in list_of_rooms:
+                    value = j[1]
+                    df.loc[origin, destination] = value
 
     od = pd.DataFrame(index=groups.keys(), columns=groups.keys(), dtype=int)
 
@@ -149,7 +161,36 @@ def visualizeOD(current, date, time):
             od.loc[o_zone, d_zone] = df.loc[o_rooms, d_rooms].sum().sum()
     
     od = od.astype(int)
-    st.table(od)  
+    label = list()
+    label.extend(rooms)
+    label.extend(rooms)
+
+    source = list()
+    target = list()
+    value = list()
+
+    for i in range(len(rooms)):
+        for j in range(len(rooms)):
+            source.append(i)
+            target.append(j+len(rooms))
+            value.append(od.loc[rooms[i], rooms[j]])
+
+
+    fig = go.Figure(data=[go.Sankey(
+    node = dict(
+      pad = 15,
+      thickness = 20,
+      line = dict(color = "black", width = 0.5),
+      label = label,
+      color = "blue"
+    ),
+    link = dict(
+      source = source,
+      target = target,
+      value = value
+    ))])
+
+    st.plotly_chart(fig)
 
 def visualizeMap(choice, df):
 
