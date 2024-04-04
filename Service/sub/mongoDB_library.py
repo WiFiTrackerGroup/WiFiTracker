@@ -48,9 +48,9 @@ class mongo_library:
     def insert_track(self, df):
         if len(df) > 1:
             try:
-                destination = []
                 timestamp = time.time()
                 for index, row in df.iterrows():
+                    destination = []
                     for room, people in row.items():
                         if people != 0:
                             destination.append((room, people))
