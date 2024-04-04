@@ -95,14 +95,13 @@ class mongo_library:
             pipeline = [
                 {"$sort": {"_id": -1}},
                 {"$limit": 1},
-                {"$project": {"last_time", "$Timestamp"}},
             ]
             df_response = pandas.DataFrame(list(self.collection.aggregate(pipeline)))
-            last_timestamp = df_response["last_time"].iloc[0]
+            last_timestamp = df_response["Timestamp"].iloc[0]
             df_response = pandas.DataFrame(
                 list(self.collection.find({"Timestamp": last_timestamp}))
             )
-        except:
+         except:
             self.error.write(
                 f"Connection error: wifiTracker.{self.name} unreachable - {datetime.now()}\n"
             )

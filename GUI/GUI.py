@@ -22,6 +22,7 @@ PATHS = ROOMS
 CLIENT = MongoClient(URL_DB)
 MYDB = CLIENT[DBNAME]
 MYCOUNT = mongo_library(MYDB[COUNTNAME], COUNTNAME)
+MYTRACKING = mongo_library(MYDB[TRACKNAME], TRACKNAME)
 TEST = DummyTestForHeatMap.TEST
 
 def contactMongo(room, current, date, time):
@@ -99,7 +100,7 @@ def check(date, time):
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
     for i in range(len(occupancy)):
-        occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
+        occupancy[i] = contactMongo(room_list[i], current, date, time)
     return occupancy
     
 def visualizeTable(choice, current, date, time):
@@ -125,7 +126,13 @@ def int_coord(poly):
     return points
 
 def getOD(current, date, time):
-    return TRACKING_TEST
+    df_tracking = MYTRACKING.findLast_forTracking()
+    df_dict = df_tracking.to_dict()
+    with open('dictList.txt', 'w') as fp:
+        for item in df_dict:
+        # write each item on a new line
+            fp.write("%s\n" % item)
+    return df_dict
 
 def visualizeOD(current, date, time):
 
