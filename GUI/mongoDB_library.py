@@ -101,7 +101,7 @@ class mongo_library:
             df_response = pandas.DataFrame(
                 list(self.collection.find({"Timestamp": last_timestamp}))
             )
-         except:
+        except:
             self.error.write(
                 f"Connection error: wifiTracker.{self.name} unreachable - {datetime.now()}\n"
             )

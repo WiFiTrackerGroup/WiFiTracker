@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from config import *
 from PIL import Image
 import pandas as pd
+import ast
 import seaborn as sns
 import matplotlib.pyplot  as plt
 import plotly.graph_objects as go
@@ -100,7 +101,7 @@ def check(date, time):
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
     for i in range(len(occupancy)):
-        occupancy[i] = contactMongo(room_list[i], current, date, time)
+        occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
     return occupancy
     
 def visualizeTable(choice, current, date, time):
@@ -136,8 +137,12 @@ def getOD(current, date, time):
 
 def visualizeOD(current, date, time):
 
-    list_od = getOD(current, date, time)
+    # list_od = getOD(current, date, time)
+    path = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(path,"then.csv")
+    od_csv = pd.read_csv(path)
     rooms = list(PATHS.keys())
+    od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
 
     list_of_rooms = list()
     groups = dict()
@@ -151,10 +156,10 @@ def visualizeOD(current, date, time):
     dati =  np.zeros([len(list_of_rooms), len(list_of_rooms)])
     df = pd.DataFrame(dati, index=list_of_rooms, columns=list_of_rooms)
 
-    for i in list_od:
-        origin = i["From"]
+    for index, row in od_csv.iterrows():
+        origin = row["From"]
         if origin in list_of_rooms:
-            destination_list = i["To"]
+            destination_list = row["To"]
             for j in destination_list:
                 destination = j[0]
                 if destination in list_of_rooms:
