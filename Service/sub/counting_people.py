@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from .config import *
 import pickle
 
@@ -115,7 +116,7 @@ class Counting_P:
         df_features = self.feature_extraction(dataRoom)
         X = df_features.loc[:, df_features.columns != "room"].to_numpy()
         y = self.rndForest_regr.predict(X)
-        df_features["N_people"] = y
+        df_features["N_people"] = np.array(y, int)
         dataRoom = pd.merge(
             dataRoom, df_features[["room", "N_people"]], left_on="Room", right_on="room"
         )
