@@ -3,7 +3,7 @@ IP = "192.168.67.41"
 PORT = "8282"
 
 # Seconds to wait before asking another acquisition
-SCHEDULE = 10
+SCHEDULE = 900
 PRINT = False
 
 # MONGODB config
@@ -23,7 +23,7 @@ URL_DB = (
 )
 # ----------------------------------------------------------------------------------------
 
-FILE_ERRORS = "Service/sub/log/mongoDB_log.txt"
+FILE_ERRORS = "sub/log/mongoDB_log.txt"
 
 # Set the hours when to reduce the acquisition
 # Default : 21

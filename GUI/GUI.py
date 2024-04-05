@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import streamlit as st
 import folium
 from folium.plugins import HeatMap
-from datetime import datetime
+from datetime import datetime, timedelta
 from config import *
 from PIL import Image
 import pandas as pd
@@ -25,7 +25,7 @@ TEST = DummyTestForHeatMap.TEST
 def contactMongo(room, current, date, time):
 
     timestamp2 = datetime.combine(date, time)
-    timestamp1 = timestamp1 - datetime.timedelta(minutes=10)
+    timestamp1 = timestamp2 - timedelta(minutes=10)
     if current:
         df = MYCOUNT.findLastBy_room(room)
     else:
@@ -97,7 +97,7 @@ def check(date, time):
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
     for i in range(len(occupancy)):
-        occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
+        occupancy[i] = contactMongo(room_list[i], current, date, time)
     return occupancy
     
 def visualizeTable(choice, current, date, time):
@@ -112,6 +112,7 @@ def visualizeTable(choice, current, date, time):
     data = {'Room': room_list,
             'Occupancy': occupancy}
     df = pd.DataFrame(data)
+    df['Occupancy'] = df['Occupancy'].astype(int)
     st.table(df)
 
     return df
@@ -120,7 +121,36 @@ def int_coord(poly):
     minx, miny, maxx, maxy = map(int, poly.bounds)
     points = [(x,y) for x in range(minx, maxx+1) for y in range(miny, maxy+1) if Point(x,y).within(poly)]
     return points
-            
+
+def getOD(current, date, time):
+    pass
+
+def visualizeOD(current, date, time):
+
+    #df = getOD(current, date, time)
+    rooms = list(PATHS.keys())
+
+    list_of_rooms = list()
+    groups = dict()
+
+    for r in rooms:
+        list_of_rooms.extend(list(PATHS[r]["room_list"]))
+        groups[r]=list(PATHS[r]["room_list"])
+    
+    list_of_rooms = list(set(list_of_rooms))
+
+    dati =  np.random.randint(0, 11, size=(len(list_of_rooms), len(list_of_rooms)))
+    df = pd.DataFrame(dati, index=list_of_rooms, columns=list_of_rooms)
+
+    od = pd.DataFrame(index=groups.keys(), columns=groups.keys(), dtype=int)
+
+    for o_zone, o_rooms in groups.items():
+        for d_zone, d_rooms in groups.items():
+            od.loc[o_zone, d_zone] = df.loc[o_rooms, d_rooms].sum().sum()
+    
+    od = od.astype(int)
+    st.table(od)  
+
 def visualizeMap(choice, df):
 
     # Check if the choice has been made
@@ -129,7 +159,7 @@ def visualizeMap(choice, df):
     
     # Select path
     path = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(path, PATHS[choice]["image_path"])
+    path = os.path.join(path,"Image", PATHS[choice]["image_path"])
 
     # Get room list and dictionary containing for each room the coordinates of the boundaries
     room_list = list(PATHS[choice]["room_list"].keys())
@@ -199,7 +229,7 @@ def main():
             df = visualizeTable(choice, current, date, time)
             visualizeMap(choice, df)
         elif action == "Flows":
-            st.write("Arriving soon")
+            visualizeOD(current, date, time)
 
 if __name__ == "__main__":
     main()

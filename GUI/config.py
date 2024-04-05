@@ -1,7 +1,7 @@
 ROOMS = {
     "Even": {
-        "image_path": "Image\Room_Even.bmp",
-        "coordinate_path": "Iamge\Even.pkl",
+        "image_path": "Room_Even.bmp",
+        "coordinate_path": "Even.pkl",
         "room_list":{
             "AULA02":{
                 "X": [1186.1766872932371, 1189.2109704789534, 845.325542764429, 842.2912595787125],
@@ -19,8 +19,8 @@ ROOMS = {
     },
     
     "Odd": {
-        "image_path": "Image\Room_Odd.bmp",
-        "coordinate_path": "Iamge\Odd.pkl",
+        "image_path": "Room_Odd.bmp",
+        "coordinate_path": "Odd.pkl",
         "room_list":{
             "AULA01":{
                 "X": [804.8684336215435, 922.6997640001969, 950.5140265359305, 1000.073985235965, 1029.9111032288429, 1148.2481474717822, 1148.2481474717822, 1096.6653333146035, 1052.1625132574297, 899.942640107324, 853.922678457292, 805.8798613501158],
@@ -38,8 +38,8 @@ ROOMS = {
     },
     
     "P": {
-        "image_path": "Image\Room_P.bmp",
-        "coordinate_path": "Iamge\P.pkl",
+        "image_path": "Room_P.bmp",
+        "coordinate_path": "P.pkl",
         "room_list":{
             "AULA1P":{
                 "X": [705.2428023571888, 704.2313746286165, 1067.3339291860116, 1065.8167875931535],
@@ -61,8 +61,8 @@ ROOMS = {
     },
     
     "R_G": {
-        "image_path": "Image\Room_R_G.bmp",
-        "coordinate_path": "Iamge\R_G.pkl",
+        "image_path": "Room_R_G.bmp",
+        "coordinate_path": "R_G.pkl",
         "room_list":{
             "AULAR1":{
                 "X": [684.50853392146, 879.2083716715952, 899.942640107324, 700.691377578614],
@@ -84,8 +84,8 @@ ROOMS = {
     },
     
     "R_1": {
-        "image_path": "Image\Room_R_1.bmp",
-        "coordinate_path": "Iamge\R_G.pkl",
+        "image_path": "Room_R_1.bmp",
+        "coordinate_path": "R_G.pkl",
         "room_list":{
             "AULAR1":{
                 "X": [647.085707964291, 854.428392321578, 876.1740884858789, 670.3485457214501],
@@ -130,5 +130,5 @@ PORT_MONGODB = "27017"
 DBNAME = "WifiTracker2024"
 COUNTNAME = "counting"
 TRACKNAME = "tracking"
-FILE_ERRORS = "sub/log/mongoDB_log.txt"
+FILE_ERRORS = "Sub/log/mongoDB_log.txt"
 URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}/{DBNAME}"
