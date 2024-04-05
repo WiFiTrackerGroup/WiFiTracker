@@ -99,8 +99,9 @@ class Acquisition:
             while True:
                 schedule.run_pending()
                 time.sleep(5)
-        except KeyboardInterrupt:
-            raise Exception("Program interrupted")
+        except Exception as error: 
+            print("Error:", error)
+            
 
 
 if __name__ == "__main__":
