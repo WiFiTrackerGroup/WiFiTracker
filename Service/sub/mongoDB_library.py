@@ -72,7 +72,7 @@ class mongo_library:
         the mongo Shell of the local mongoDB server."""
         if len(df) > 1:
             try:
-                dict = df.T.to_dict()
+                dict = df.T.to_dict().values()
                 self.collection.insert_many(
                     {"Timestamp": datetime.datetime.now(), "Raw_data": dict}
                 )
