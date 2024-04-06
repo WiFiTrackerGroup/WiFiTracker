@@ -73,7 +73,7 @@ class mongo_library:
         if len(df) > 1:
             try:
                 dict = df.T.to_dict().values()
-                self.collection.insert_many(
+                self.collection.insert_one(
                     {"Timestamp": datetime.datetime.now(), "Raw_data": dict}
                 )
             except:
