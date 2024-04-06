@@ -141,15 +141,15 @@ def visualizeOD(current, date, time):
     path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(path,"then.csv")
     od_csv = pd.read_csv(path)
-    rooms = list(PATHS.keys())
+    rooms = list(ROOM_LIST.keys())
     od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
 
     list_of_rooms = list()
     groups = dict()
 
     for r in rooms:
-        list_of_rooms.extend(list(PATHS[r]["room_list"]))
-        groups[r]=list(PATHS[r]["room_list"])
+        list_of_rooms.extend(list(ROOM_LIST[r]["room_list"]))
+        groups[r]=list(ROOM_LIST[r]["room_list"])
     
     list_of_rooms = list(set(list_of_rooms))
 
@@ -165,6 +165,7 @@ def visualizeOD(current, date, time):
                 if destination in list_of_rooms:
                     value = j[1]
                     df.loc[origin, destination] = value
+    st.table(df)
 
     od = pd.DataFrame(index=groups.keys(), columns=groups.keys(), dtype=int)
 
