@@ -72,10 +72,9 @@ class mongo_library:
         the mongo Shell of the local mongoDB server."""
         if len(df) > 1:
             try:
+                df["Timestamp"] = datetime.datetime.now()
                 dict = df.T.to_dict().values()
-                self.collection.insert_one(
-                    {"Timestamp": datetime.datetime.now(), "Raw_data": dict}
-                )
+                self.collection.insert_many(dict)
             except:
                 self.error.write(
                     f"Connection error: wifiTracker.{self.name} unreachable - {datetime.datetime.now()}\n"
