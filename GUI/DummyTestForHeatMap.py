@@ -1,4 +1,4 @@
-TEST = {
+TEST_HEAT = {
             "AULA2": 150,
             "AULA4": 125,
             "AULA6": 136,

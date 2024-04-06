@@ -16,14 +16,13 @@ import os
 import numpy as np
 from mongoDB_library import *
 from tracking import *
-import DummyTestForHeatMap
+from DummyTestForHeatMap import *
 from shapely.geometry import Point, Polygon
 
 CLIENT = MongoClient(URL_DB)
 MYDB = CLIENT[DBNAME]
 MYCOUNT = mongo_library(MYDB[COUNTNAME], COUNTNAME)
 MYTRACKING = mongo_library(MYDB[TRACKNAME], TRACKNAME)
-TEST = DummyTestForHeatMap.TEST
 
 TIME = "Room Occupancy Time Series"
 FLOW = "Distribution Flows"
@@ -40,9 +39,6 @@ def contactMongo(room, current, date, time):
         df = MYCOUNT.findBy_class_period(room, timestamp1, timestamp2)
 
     return df.loc[0, 'N_people']
-
-def contactMongoDummy(room, current, date, time):
-    return TEST[room]
 
 def selection():
 
@@ -67,6 +63,9 @@ def selection():
         choice = revert[choice]
     elif action == TIME:
         interim = list()
+        groups = list(ROOM_LIST.keys())
+        for group in groups:
+            interim.extend(ROOM_LIST[group]["room_list"])
         interim.insert(0, "--select--")
         choice = st.sidebar.selectbox("Select a room", interim)
     else:
@@ -88,16 +87,6 @@ def selection():
 
     return action, choice, current, date, time
 
-def visualization(choice, date, time):
-
-    # Format
-    date = date.strftime("%d %B %Y, %A")
-    time = time.strftime("%I:%M")
-
-    # Visualization
-    st.write(f"<strong>Selected room:</strong> {choice}", unsafe_allow_html=True)
-    st.write(f"<strong>Selected date and time:</strong> {date} {time}", unsafe_allow_html=True)
-
 def check(date, time):
 
     # Current
@@ -118,7 +107,8 @@ def check(date, time):
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
     for i in range(len(occupancy)):
-        occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
+        occupancy[i] = TEST_HEAT[room_list[i]]
+        # occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
     return occupancy
     
 def visualizeTable(choice, current, date, time):
@@ -138,16 +128,13 @@ def visualizeTable(choice, current, date, time):
 
     return df
 
-def int_coord(poly):
-    minx, miny, maxx, maxy = map(int, poly.bounds)
-    points = [(x,y) for x in range(minx, maxx+1) for y in range(miny, maxy+1) if Point(x,y).within(poly)]
-    return points
-
 def getOD(current, date, time):
     if current == True:
         df_tracking = MYTRACKING.findLast_forTracking()
     else:
-        pass
+        timestamp2 = datetime.combine(date, time)
+        timestamp1 = timestamp2 - timedelta(minutes=10)
+        df_tracking = MYTRACKING.findBy_period(timestamp1, timestamp2)
     return df_tracking
 
 def visualizeOD(current, date, time):
@@ -274,7 +261,6 @@ def main():
 
     # Start the application and give a title
     st.title("Wi-Fi Tracker")
-
     st.markdown(
         """
         <style>
