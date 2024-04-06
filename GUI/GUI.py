@@ -19,12 +19,16 @@ from tracking import *
 import DummyTestForHeatMap
 from shapely.geometry import Point, Polygon
 
-PATHS = ROOMS
 CLIENT = MongoClient(URL_DB)
 MYDB = CLIENT[DBNAME]
 MYCOUNT = mongo_library(MYDB[COUNTNAME], COUNTNAME)
 MYTRACKING = mongo_library(MYDB[TRACKNAME], TRACKNAME)
 TEST = DummyTestForHeatMap.TEST
+
+TIME = "Room Occupancy Time Series"
+FLOW = "Distribution Flows"
+HEAT = "Room Occupancy Heat Map"
+
 
 def contactMongo(room, current, date, time):
 
@@ -40,19 +44,31 @@ def contactMongo(room, current, date, time):
 def contactMongoDummy(room, current, date, time):
     return TEST[room]
 
-def selection(rooms):
+def selection():
 
     # Title for Menu
     st.sidebar.title("Settings")
 
     # Select Action
-    act = ["--select--", "Room occupancy", "Flows"]
+    act = ["--select--", TIME, FLOW, HEAT]
     action = st.sidebar.selectbox("Select action", act)
 
     # Possible room choice and selection
-    if action == "Room occupancy":
-        rooms.insert(0, "--select--")
-        choice = st.sidebar.selectbox("Select a room", rooms)
+    if action == HEAT:
+        rooms = list(ROOMS.keys())
+        rooms_name = list()
+        revert = dict()
+        for r in rooms:
+            rooms_name.append(ROOMS[r]["name"])
+            revert[ROOMS[r]["name"]] = r
+        rooms_name.insert(0, "--select--")
+        revert["--select--"] = ""
+        choice = st.sidebar.selectbox("Select a room", rooms_name)
+        choice = revert[choice]
+    elif action == TIME:
+        interim = list()
+        interim.insert(0, "--select--")
+        choice = st.sidebar.selectbox("Select a room", interim)
     else:
         choice = ""
 
@@ -67,7 +83,8 @@ def selection(rooms):
         if not current:
             # To select date and time 
             date = st.sidebar.date_input("Select date")
-            time = st.sidebar.time_input("Select time")
+            if action!=TIME:
+                time = st.sidebar.time_input("Select time")
 
     return action, choice, current, date, time
 
@@ -101,16 +118,16 @@ def check(date, time):
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
     for i in range(len(occupancy)):
-        occupancy[i] = contactMongo(room_list[i], current, date, time)
+        occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
     return occupancy
     
 def visualizeTable(choice, current, date, time):
 
     # Check if the choice has been made
-    if not choice in PATHS:
+    if not choice in ROOMS:
         return
     
-    room_list = list(PATHS[choice]["room_list"].keys())
+    room_list = list(ROOMS[choice]["room_list"].keys())
 
     occupancy = getOccupancy(room_list, current, date, time)
     data = {'Room': room_list,
@@ -127,7 +144,10 @@ def int_coord(poly):
     return points
 
 def getOD(current, date, time):
-    df_tracking = MYTRACKING.findLast_forTracking()
+    if current == True:
+        df_tracking = MYTRACKING.findLast_forTracking()
+    else:
+        pass
     return df_tracking
 
 def visualizeOD(current, date, time):
@@ -210,16 +230,16 @@ def visualizeOD(current, date, time):
 def visualizeMap(choice, df):
 
     # Check if the choice has been made
-    if not choice in PATHS:
+    if not choice in ROOMS:
         return
     
     # Select path
     path = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(path,"Image", PATHS[choice]["image_path"])
+    path = os.path.join(path,"Image", ROOMS[choice]["image_path"])
 
     # Get room list and dictionary containing for each room the coordinates of the boundaries
-    room_list = list(PATHS[choice]["room_list"].keys())
-    room_dict = PATHS[choice]["room_list"]
+    room_list = list(ROOMS[choice]["room_list"].keys())
+    room_dict = ROOMS[choice]["room_list"]
 
     # Convert image to PNG and visualize
     image_bmp = Image.open(path)
@@ -268,10 +288,9 @@ def main():
     )
 
     # Select available rooms from constants file
-    rooms = list(PATHS.keys())
 
     # take the choice of the user and visualize it
-    action, choice, current, date, time = selection(rooms)
+    action, choice, current, date, time = selection()
     # visualization(choice, date, time)
 
     # Wrong date and time warning
@@ -280,12 +299,14 @@ def main():
         st.write('<span style="color:red">Please inserta a valid date!</span>', unsafe_allow_html=True)
     else:
 
-        if action == "Room occupancy":
+        if action == HEAT:
             # Visualize data and map about the choesn room
             df = visualizeTable(choice, current, date, time)
             visualizeMap(choice, df)
-        elif action == "Flows":
+        elif action == FLOW:
             visualizeOD(current, date, time)
+        elif action == TIME:
+            pass
 
 if __name__ == "__main__":
     main()
