@@ -160,7 +160,6 @@ def visualizeOD(current, date, time):
                 if destination in list_of_rooms:
                     value = j[1]
                     df.loc[origin, destination] = value
-    st.table(df)
 
     od = pd.DataFrame(index=groups.keys(), columns=groups.keys(), dtype=int)
 
