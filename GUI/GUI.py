@@ -132,12 +132,12 @@ def getOD(current, date, time):
 
 def visualizeOD(current, date, time):
 
-    # list_od = getOD(current, date, time)
+    # od_csv = getOD(current, date, time)
     path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(path,"then.csv")
-    #od_csv = pd.read_csv(path)
+    od_csv = pd.read_csv(path)
     rooms = list(ROOM_LIST.keys())
-    #od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
+    od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
 
     list_of_rooms = list()
     groups = dict()
@@ -170,8 +170,14 @@ def visualizeOD(current, date, time):
     
     od = od.astype(int)
     label = list()
-    label.extend(rooms)
-    label.extend(rooms)
+    colors = list()
+
+    for r in rooms:
+        label.append(ROOM_LIST[r]["name"])
+        colors.append(ROOM_LIST[r]["color"])
+    for r in rooms:
+        label.append(ROOM_LIST[r]["name"])
+        colors.append(ROOM_LIST[r]["color"])
 
     source = list()
     target = list()
@@ -183,6 +189,8 @@ def visualizeOD(current, date, time):
             target.append(j+len(rooms))
             value.append(od.loc[rooms[i], rooms[j]])
 
+    
+
 
     fig = go.Figure(data=[go.Sankey(
     node = dict(
@@ -190,7 +198,7 @@ def visualizeOD(current, date, time):
       thickness = 20,
       line = dict(color = "black", width = 0.5),
       label = label,
-      color = "blue"
+      color = colors
     ),
     link = dict(
       source = source,
