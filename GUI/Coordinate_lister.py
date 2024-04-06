@@ -9,7 +9,7 @@ def int_coord(poly):
     return points
 
 def main():
-    choice = "R_1"
+    choice = "Even"
 
     current_rooms = ROOMS[choice]["room_list"]
 
