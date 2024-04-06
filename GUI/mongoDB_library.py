@@ -80,7 +80,7 @@ class mongo_library:
         try:
             pipeline = [
                 {"$match": {"Room": room}},
-                {"$sort": {"Timestamp": -1}},
+                {"$sort": {"_id": -1}},
                 {"$limit": 1},
             ]
             df_response = pandas.DataFrame(list(self.collection.aggregate(pipeline)))

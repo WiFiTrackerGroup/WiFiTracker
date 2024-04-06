@@ -101,7 +101,7 @@ def check(date, time):
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
     for i in range(len(occupancy)):
-        occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
+        occupancy[i] = contactMongo(room_list[i], current, date, time)
     return occupancy
     
 def visualizeTable(choice, current, date, time):
@@ -128,21 +128,16 @@ def int_coord(poly):
 
 def getOD(current, date, time):
     df_tracking = MYTRACKING.findLast_forTracking()
-    df_dict = df_tracking.to_dict()
-    with open('dictList.txt', 'w') as fp:
-        for item in df_dict:
-        # write each item on a new line
-            fp.write("%s\n" % item)
-    return df_dict
+    return df_tracking
 
 def visualizeOD(current, date, time):
 
     # list_od = getOD(current, date, time)
     path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(path,"then.csv")
-    od_csv = pd.read_csv(path)
+    #od_csv = pd.read_csv(path)
     rooms = list(ROOM_LIST.keys())
-    od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
+    #od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
 
     list_of_rooms = list()
     groups = dict()
