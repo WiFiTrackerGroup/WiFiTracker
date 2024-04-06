@@ -303,7 +303,6 @@ class mongo_library:
         The method returns the records in a period of time. It can be called on
         the "raw_data" collection only.
         Input:
-            - room: string with the name of the room
             - init_date
             - final_date
         Output:
