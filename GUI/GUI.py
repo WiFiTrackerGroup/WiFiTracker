@@ -29,7 +29,7 @@ FLOW = "Distribution Flows"
 HEAT = "Room Occupancy Heat Map"
 
 
-def contactMongo(room, current, date, time):
+def getForHeatMap(room, current, date, time):
 
     timestamp2 = datetime.combine(date, time)
     timestamp1 = timestamp2 - timedelta(minutes=10)
@@ -39,6 +39,16 @@ def contactMongo(room, current, date, time):
         df = MYCOUNT.findBy_class_period(room, timestamp1, timestamp2)
 
     return df.loc[0, 'N_people']
+
+def getTimeSeries(choice, date): 
+    selected_date = datetime.combine(date, datetime.min.time())
+
+    timestamp1 = selected_date.replace(hour=0, minute=0)
+    timestamp2 = selected_date.replace(hour=23, minute=59)
+
+    df_tracking = MYTRACKING.findBy_class_period(choice, timestamp1, timestamp2)
+    return df_tracking
+
 
 def selection():
 
@@ -87,6 +97,22 @@ def selection():
 
     return action, choice, current, date, time
 
+def timeseries(choice, current, date):
+
+    err = ["", "--select--"]
+    if  choice in err:
+        return
+
+    path = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(path,"Dummy_time_series.csv")
+    df = pd.read_csv(path)
+    df = df.loc[df['Room'] == choice]
+    #df = getTimeSeries(choice, date)
+    df = df.sort_values(by='Timestamp')
+    df = df.drop('Room', axis=1)
+    df['Timestamp'] = pd.to_datetime(df['Timestamp'])
+    st.line_chart(df, x='Timestamp', y='N_people')
+
 def check(date, time):
 
     # Current
@@ -108,7 +134,7 @@ def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
     for i in range(len(occupancy)):
         occupancy[i] = TEST_HEAT[room_list[i]]
-        # occupancy[i] = contactMongoDummy(room_list[i], current, date, time)
+        # occupancy[i] = getForHeatMap(room_list[i], current, date, time)
     return occupancy
     
 def visualizeTable(choice, current, date, time):
@@ -292,7 +318,7 @@ def main():
         elif action == FLOW:
             visualizeOD(current, date, time)
         elif action == TIME:
-            pass
+            timeseries(choice, current, date)
 
 if __name__ == "__main__":
     main()
