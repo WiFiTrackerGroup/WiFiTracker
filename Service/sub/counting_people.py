@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from .config import *
+from .utils import room_division
 import pickle
 
 
@@ -132,7 +133,7 @@ class Counting_P:
         return dataRoom
 
     def main(self, dataRoom):
-        dataRoom = self.room_division(dataRoom)
+        dataRoom = room_division(dataRoom)
         dataRoom = self.filter(dataRoom)
         dataRoom = self.random_forest_regr(dataRoom)
         return dataRoom
