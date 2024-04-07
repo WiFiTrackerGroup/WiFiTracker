@@ -32,7 +32,7 @@ HEAT = "Room Occupancy Heat Map"
 def getForHeatMap(room, current, date, time):
 
     timestamp2 = datetime.combine(date, time)
-    timestamp1 = timestamp2 - timedelta(minutes=10)
+    timestamp1 = timestamp2 - timedelta(minutes=15)
     if current:
         df = MYCOUNT.findLastBy_room(room)
     else:
@@ -48,7 +48,6 @@ def getTimeSeries(choice, date):
 
     df_tracking = MYTRACKING.findBy_class_period(choice, timestamp1, timestamp2)
     return df_tracking
-
 
 def selection():
 
@@ -159,7 +158,7 @@ def getOD(current, date, time):
         df_tracking = MYTRACKING.findLast_forTracking()
     else:
         timestamp2 = datetime.combine(date, time)
-        timestamp1 = timestamp2 - timedelta(minutes=10)
+        timestamp1 = timestamp2 - timedelta(minutes=15)
         df_tracking = MYTRACKING.findBy_period(timestamp1, timestamp2)
     return df_tracking
 
