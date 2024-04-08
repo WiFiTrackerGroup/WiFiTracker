@@ -31,12 +31,11 @@ HEAT = "Room Occupancy Heat Map"
 
 def getForHeatMap(room, current, date, time):
 
-    timestamp2 = datetime.combine(date, time)
-    timestamp1 = timestamp2 - timedelta(minutes=15)
+    timestamp1 = datetime.combine(date, time)
     if current:
         df = MYCOUNT.findLastBy_room(room)
     else:
-        df = MYCOUNT.findBy_class_period(room, timestamp1, timestamp2)
+        df = MYCOUNT.findBy_room_timestamp(room, timestamp1)
 
     return df.loc[0, 'N_people']
 
@@ -46,57 +45,39 @@ def getTimeSeries(choice, date):
     timestamp1 = selected_date.replace(hour=0, minute=0)
     timestamp2 = selected_date.replace(hour=23, minute=59)
 
-    df_tracking = MYTRACKING.findBy_class_period(choice, timestamp1, timestamp2)
+    try:
+        df_tracking = MYTRACKING.findBy_room_period(choice, timestamp1, timestamp2)
+    except Exception as e:
+        st.write("The database is not responding")
+        return None
     return df_tracking
 
-def selection():
+def getOccupancy(room_list, current, date, time):
+    occupancy = np.zeros(len(room_list)).tolist()
 
-    # Title for Menu
-    st.sidebar.title("Settings")
+    try:
+        for i in range(len(occupancy)):
+            # occupancy[i] = TEST_HEAT[room_list[i]]
+            occupancy[i] = getForHeatMap(room_list[i], current, date, time)
+    except Exception as e:
+        st.write("The database is not responding")
+        return None
+    return occupancy
 
-    # Select Action
-    act = ["--select--", TIME, FLOW, HEAT]
-    action = st.sidebar.selectbox("Select action", act)
+def getOD(current, date, time):
 
-    # Possible room choice and selection
-    if action == HEAT:
-        rooms = list(ROOMS.keys())
-        rooms_name = list()
-        revert = dict()
-        for r in rooms:
-            rooms_name.append(ROOMS[r]["name"])
-            revert[ROOMS[r]["name"]] = r
-        rooms_name.insert(0, "--select--")
-        revert["--select--"] = ""
-        choice = st.sidebar.selectbox("Select a room", rooms_name)
-        choice = revert[choice]
-    elif action == TIME:
-        interim = list()
-        groups = list(ROOM_LIST.keys())
-        for group in groups:
-            interim.extend(ROOM_LIST[group]["room_list"])
-        interim.insert(0, "--select--")
-        choice = st.sidebar.selectbox("Select a room", interim)
-    else:
-        choice = ""
+    try:
+        if current == True:
+            df_tracking = MYTRACKING.findLast_forTracking()
+        else:
+            timestamp1 = datetime.combine(date, time)
+            df_tracking = MYTRACKING.findTimestamp_forTracking(timestamp1)
+    except Exception as e:
+        st.write("The database is not responding")
+        return None
+    return df_tracking
 
-    # Time selection
-    current = True
-    date = datetime.now().date()
-    time = datetime.now().time()
-
-    if action != "--select--":
-        current = st.sidebar.checkbox("See previous data")
-        current = not current
-        if not current:
-            # To select date and time 
-            date = st.sidebar.date_input("Select date")
-            if action!=TIME:
-                time = st.sidebar.time_input("Select time")
-
-    return action, choice, current, date, time
-
-def timeseries(choice, current, date):
+def visualizeTS(choice, current, date):
 
     err = ["", "--select--"]
     if  choice in err:
@@ -104,39 +85,23 @@ def timeseries(choice, current, date):
 
     path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(path,"Dummy_time_series.csv")
-    df = pd.read_csv(path)
-    df = df.loc[df['Room'] == choice]
-    #df = getTimeSeries(choice, date)
+    #df = pd.read_csv(path)
+    #df = df.loc[df['Room'] == choice]
+
+    df = getTimeSeries(choice, date)
+
+    if df is None:
+        return
+    elif df.empty:
+        st.write("No data found for the considered time period")
+        return
+
     df = df.sort_values(by='Timestamp')
     df = df.drop('Room', axis=1)
     df['Timestamp'] = pd.to_datetime(df['Timestamp'])
     st.line_chart(df, x='Timestamp', y='N_people')
-
-def check(date, time):
-
-    # Current
-    date_now = datetime.now().date()
-    time_now = datetime.now().time()
-
-    # Check that the date is 
-    if date_now<date:
-        return False
-    elif date_now == date:
-        if time_now < time:
-            return False
-        else:
-            return True
-    else:
-        return True
     
-def getOccupancy(room_list, current, date, time):
-    occupancy = np.zeros(len(room_list)).tolist()
-    for i in range(len(occupancy)):
-        occupancy[i] = TEST_HEAT[room_list[i]]
-        # occupancy[i] = getForHeatMap(room_list[i], current, date, time)
-    return occupancy
-    
-def visualizeTable(choice, current, date, time):
+def visualizeHM(choice, current, date, time):
 
     # Check if the choice has been made
     if not choice in ROOMS:
@@ -145,32 +110,39 @@ def visualizeTable(choice, current, date, time):
     room_list = list(ROOMS[choice]["room_list"].keys())
 
     occupancy = getOccupancy(room_list, current, date, time)
+
+    if occupancy is None:
+        return
+    elif len(occupancy)==0:
+        st.write("No data found for the considered time period")
+        return
+
     data = {'Room': room_list,
             'Occupancy': occupancy}
     df = pd.DataFrame(data)
     df['Occupancy'] = df['Occupancy'].astype(int)
     st.table(df)
 
-    return df
+    visualizeMap(choice, df)
 
-def getOD(current, date, time):
-    if current == True:
-        df_tracking = MYTRACKING.findLast_forTracking()
-    else:
-        timestamp2 = datetime.combine(date, time)
-        timestamp1 = timestamp2 - timedelta(minutes=15)
-        df_tracking = MYTRACKING.findBy_period(timestamp1, timestamp2)
-    return df_tracking
+    return
 
 def visualizeOD(current, date, time):
 
-    # od_csv = getOD(current, date, time)
+    od_csv = getOD(current, date, time)
+
+    if od_csv is None:
+        return
+    elif od_csv.empty:
+        st.write("No data found for the considered time period")
+        return
+
     path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(path,"then.csv")
-    od_csv = pd.read_csv(path)
-    rooms = list(ROOM_LIST.keys())
-    od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
+    #od_csv = pd.read_csv(path)
+    #od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
 
+    rooms = list(ROOM_LIST.keys())
     list_of_rooms = list()
     groups = dict()
 
@@ -282,6 +254,70 @@ def visualizeMap(choice, df):
     buffer.seek(0)
     st.image(buffer,use_column_width=True)
 
+def check(date, time):
+
+    # Current
+    date_now = datetime.now().date()
+    time_now = datetime.now().time()
+
+    # Check that the date is 
+    if date_now<date:
+        return False
+    elif date_now == date:
+        if time_now < time:
+            return False
+        else:
+            return True
+    else:
+        return True
+
+def selection():
+
+    # Title for Menu
+    st.sidebar.title("Settings")
+
+    # Select Action
+    act = ["--select--", TIME, FLOW, HEAT]
+    action = st.sidebar.selectbox("Select action", act)
+
+    # Time selection
+    current = True
+    date = datetime.now().date()
+    time = datetime.now().time()
+
+    if action != "--select--":
+        current = st.sidebar.checkbox("See previous data")
+        current = not current
+        if not current:
+            # To select date and time 
+            date = st.sidebar.date_input("Select date")
+            if action!=TIME:
+                time = st.sidebar.time_input("Select time")
+
+    # Possible room choice and selection
+    if action == HEAT:
+        rooms = list(ROOMS.keys())
+        rooms_name = list()
+        revert = dict()
+        for r in rooms:
+            rooms_name.append(ROOMS[r]["name"])
+            revert[ROOMS[r]["name"]] = r
+        rooms_name.insert(0, "--select--")
+        revert["--select--"] = ""
+        choice = st.sidebar.selectbox("Select a room", rooms_name)
+        choice = revert[choice]
+    elif action == TIME:
+        interim = list()
+        groups = list(ROOM_LIST.keys())
+        for group in groups:
+            interim.extend(ROOM_LIST[group]["room_list"])
+        interim.insert(0, "--select--")
+        choice = st.sidebar.selectbox("Select a room", interim)
+    else:
+        choice = ""
+
+    return action, choice, current, date, time
+
 def main():
 
     # Start the application and give a title
@@ -311,13 +347,11 @@ def main():
     else:
 
         if action == HEAT:
-            # Visualize data and map about the choesn room
-            df = visualizeTable(choice, current, date, time)
-            visualizeMap(choice, df)
+            visualizeHM(choice, current, date, time)
         elif action == FLOW:
             visualizeOD(current, date, time)
         elif action == TIME:
-            timeseries(choice, current, date)
+            visualizeTS(choice, current, date)
 
 if __name__ == "__main__":
     main()

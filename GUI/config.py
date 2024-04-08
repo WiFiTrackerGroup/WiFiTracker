@@ -1,3 +1,5 @@
+import os
+
 ROOMS = {
     "Even": {
         "name": "Even Room",
@@ -199,5 +201,8 @@ PORT_MONGODB = "27017"
 DBNAME = "WifiTracker2024"
 COUNTNAME = "counting"
 TRACKNAME = "tracking"
-FILE_ERRORS = "Sub/log/mongoDB_log.txt"
+RAWNAME = "raw_data"
+SCHEDULE = 900
+path = os.path.dirname(os.path.abspath(__file__))
+FILE_ERRORS = os.path.join(path,"sub", "log", "mongoDB_log.txt")
 URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}/{DBNAME}"
