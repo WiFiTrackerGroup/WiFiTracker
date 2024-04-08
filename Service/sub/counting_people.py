@@ -97,6 +97,7 @@ class Counting_P:
                 "noise_2_4_mean",
                 "noise_5_mean",
             ],
+            axis=1,
             inplace=True,
         )
         df_features["Timestamp"] = timestamp
