@@ -113,17 +113,29 @@ class Counting_P:
 
     def random_forest_regr(self, dataRoom: pd.DataFrame):
         timestamp = dataRoom["Timestamp_x"].iloc[0]
-        # EXtract features
+        # Extract features
         df_features = self.feature_extraction(dataRoom)
         X = df_features.loc[:, df_features.columns != "room"].to_numpy()
         y = self.rndForest_regr.predict(X)
         df_features["N_people"] = np.array(y, int)
-        dataRoom = pd.merge(
-            dataRoom, df_features[["room", "N_people"]], left_on="Room", right_on="room"
+        df_features.drop(
+            [
+                "n_devices",
+                "n_users",
+                "snr_mean",
+                "snr_std",
+                "rssi_mean",
+                "rssi_std",
+                "ch_util_2_4_mean",
+                "ch_util_5_mean",
+                "noise_2_4_mean",
+                "noise_5_mean",
+            ],
+            inplace=True,
         )
-        dataRoom = dataRoom.reset_index()
-        dataRoom["Timestamp"] = timestamp
-        return dataRoom
+        df_features["Timestamp"] = timestamp
+        df_features.reset_index(inplace=True)
+        return df_features
 
     def filter(self, dataRoom):
         # Remove devices that may be connected from different rooms
