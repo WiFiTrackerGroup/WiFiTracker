@@ -10,40 +10,6 @@ class Counting_P:
         model_path = "Service/sub/ml_models/random_forest.sav"
         self.rndForest_regr = pickle.load(open(model_path, "rb"))
 
-    def room_division(self, dataRoom):
-        """
-        room_division
-        -------------
-        take all the data and divide the rooms of all PoliTo
-        ### Output:
-            - the dataframe with the room divided
-        """
-        Ap = "AP-AULA"
-        dataRoom = dataRoom[dataRoom["name_ap"].notnull()]
-        dataRoom = dataRoom[dataRoom["name_ap"].str.contains(Ap)]
-        rooms = pd.DataFrame()
-        max_l = max([len(sublist.split("-")) for sublist in dataRoom["name_ap"]])
-        if max_l == 2:
-            rooms[["AP", "Room"]] = dataRoom["name_ap"].str.split("-", expand=True)
-        elif max_l == 3:
-            rooms[["AP", "Room", "APnum"]] = dataRoom["name_ap"].str.split(
-                "-", expand=True
-            )
-        elif max_l == 4:
-            rooms[["AP", "Room", "APnum", "NaN"]] = dataRoom["name_ap"].str.split(
-                "-", expand=True
-            )
-        elif max_l == 5:
-            rooms[["AP", "Room", "APnum", "NaN", "other"]] = dataRoom[
-                "name_ap"
-            ].str.split("-", expand=True)
-        else:
-            raise Exception("Error in dataRoom['name_ap'].str.split('-', expand=True)")
-
-        dataRoom = pd.concat([dataRoom, rooms], axis=1)
-        dataRoom = dataRoom.drop(["AP", "NaN"], axis=1)
-        return dataRoom
-
     def baseline(self, dataRoom):
         timestamp = dataRoom["Timestamp"].iloc[0]
         dataRoom = (
@@ -122,6 +88,7 @@ class Counting_P:
             dataRoom, df_features[["room", "N_people"]], left_on="Room", right_on="room"
         )
         dataRoom = dataRoom.reset_index()
+        print(dataRoom.columns)
         dataRoom["Timestamp"] = timestamp
         return dataRoom
 

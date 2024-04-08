@@ -12,7 +12,7 @@ class mongo_library:
         self.error = open(FILE_ERRORS, "w")
 
     def getName(self):
-        return self.name
+        return self.collection
 
     # ------------------------------------------------------------------------------
     # INSERTION METHODS

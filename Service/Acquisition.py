@@ -99,12 +99,12 @@ class Acquisition:
     def main(self):
 
         schedule.every(SCHEDULE).seconds.do(self.request)
-        try:
-            while True:
-                schedule.run_pending()
-                time.sleep(5)
-        except Exception as error: 
-            print("Error:", error)
+        #try:
+        while True:
+            schedule.run_pending()
+            time.sleep(5)
+        #except Exception as error: 
+            #print("Error:", error)
             
 
 
