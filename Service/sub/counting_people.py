@@ -95,13 +95,15 @@ class Counting_P:
                 "ch_util_2_4_mean",
                 "ch_util_5_mean",
                 "noise_2_4_mean",
-                "noise_5_mean",
+                "noise_5_mean"
             ],
             axis=1,
             inplace=True,
         )
+        df_features = df_features.rename(columns={"room":"Room"})
         df_features["Timestamp"] = timestamp
         df_features.reset_index(inplace=True)
+        df_features = df_features.drop("index", axis = 1)
         return df_features
 
     def filter(self, dataRoom):

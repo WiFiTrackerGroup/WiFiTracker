@@ -3,7 +3,7 @@ IP = "192.168.67.41"
 PORT = "8282"
 
 # Seconds to wait before asking another acquisition
-SCHEDULE = 50
+SCHEDULE = 900
 PRINT = False
 
 # MONGODB config
