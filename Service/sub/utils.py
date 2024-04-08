@@ -22,19 +22,15 @@ def room_division(dataRoom):
         rooms[["AP", "Room", "APnum", "NaN"]] = dataRoom["name_ap"].str.split(
             "-", expand=True
         )
-        dataRoom = dataRoom.drop(["AP", "NaN"], axis=1)
+        rooms = rooms.drop(["NaN"], axis=1)
     elif max_l == 5:
         rooms[["AP", "Room", "APnum", "NaN", "other"]] = dataRoom["name_ap"].str.split(
             "-", expand=True
         )
-        dataRoom = dataRoom.drop(["other"])
+        rooms = rooms.drop(["NaN","other"])
     else:
         raise Exception("Error in dataRoom['name_ap'].str.split('-', expand=True)")
 
     dataRoom = pd.concat([dataRoom, rooms], axis=1)
-    try:
-        dataRoom = dataRoom.drop(["NaN"])
-    except:
-        pass
     dataRoom = dataRoom.drop(["AP"], axis=1)
     return dataRoom
