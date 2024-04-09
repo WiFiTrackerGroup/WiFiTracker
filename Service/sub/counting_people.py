@@ -2,8 +2,9 @@ import pandas as pd
 import numpy as np
 from .config import *
 from .utils import room_division
+from datetime import datetime
 import pickle
-
+import pytz
 
 class Counting_P:
     def __init__(self):
@@ -78,7 +79,7 @@ class Counting_P:
         return df_features
 
     def random_forest_regr(self, dataRoom: pd.DataFrame):
-        timestamp = dataRoom["Timestamp_x"].iloc[0]
+        timestamp = datetime.now(pytz.timezone('Europe/Rome'))
         # Extract features
         df_features = self.feature_extraction(dataRoom)
         X = df_features.loc[:, df_features.columns != "room"].to_numpy()

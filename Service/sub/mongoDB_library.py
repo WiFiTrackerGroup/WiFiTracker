@@ -2,7 +2,7 @@ import pandas
 from .config import *
 from datetime import datetime, timedelta
 import time
-
+import pytz
 
 class mongo_library:
 
@@ -51,7 +51,7 @@ class mongo_library:
     def insert_track(self, df):
         if len(df) > 1:
             try:
-                timestamp = datetime.now()
+                timestamp = datetime.now(pytz.timezone('Europe/Rome'))
                 for index, row in df.iterrows():
                     destination = []
                     for room, people in row.items():
@@ -77,7 +77,7 @@ class mongo_library:
         """
         if len(df) > 1:
             try:
-                df["Timestamp"] = datetime.now()
+                df["Timestamp"] = datetime.now(pytz.timezone('Europe/Rome'))
                 dict = df.T.to_dict().values()
                 self.collection.insert_many(dict)
             except:
