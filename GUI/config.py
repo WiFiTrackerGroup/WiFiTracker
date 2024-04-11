@@ -137,17 +137,19 @@ ROOMS = {
 
 ROOM_LIST ={
     "Even": {
-        "name": "Even Room",
+        "name": "Even Rooms",
         "color": "red",
         "room_list":[
             "AULA2",
             "AULA4",
-            "AULA6"
+            "AULA6",
+            "AULA08",
+            "AULA10"
         ]
     },
     
     "Odd": {
-        "name": "Odd Room",
+        "name": "Odd Rooms",
         "color": "blue",
         "room_list":[
             "AULA01",
@@ -157,7 +159,7 @@ ROOM_LIST ={
     },
     
     "P": {
-        "name": "Room P",
+        "name": "Rooms P",
         "color": "purple",
         "room_list":[
             "AULA1P",
@@ -168,7 +170,7 @@ ROOM_LIST ={
     },
     
     "R_G": {
-        "name": "Room R ground floor",
+        "name": "Rooms R ground floor",
         "color": "yellow",
         "room_list":[
             "AULAR1",
@@ -179,7 +181,7 @@ ROOM_LIST ={
     },
     
     "R_1": {
-        "name": "Room R first floor",
+        "name": "Rooms R first floor",
         "color": "green",
         "room_list":[
             "AULAR1",
@@ -188,6 +190,7 @@ ROOM_LIST ={
             "AULAR4", 
             "AULAR1B",
             "AULAR2B",
+            "AULAR3B",
             "AULAR4B"
         ]
     }

@@ -95,6 +95,14 @@ def visualizeTS(choice, current, date):
     elif df.empty:
         st.write("No data found for the considered time period")
         return
+    
+    df = df.drop('Room', axis=1)
+    df['Timestamp'] = pd.to_datetime(df['Timestamp'])
+
+    if current:
+        df = df.sort_values(by='Timestamp', ascending=False)
+        occupancy = df.iloc[0]['N_people']
+        st.write(f"Current number of people in the room: {occupancy}")
 
     df = df.sort_values(by='Timestamp')
     df = df.drop('Room', axis=1)
