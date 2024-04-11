@@ -46,11 +46,11 @@ def getTimeSeries(choice, date):
     timestamp2 = selected_date.replace(hour=23, minute=59)
 
     try:
-        df_tracking = MYTRACKING.findBy_room_period(choice, timestamp1, timestamp2)
+        df_timeseries= MYCOUNT.findBy_room_period(choice, timestamp1, timestamp2)
     except Exception as e:
         st.write("The database is not responding")
         return None
-    return df_tracking
+    return df_timeseries
 
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
@@ -105,8 +105,6 @@ def visualizeTS(choice, current, date):
         st.write(f"Current number of people in the room: {occupancy}")
 
     df = df.sort_values(by='Timestamp')
-    df = df.drop('Room', axis=1)
-    df['Timestamp'] = pd.to_datetime(df['Timestamp'])
     st.line_chart(df, x='Timestamp', y='N_people')
     
 def visualizeHM(choice, current, date, time):

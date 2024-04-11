@@ -197,8 +197,8 @@ ROOM_LIST ={
 
 }
 
-PSW_MONGODB = "hcgFRD3G!f"
-USER_MONGODB = "wifitracker"
+PSW_MONGODB = "ciao"
+USER_MONGODB = "root"
 HOST_MONGODB = "127.0.0.1"
 PORT_MONGODB = "27017"
 DBNAME = "WifiTracker2024"
@@ -208,4 +208,4 @@ RAWNAME = "raw_data"
 SCHEDULE = 900
 path = os.path.dirname(os.path.abspath(__file__))
 FILE_ERRORS = os.path.join(path,"sub", "log", "mongoDB_log.txt")
-URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}/{DBNAME}"
+URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}"
