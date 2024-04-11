@@ -86,7 +86,7 @@ class Acquisition:
         Check the time to compare it with config parameters.
         During night we want that the acquisition will work less.
         """
-        hour = time.localtime().tm_hour
+        hour = int(dt.now(pytz.timezone('Europe/Rome')).strftime('%H'))
         if hour >= TIME_REDUCE or hour <= TIME_INCREASE:
             if hour == self.old_hour:
                 return False
