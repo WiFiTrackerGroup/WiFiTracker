@@ -111,8 +111,7 @@ class mongo_library:
                 pipeline = [
                     {
                         "$match": {
-                            "Timestamp": {"$gte": init_date},
-                            "Timestamp": {"$lte": final_date},
+                            "Timestamp":{"$gte": init_date, "$lte": final_date},
                             "Room": room,
                         }
                     }
@@ -149,8 +148,7 @@ class mongo_library:
                 pipeline = [
                     {
                         "$match": {
-                            "Timestamp": {"$gte": timestamp_before},
-                            "Timestamp": {"$lte": timestamp_after},
+                            "Timestamp": {"$gte": timestamp_before, "$lte": timestamp_after},
                             "Room": room,
                         }
                     },
@@ -264,8 +262,7 @@ class mongo_library:
                 pipeline = [
                     {
                         "$match": {
-                            "Timestamp": {"$gte": timestamp_before},
-                            "Timestamp": {"$lte": timestamp_after},
+                            "Timestamp": {"$gte": timestamp_before, "$lte": timestamp_after},
                         }
                     },
                     {
@@ -313,8 +310,7 @@ class mongo_library:
                 pipeline = [
                     {
                         "$match": {
-                            "Timestamp": {"$gte": init_date},
-                            "Timestamp": {"$lte": final_date},
+                            "Timestamp": {"$gte": init_date, "$lte": final_date},
                         }
                     }
                 ]
