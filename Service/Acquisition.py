@@ -1,7 +1,5 @@
-import os
-import time
 import pandas as pd
-import schedule
+import ischedule
 import requests
 import pymongo as pm
 from datetime import datetime as dt
@@ -62,7 +60,7 @@ class Acquisition:
                 dataRoom = pd.DataFrame.from_dict(req_data.json())
                 ap_info = pd.DataFrame.from_dict(req_ap_info.json())
                 if len(dataRoom) > 0:
-                    # TODO: vogliamo inserire anche le info sugli AP?
+                    # Insert raw data
                     self.myRaw.insert_records(dataRoom)
                     # Counting people
                     dataRoom = dataRoom.merge(ap_info, on="name_ap", how="left")
@@ -86,7 +84,7 @@ class Acquisition:
         Check the time to compare it with config parameters.
         During night we want that the acquisition will work less.
         """
-        hour = int(dt.now(pytz.timezone('Europe/Rome')).strftime('%H'))
+        hour = int(dt.now(pytz.timezone("Europe/Rome")).strftime("%H"))
         if hour >= TIME_REDUCE or hour <= TIME_INCREASE:
             if hour == self.old_hour:
                 return False
@@ -97,15 +95,11 @@ class Acquisition:
             return True
 
     def main(self):
-
-        schedule.every(SCHEDULE).seconds.do(self.request)
-        #try:
-        while True:
-            schedule.run_pending()
-            time.sleep(5)
-        #except Exception as error: 
-            #print("Error:", error)
-            
+        try:
+            ischedule.schedule(self.request, interval=SCHEDULE)
+            ischedule.run_loop()
+        except Exception as error:
+            print("Error:", error)
 
 
 if __name__ == "__main__":
