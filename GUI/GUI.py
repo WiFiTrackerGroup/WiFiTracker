@@ -57,8 +57,8 @@ def getOccupancy(room_list, current, date, time):
 
     try:
         for i in range(len(occupancy)):
-            # occupancy[i] = TEST_HEAT[room_list[i]]
-            occupancy[i] = getForHeatMap(room_list[i], current, date, time)
+            occupancy[i] = TEST_HEAT[room_list[i]]
+            # occupancy[i] = getForHeatMap(room_list[i], current, date, time)
     except Exception as e:
         st.write("The database is not responding")
         return None
@@ -85,10 +85,10 @@ def visualizeTS(choice, current, date):
 
     path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(path,"Dummy_time_series.csv")
-    #df = pd.read_csv(path)
-    #df = df.loc[df['Room'] == choice]
+    df = pd.read_csv(path)
+    df = df.loc[df['Room'] == choice]
 
-    df = getTimeSeries(choice, date)
+    #df = getTimeSeries(choice, date)
 
     if df is None:
         return
@@ -104,8 +104,6 @@ def visualizeTS(choice, current, date):
         occupancy = df.iloc[0]['N_people']
         st.write(f"Current number of people in the room: {occupancy}")
 
-    df = df.sort_values(by='Timestamp')
-    df = df.drop('Room', axis=1)
     df['Timestamp'] = pd.to_datetime(df['Timestamp'])
     st.line_chart(df, x='Timestamp', y='N_people')
     
@@ -147,8 +145,8 @@ def visualizeOD(current, date, time):
 
     path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(path,"then.csv")
-    #od_csv = pd.read_csv(path)
-    #od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
+    od_csv = pd.read_csv(path)
+    od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
 
     rooms = list(ROOM_LIST.keys())
     list_of_rooms = list()

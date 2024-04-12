@@ -1,7 +1,7 @@
 from config import *
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 import os
 
 
@@ -25,11 +25,16 @@ lista2 = list()
 lista3 = list()
 
 my_list = list()
+start = time(8, 30)
+end= time(19, 0)
 for t in timestamps:
     for room in interim:
         lista1.append(room)
         lista2.append(t)
-        lista3.append(np.random.randint(0,251))
+        if (start<=t.time()<=end):
+            lista3.append(np.random.randint(0,251))
+        else:
+            lista3.append(0)
         
 
 df = pd.DataFrame({'Rooms': lista1, 'Timestamp': lista2, 'N_people': lista3})
