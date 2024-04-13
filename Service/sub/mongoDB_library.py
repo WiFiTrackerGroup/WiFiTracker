@@ -1,8 +1,8 @@
 import pandas
-from .config import *
+from config import *
 from datetime import datetime, timedelta
 import time
-import pytz
+
 
 class mongo_library:
 
@@ -12,7 +12,7 @@ class mongo_library:
         self.error = open(FILE_ERRORS, "w")
 
     def getName(self):
-        return self.collection
+        return self.name
 
     # ------------------------------------------------------------------------------
     # INSERTION METHODS
@@ -51,7 +51,7 @@ class mongo_library:
     def insert_track(self, df):
         if len(df) > 1:
             try:
-                timestamp = datetime.now(pytz.timezone('Europe/Rome'))
+                timestamp = datetime.now()
                 for index, row in df.iterrows():
                     destination = []
                     for room, people in row.items():
@@ -77,7 +77,7 @@ class mongo_library:
         """
         if len(df) > 1:
             try:
-                df["Timestamp"] = datetime.now(pytz.timezone('Europe/Rome'))
+                df["Timestamp"] = datetime.now()
                 dict = df.T.to_dict().values()
                 self.collection.insert_many(dict)
             except:
@@ -111,8 +111,7 @@ class mongo_library:
                 pipeline = [
                     {
                         "$match": {
-                            "Timestamp": {"$gte": init_date},
-                            "Timestamp": {"$lte": final_date},
+                            "Timestamp": {"$gte": init_date, "$lte": final_date},
                             "Room": room,
                         }
                     }
@@ -149,8 +148,10 @@ class mongo_library:
                 pipeline = [
                     {
                         "$match": {
-                            "Timestamp": {"$gte": timestamp_before},
-                            "Timestamp": {"$lte": timestamp_after},
+                            "Timestamp": {
+                                "$gte": timestamp_before,
+                                "$lte": timestamp_after,
+                            },
                             "Room": room,
                         }
                     },
@@ -264,8 +265,10 @@ class mongo_library:
                 pipeline = [
                     {
                         "$match": {
-                            "Timestamp": {"$gte": timestamp_before},
-                            "Timestamp": {"$lte": timestamp_after},
+                            "Timestamp": {
+                                "$gte": timestamp_before,
+                                "$lte": timestamp_after,
+                            },
                         }
                     },
                     {
@@ -313,8 +316,7 @@ class mongo_library:
                 pipeline = [
                     {
                         "$match": {
-                            "Timestamp": {"$gte": init_date},
-                            "Timestamp": {"$lte": final_date},
+                            "Timestamp": {"$gte": init_date, "$lte": final_date},
                         }
                     }
                 ]
