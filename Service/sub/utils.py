@@ -39,7 +39,7 @@ def room_division(dataRoom):
     return dataRoom
 
 
-def update_MongoDB_df(df, init_timestamp, final_timestamp, room):
+def update_MongoDB_df(df, room, init_timestamp, final_timestamp):
     """
     The method checks the timestamps inside the df, starting from the init_timestamp
     up to final_timestamp. If there is a hole between two timestamps a raw with
@@ -70,9 +70,21 @@ def update_MongoDB_df(df, init_timestamp, final_timestamp, room):
             i += 1
         current_time += timedelta(seconds=SCHEDULE)
     df_updated = pd.DataFrame(list_updated)
-    current_timezone = pytz.timezone("Europe/Rome")
+    if is_legal_time():
+        shift = 2
+    else:
+        shift = 1
     df_updated["Timestamp"] = [
-        current_timezone.localize(df_updated["Timestamp"].iloc[i])
+        df_updated["Timestamp"].iloc[i] + timedelta(hours=shift)
         for i in range(len(df_updated["Timestamp"]))
     ]
     return df_updated
+
+
+def is_legal_time():
+    utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
+
+    local_timezone = pytz.timezone("Europe/Rome")
+    local_now = utc_now.astimezone(local_timezone)
+
+    return local_now.dst() != timedelta(0)
