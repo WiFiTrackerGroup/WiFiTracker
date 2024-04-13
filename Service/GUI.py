@@ -37,8 +37,10 @@ def getForHeatMap(room, current, timestamp):
         df = MYCOUNT.findLastBy_room(room)
     else:
         df = MYCOUNT.findBy_room_timestamp(room, timestamp)
-
-    return df.loc[0, "N_people"]
+    try:
+        return df.loc[0, "N_people"]
+    except:
+        return 0
 
 
 def getTimeSeries(choice, date):
@@ -49,6 +51,7 @@ def getTimeSeries(choice, date):
 
     try:
         df_tracking = MYCOUNT.findBy_room_period(choice, timestamp1, timestamp2)
+        df_timeseries = update_MongoDB_df(df_timeseries, choice, timestamp1, timestamp2)
     except Exception as e:
         st.write("The database is not responding")
         return None
