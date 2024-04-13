@@ -1,17 +1,21 @@
+import os
+
 ROOMS = {
     "Even": {
+        "name": "Even Room",
+        "color": "red",
         "image_path": "Room_Even.bmp",
         "coordinate_path": "Even.pkl",
         "room_list":{
-            "AULA02":{
+            "AULA2":{
                 "X": [1186.1766872932371, 1189.2109704789534, 845.325542764429, 842.2912595787125],
                 "Y": [498.700269714061, 187.18052931384466, 186.16910158527253, 497.68884198548886]
             },
-            "AULA04":{
+            "AULA4":{
                 "X": [838.245548664424, 837.7398348001379, 412.4344749355567, 412.9401887998427],
                 "Y": [496.67741425691673, 187.68624317813078, 185.1576738567004, 497.1831281212028]
             },
-            "AULA06":{
+            "AULA6":{
                 "X": [388.6659233141116, 98.38616521390998, 98.38616521390998, 389.6773510426837],
                 "Y": [493.1374172069143, 493.64313107120034, 115.87487444950943, 116.38058831379556]
             }
@@ -19,6 +23,8 @@ ROOMS = {
     },
     
     "Odd": {
+        "name": "Odd Room",
+        "color": "blue",
         "image_path": "Room_Odd.bmp",
         "coordinate_path": "Odd.pkl",
         "room_list":{
@@ -38,6 +44,8 @@ ROOMS = {
     },
     
     "P": {
+        "name": "Room P",
+        "color": "purple",
         "image_path": "Room_P.bmp",
         "coordinate_path": "P.pkl",
         "room_list":{
@@ -61,6 +69,8 @@ ROOMS = {
     },
     
     "R_G": {
+        "name": "Room R ground floor",
+        "color": "yellow",
         "image_path": "Room_R_G.bmp",
         "coordinate_path": "R_G.pkl",
         "room_list":{
@@ -84,6 +94,8 @@ ROOMS = {
     },
     
     "R_1": {
+        "name": "Room R first floor",
+        "color": "green",
         "image_path": "Room_R_1.bmp",
         "coordinate_path": "R_G.pkl",
         "room_list":{
@@ -123,12 +135,95 @@ ROOMS = {
     }
 }
 
-PSW_MONGODB = "hcgFRD3G!f"
-USER_MONGODB = "wifitracker"
+ROOM_LIST ={
+    "Even": {
+        "name": "Even Rooms",
+        "color": "red",
+        "room_list":[
+            "AULA2",
+            "AULA4",
+            "AULA6",
+            "AULA08",
+            "AULA10",
+            "AULA12",
+            "AULA14",
+            "AULA16"
+        ]
+    },
+    
+    "Odd": {
+        "name": "Odd Rooms",
+        "color": "blue",
+        "room_list":[
+            "AULA01",
+            "AULA03",
+            "AULA05",
+            "AULA11",
+            "AULA13",
+            "AULA15",
+            "AULA17",
+            "AULA19",
+            "AULA21",
+            "AULA23",
+            "AULA25",
+            "AULA27",
+            "AULA29"
+        ]
+    },
+    
+    "P": {
+        "name": "Rooms P",
+        "color": "purple",
+        "room_list":[
+            "AULA1P",
+            "AULA2P",
+            "AULA3P",
+            "AULA4P"
+        ]
+    },
+    
+    "R": {
+        "name": "Rooms R",
+        "color": "green",
+        "room_list":[
+            "AULAR1",
+            "AULAR2",
+            "AULAR3",
+            "AULAR4", 
+            "AULAR1B",
+            "AULAR2B",
+            "AULAR3B",
+            "AULAR4B"
+        ]
+    },
+
+    "I": {
+        "name": "Rooms I",
+        "color": "yellow",
+        "room_list":[
+            "AULA1I",
+            "AULA2I",
+            "AULA3I",
+            "AULA4I",
+            "AULA5I",
+            "AULA6I",
+            "AULA7I",
+            "AULA8I",
+            "AULA9I"
+        ]
+    }
+
+}
+
+PSW_MONGODB = "ciao"
+USER_MONGODB = "root"
 HOST_MONGODB = "127.0.0.1"
 PORT_MONGODB = "27017"
 DBNAME = "WifiTracker2024"
 COUNTNAME = "counting"
 TRACKNAME = "tracking"
-FILE_ERRORS = "Sub/log/mongoDB_log.txt"
-URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}/{DBNAME}"
+RAWNAME = "raw_data"
+SCHEDULE = 900
+path = os.path.dirname(os.path.abspath(__file__))
+FILE_ERRORS = os.path.join(path,"sub", "log", "mongoDB_log.txt")
+URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}"
