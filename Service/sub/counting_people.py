@@ -79,7 +79,7 @@ class Counting_P:
         return df_features
 
     def random_forest_regr(self, dataRoom: pd.DataFrame):
-        timestamp = datetime.now(pytz.timezone('Europe/Rome'))
+        # timestamp = datetime.now(pytz.timezone('Europe/Rome'))
         # Extract features
         df_features = self.feature_extraction(dataRoom)
         X = df_features.loc[:, df_features.columns != "room"].to_numpy()
