@@ -93,12 +93,12 @@ def visualizeTS(choice, current, date):
     if choice in err:
         return
 
-    path = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(path, "Dummy_time_series.csv")
-    df = pd.read_csv(path)
-    df = df.loc[df["Room"] == choice]
+    # path = os.path.dirname(os.path.abspath(__file__))
+    # path = os.path.join(path, "Dummy_time_series.csv")
+    # df = pd.read_csv(path)
+    # df = df.loc[df["Room"] == choice]
 
-    # df = getTimeSeries(choice, date)
+    df = getTimeSeries(choice, date)
 
     if df is None:
         return
