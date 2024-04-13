@@ -1,1 +1,13 @@
 nohup output
+Traceback (most recent call last):
+  File "/home/vm-admin/WiFiTracker/Service/Acquisition.py", line 107, in <module>
+    aq.main()
+  File "/home/vm-admin/WiFiTracker/Service/Acquisition.py", line 100, in main
+    ischedule.run_loop()
+  File "/home/vm-admin/.local/lib/python3.10/site-packages/ischedule/ischedule.py", line 117, in run_loop
+    stop_event.wait(next_call_time)
+  File "/usr/lib/python3.10/threading.py", line 607, in wait
+    signaled = self._cond.wait(timeout)
+  File "/usr/lib/python3.10/threading.py", line 324, in wait
+    gotit = waiter.acquire(True, timeout)
+KeyboardInterrupt
