@@ -1,5 +1,5 @@
 import pandas
-from config import *
+from sub.config import *
 from datetime import datetime, timedelta
 import time
 
