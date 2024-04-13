@@ -46,7 +46,7 @@ def getTimeSeries(choice, date):
     timestamp2 = selected_date.replace(hour=23, minute=59)
 
     try:
-        df_tracking = MYTRACKING.findBy_room_period(choice, timestamp1, timestamp2)
+        df_tracking = MYCOUNT.findBy_room_period(choice, timestamp1, timestamp2)
     except Exception as e:
         st.write("The database is not responding")
         return None
@@ -135,13 +135,13 @@ def visualizeHM(choice, current, date, time):
 
 def visualizeOD(current, date, time):
 
-    od_csv = getOD(current, date, time)
+    # od_csv = getOD(current, date, time)
 
-    if od_csv is None:
-        return
-    elif od_csv.empty:
-        st.write("No data found for the considered time period")
-        return
+    # if od_csv is None:
+    #     return
+    # elif od_csv.empty:
+    #     st.write("No data found for the considered time period")
+    #     return
 
     path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(path,"then.csv")

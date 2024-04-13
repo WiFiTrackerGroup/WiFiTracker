@@ -144,7 +144,10 @@ ROOM_LIST ={
             "AULA4",
             "AULA6",
             "AULA08",
-            "AULA10"
+            "AULA10",
+            "AULA12",
+            "AULA14",
+            "AULA16"
         ]
     },
     
@@ -154,7 +157,17 @@ ROOM_LIST ={
         "room_list":[
             "AULA01",
             "AULA03",
-            "AULA05"
+            "AULA05",
+            "AULA11",
+            "AULA13",
+            "AULA15",
+            "AULA17",
+            "AULA19",
+            "AULA21",
+            "AULA23",
+            "AULA25",
+            "AULA27",
+            "AULA29"
         ]
     },
     
@@ -169,19 +182,8 @@ ROOM_LIST ={
         ]
     },
     
-    "R_G": {
-        "name": "Rooms R ground floor",
-        "color": "yellow",
-        "room_list":[
-            "AULAR1",
-            "AULAR2",
-            "AULAR3",
-            "AULAR4"
-        ]
-    },
-    
-    "R_1": {
-        "name": "Rooms R first floor",
+    "R": {
+        "name": "Rooms R",
         "color": "green",
         "room_list":[
             "AULAR1",
@@ -192,6 +194,22 @@ ROOM_LIST ={
             "AULAR2B",
             "AULAR3B",
             "AULAR4B"
+        ]
+    },
+
+    "I": {
+        "name": "Rooms I",
+        "color": "yellow",
+        "room_list":[
+            "AULA1I",
+            "AULA2I",
+            "AULA3I",
+            "AULA4I",
+            "AULA5I",
+            "AULA6I",
+            "AULA7I",
+            "AULA8I",
+            "AULA9I"
         ]
     }
 
