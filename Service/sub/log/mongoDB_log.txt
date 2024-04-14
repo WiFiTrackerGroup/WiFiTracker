@@ -1,0 +1,1 @@
+Connection error: wifiTracker.tracking unreachable - 2024-04-14 16:37:57.521322

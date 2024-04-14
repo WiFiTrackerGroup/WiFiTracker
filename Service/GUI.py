@@ -146,8 +146,8 @@ def display_no_data():
     # Add styled text to the container
     container.markdown(
         "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #0066ff;'>"
-        "<h3 style='color: #0066ff;'>Sorry, no data found for the considered time period</h3>"
-        "<h4 style='font-style: italic;'>🚨Probably, there was probably no one in the selected period🚨</p>"
+        "<h3 style='color: #0066ff;'>Sorry, no one found for the considered time period</h3>"
+        "<h4 style='font-style: italic;'>🚀Please, try inserting a new period🚀</p>"
         "</div>",
         unsafe_allow_html=True,
     )
