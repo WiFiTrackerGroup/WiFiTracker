@@ -98,7 +98,7 @@ def visualizeTS(choice, current, date):
     if df is None:
         return
     elif df.empty:
-        st.write("No data found for the considered time period")
+        display_no_data()
         return
 
     df = df.drop("Room", axis=1)
@@ -127,7 +127,7 @@ def visualizeHM(choice, current, timestamp):
     if occupancy is None:
         return
     elif len(occupancy) == 0:
-        st.write("No data found for the considered time period")
+        display_no_data()
         return
 
     data = {"Room": room_list, "Occupancy": occupancy}
@@ -140,6 +140,19 @@ def visualizeHM(choice, current, timestamp):
     return
 
 
+def display_no_data():
+    container = st.empty()
+
+    # Add styled text to the container
+    container.markdown(
+        "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #0066ff;'>"
+        "<h3 style='color: #0066ff;'>Sorry, no data found for the considered time period</h3>"
+        "<h4 style='font-style: italic;'>🚨Probably, there was probably no one in the selected period🚨</p>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+
 def visualizeOD(current, timestamp):
 
     od_csv = getOD(current, timestamp)
@@ -147,7 +160,7 @@ def visualizeOD(current, timestamp):
     if od_csv is None:
         return
     elif od_csv.empty:
-        st.write("No data found for the considered time period")
+        display_no_data()
         return
 
     path = os.path.dirname(os.path.abspath(__file__))
@@ -361,21 +374,24 @@ def main():
     # visualization(choice, date, time)
     c_notes = st.empty()
     if action == "--select--":
-        c_notes.markdown("<p style='font-size: 20px;'>   Hello there! 👋<br>   We are a group of ICT4SS students from the Politecnico di Torino! <br>The interface is easy to use, just select the desired data in the menu on the left and enjoy the search!</p>", unsafe_allow_html=True)
+        c_notes.markdown(
+            "<p style='font-size: 20px;'>   Hello there! 👋<br>   We are a group of ICT4SS students from the Politecnico di Torino! <br>The interface is easy to use, just select the desired data in the menu on the left and enjoy the search!</p>",
+            unsafe_allow_html=True,
+        )
     else:
         c_notes.empty()
-# Wrong date and time warning
+    # Wrong date and time warning
     if not check(date, time):
         container = st.empty()
 
-# Add styled text to the container
+        # Add styled text to the container
         container.markdown(
-"<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #ff5733;'>"
-"<h3 style='color: #ff5733;'>Sorry, the application is not able to predict the future!</h3>"
-"<h4 style='font-style: italic;'>🚨Please insert a valid date!🚨</p>"    
-"</div>",   
-unsafe_allow_html=True
-)
+            "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #ff5733;'>"
+            "<h3 style='color: #ff5733;'>Sorry, the application is not able to predict the future!</h3>"
+            "<h4 style='font-style: italic;'>🚨Please insert a valid date!🚨</p>"
+            "</div>",
+            unsafe_allow_html=True,
+        )
     else:
         timestamp = datetime.combine(date, time)
         if is_legal_time():
@@ -388,7 +404,6 @@ unsafe_allow_html=True
             visualizeOD(current, timestamp)
         elif action == TIME:
             visualizeTS(choice, current, date)
-           
 
 
 if __name__ == "__main__":
