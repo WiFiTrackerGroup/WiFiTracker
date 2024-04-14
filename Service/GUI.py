@@ -51,7 +51,7 @@ def getTimeSeries(choice, date):
 
     try:
         df_tracking = MYCOUNT.findBy_room_period(choice, timestamp1, timestamp2)
-        df_timeseries = update_MongoDB_df(df_timeseries, choice, timestamp1, timestamp2)
+        df_tracking = update_MongoDB_df(df_tracking, choice, timestamp1, timestamp2)
     except Exception as e:
         st.write("The database is not responding")
         return None
@@ -113,7 +113,7 @@ def visualizeTS(choice, current, date):
     st.line_chart(df, x="Timestamp", y="N_people")
 
 
-def visualizeHM(choice, current, date, time):
+def visualizeHM(choice, current, timestamp):
 
     # Check if the choice has been made
     if not choice in ROOMS:
@@ -121,7 +121,7 @@ def visualizeHM(choice, current, date, time):
 
     room_list = list(ROOMS[choice]["room_list"].keys())
 
-    occupancy = getOccupancy(room_list, current, date, time)
+    occupancy = getOccupancy(room_list, current, timestamp)
 
     if occupancy is None:
         return
@@ -376,7 +376,7 @@ def main():
         else:
             timestamp -= timedelta(hours=1)
         if action == HEAT:
-            visualizeHM(choice, current, date, time)
+            visualizeHM(choice, current, timestamp)
         elif action == FLOW:
             visualizeOD(current, timestamp)
         elif action == TIME:
