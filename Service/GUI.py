@@ -58,7 +58,7 @@ def getTimeSeries(choice, date):
     return df_tracking
 
 
-def getOccupancy(room_list, current, date, time):
+def getOccupancy(room_list, current, timestamp):
     occupancy = np.zeros(len(room_list)).tolist()
     try:
         for i in range(len(occupancy)):
