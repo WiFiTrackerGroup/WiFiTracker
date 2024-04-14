@@ -34,7 +34,7 @@ HEAT = "Room Occupancy Heat Map"
 
 def getForHeatMap(room, current, timestamp):
     if current:
-        df = MYCOUNT.findLastBy_room(room)
+        df = MYCOUNT.findBy_room_timestamp(room, datetime.now())
     else:
         df = MYCOUNT.findBy_room_timestamp(room, timestamp)
     try:
@@ -60,11 +60,6 @@ def getTimeSeries(choice, date):
 
 def getOccupancy(room_list, current, date, time):
     occupancy = np.zeros(len(room_list)).tolist()
-    timestamp = datetime.combine(date, time)
-    if is_legal_time():
-        timestamp -= timedelta(hours=2)
-    else:
-        timestamp -= timedelta(hours=1)
     try:
         for i in range(len(occupancy)):
             # occupancy[i] = TEST_HEAT[room_list[i]]
@@ -144,9 +139,9 @@ def visualizeHM(choice, current, date, time):
     return
 
 
-def visualizeOD(current, date, time):
+def visualizeOD(current, timestamp):
 
-    od_csv = getOD(current, date, time)
+    od_csv = getOD(current, timestamp)
 
     if od_csv is None:
         return
@@ -235,7 +230,7 @@ def visualizeMap(choice, df):
 
     # Select path
     path = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(path, "Image", ROOMS[choice]["image_path"])
+    path = os.path.join(path, "sub/Image", ROOMS[choice]["image_path"])
 
     # Get room list and dictionary containing for each room the coordinates of the boundaries
     room_list = list(ROOMS[choice]["room_list"].keys())
@@ -249,7 +244,7 @@ def visualizeMap(choice, df):
 
     heatmap_data = np.zeros((max_y + 1, max_x + 1))
     file_name = os.path.dirname(os.path.abspath(__file__))
-    file_name = os.path.join(file_name, "Image", choice + ".pkl")
+    file_name = os.path.join(file_name, "sub/Image", choice + ".pkl")
     with open(file_name, "rb") as file:
         coord = pickle.load(file)
 
@@ -375,11 +370,15 @@ def main():
             unsafe_allow_html=True,
         )
     else:
-
+        timestamp = datetime.combine(date, time)
+        if is_legal_time():
+            timestamp -= timedelta(hours=2)
+        else:
+            timestamp -= timedelta(hours=1)
         if action == HEAT:
             visualizeHM(choice, current, date, time)
         elif action == FLOW:
-            visualizeOD(current, date, time)
+            visualizeOD(current, timestamp)
         elif action == TIME:
             visualizeTS(choice, current, date)
 
