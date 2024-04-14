@@ -105,6 +105,7 @@ def visualizeTS(choice, current, date):
     df["Timestamp"] = pd.to_datetime(df["Timestamp"])
 
     if current:
+        st.empty()
         df = df.sort_values(by="Timestamp", ascending=False)
         occupancy = df.iloc[0]["N_people"]
         st.write(f"Current number of people in the room: {occupancy}")
@@ -341,7 +342,7 @@ def selection():
 def main():
 
     # Start the application and give a title
-    st.title("Wi-Fi Tracker")
+    st.title("🛜 Wi-Fi Tracker")
     st.markdown(
         """
         <style>
@@ -353,22 +354,28 @@ def main():
         """,
         unsafe_allow_html=True,
     )
-
     # Select available rooms from constants file
 
     # take the choice of the user and visualize it
     action, choice, current, date, time = selection()
     # visualization(choice, date, time)
-
-    # Wrong date and time warning
+    c_notes = st.empty()
+    if action == "--select--":
+        c_notes.markdown("<p style='font-size: 20px;'>   Hello there! 👋<br>   We are a group of ICT4SS students from the Politecnico di Torino! <br>The interface is easy to use, just select the desired data in the menu on the left and enjoy the search!</p>", unsafe_allow_html=True)
+    else:
+        c_notes.empty()
+# Wrong date and time warning
     if not check(date, time):
-        st.write(
-            '<span style="color:red">Data not available!</span>', unsafe_allow_html=True
-        )
-        st.write(
-            '<span style="color:red">Please inserta a valid date!</span>',
-            unsafe_allow_html=True,
-        )
+        container = st.empty()
+
+# Add styled text to the container
+        container.markdown(
+"<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #ff5733;'>"
+"<h3 style='color: #ff5733;'>Sorry, the application is not able to predict the future!</h3>"
+"<h4 style='font-style: italic;'>🚨Please insert a valid date!🚨</p>"    
+"</div>",   
+unsafe_allow_html=True
+)
     else:
         timestamp = datetime.combine(date, time)
         if is_legal_time():
@@ -381,6 +388,7 @@ def main():
             visualizeOD(current, timestamp)
         elif action == TIME:
             visualizeTS(choice, current, date)
+           
 
 
 if __name__ == "__main__":
