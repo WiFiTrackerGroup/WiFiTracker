@@ -4,6 +4,7 @@ PORT = "8282"
 
 # Seconds to wait before asking another acquisition
 SCHEDULE = 900
+TRACKING_TIME = 5 * SCHEDULE  # time in seconds
 PRINT = False
 
 # MONGODB config
@@ -18,9 +19,7 @@ PSW_MONGODB = "ciao"
 USER_MONGODB = "root"
 HOST_MONGODB = "127.0.0.1"
 PORT_MONGODB = "27017"
-URL_DB = (
-    f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}"
-)
+URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}"
 # ----------------------------------------------------------------------------------------
 
 FILE_ERRORS = "Service/sub/log/mongoDB_log.txt"
