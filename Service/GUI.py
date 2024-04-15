@@ -53,7 +53,7 @@ def getTimeSeries(choice, date):
         df_tracking = MYCOUNT.findBy_room_period(choice, timestamp1, timestamp2)
         df_tracking = update_MongoDB_df(df_tracking, choice, timestamp1, timestamp2)
     except Exception as e:
-        st.write("The database is not responding")
+        display_Mongo_not_responding()
         return None
     return df_tracking
 
@@ -65,7 +65,7 @@ def getOccupancy(room_list, current, timestamp):
             # occupancy[i] = TEST_HEAT[room_list[i]]
             occupancy[i] = getForHeatMap(room_list[i], current, timestamp)
     except Exception as e:
-        st.write("The database is not responding")
+        display_Mongo_not_responding()
         return None
     return occupancy
 
@@ -77,7 +77,7 @@ def getOD(current, timestamp):
         else:
             df_tracking = MYTRACKING.findTimestamp_forTracking(timestamp)
     except Exception as e:
-        st.write("The database is not responding")
+        display_Mongo_not_responding()
         return None
     return df_tracking
 
@@ -138,6 +138,19 @@ def visualizeHM(choice, current, timestamp):
     visualizeMap(choice, df)
 
     return
+
+
+def display_Mongo_not_responding():
+    container = st.empty()
+
+    # Add styled text to the container
+    container.markdown(
+        "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #32CD32;'>"
+        "<h3 style='color: #32CD32;'>Sorry, the database is not responding</h3>"
+        "<h4 style='font-style: italic;'>🍃Try again in some minutes🍃</p>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
 
 
 def display_no_data():
