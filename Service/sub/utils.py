@@ -65,10 +65,11 @@ def update_MongoDB_df(df, room, init_timestamp, final_timestamp):
             list_updated.append(
                 {"Room": room, "Timestamp": current_time, "N_people": 0}
             )
+            current_time += timedelta(seconds=SCHEDULE)
         else:
             list_updated.append(dict_list[i])
+            current_time = df["Timestamp"].iloc[i]
             i += 1
-        current_time += timedelta(seconds=SCHEDULE)
     df_updated = pd.DataFrame(list_updated)
     if is_legal_time():
         shift = 2
@@ -88,3 +89,22 @@ def is_legal_time():
     local_now = utc_now.astimezone(local_timezone)
 
     return local_now.dst() != timedelta(0)
+
+def set_tracking_labels(hour):
+    dict_labels = {
+        7:("hearly-morning", "8.30 - 10.00"),
+        8:("8.30 - 10.00", "10.00 - 11.30"),
+        9:("8.30 - 10.00", "10.00 - 11.30"),
+        10:("10.00 - 11.30", "11.30 - 13.00"),
+        11:("11.30 - 13.00", "13.00 - 14.30"),
+        12: ("11.30 - 13.00", "13.00 - 14.30"),
+        13:("13.00 - 14.30", "14.30 - 16.00"),
+        14:("14.30 - 16.00", "16.00 - 17.30"),
+        15: ("14.30 - 16.00", "16.00 - 17.30"),
+        16:("16.00 - 17.30", "17.30 - 19.00"),
+        17:("17.30 - 19.00", "evening"),
+    }
+    try:
+     return dict_labels[hour]
+    except:
+        return ("Not during lessons","PoliTO closed")

@@ -260,8 +260,8 @@ class mongo_library:
         """
         if self.name == TRACKNAME:
             try:
-                timestamp_before = timestamp - timedelta(seconds=SCHEDULE)
-                timestamp_after = timestamp + timedelta(seconds=SCHEDULE)
+                timestamp_before = timestamp - timedelta(seconds=(SCHEDULE*6))
+                timestamp_after = timestamp + timedelta(seconds=(SCHEDULE*6))
                 pipeline = [
                     {
                         "$match": {
@@ -279,7 +279,7 @@ class mongo_library:
                             },
                         }
                     },
-                    {"$sort": {"time_dist": -1}},
+                    {"$sort": {"time_dist": 1}},
                     {"$limit": 1},
                 ]
                 df_response = pandas.DataFrame(

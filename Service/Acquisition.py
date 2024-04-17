@@ -20,7 +20,7 @@ class Acquisition:
         self.myclient = pm.MongoClient(URL_DB)
         self.df_t_1 = pd.DataFrame()  # containing data of the previous request
         self.old_hour = -1
-        self.counter_tracking = 0
+        self.counter_tracking = 1
 
         # Collection
         self.myDB = self.myclient[DBNAME]
@@ -73,15 +73,15 @@ class Acquisition:
                         # Tracking people
                         if self.df_t_1.empty:
                             self.df_t_1 = dataRoom
-                            self.counter_tracking = 0
+                            self.counter_tracking = 2
                         elif self.counter_tracking >= int(TRACKING_TIME/SCHEDULE):
                             dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
                             self.myTrack.insert_records(dataTrack)
                         # DF at t-1 needed for tracking purpose
                             self.df_t_1 = dataRoom.copy()
-                            self.counter_tracking = 0
+                            self.counter_tracking = 1
                         else:
-                            self.counter_tracking +=1
+                            self.counter_tracking += 1
                     else:
                         self.df_t_1 = self.df_t_1.iloc[0:0]
 
@@ -103,11 +103,11 @@ class Acquisition:
             return True
 
     def main(self):
-        try:
-            ischedule.schedule(self.request, interval=SCHEDULE)
-            ischedule.run_loop()
-        except Exception as error:
-            print("Error:", error)
+        #try:
+        ischedule.schedule(self.request, interval=SCHEDULE)
+        ischedule.run_loop()
+        #except Exception as error:
+           # print("Error:", error)
 
 
 if __name__ == "__main__":

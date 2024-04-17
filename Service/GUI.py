@@ -108,7 +108,7 @@ def visualizeTS(choice, current, date):
         st.empty()
         df = df.sort_values(by="Timestamp", ascending=False)
         occupancy = df.iloc[0]["N_people"]
-        st.write(f"Current number of people in the room: {occupancy}")
+        st.markdown(f"<h5>Current number of people in the room: {occupancy}</h5>", unsafe_allow_html=True)
 
     df["Timestamp"] = pd.to_datetime(df["Timestamp"])
     st.line_chart(df, x="Timestamp", y="N_people")
@@ -171,6 +171,7 @@ def visualizeOD(current, timestamp):
     od_csv = getOD(current, timestamp)
 
     if od_csv is None:
+        display_no_data()
         return
     elif od_csv.empty:
         display_no_data()
@@ -180,11 +181,10 @@ def visualizeOD(current, timestamp):
     path = os.path.join(path, "then.csv")
     # od_csv = pd.read_csv(path)
     # od_csv['To'] = od_csv['To'].apply(ast.literal_eval)
-
+    timetracking = od_csv["Timestamp"].iloc[0]
     rooms = list(ROOM_LIST.keys())
     list_of_rooms = list()
     groups = dict()
-
     for r in rooms:
         list_of_rooms.extend(list(ROOM_LIST[r]["room_list"]))
         groups[r] = list(ROOM_LIST[r]["room_list"])
@@ -193,7 +193,8 @@ def visualizeOD(current, timestamp):
 
     dati = np.zeros([len(list_of_rooms), len(list_of_rooms)])
     df = pd.DataFrame(dati, index=list_of_rooms, columns=list_of_rooms)
-
+    time_track = set_tracking_labels(int(timetracking.hour))
+    st.markdown(f"<h5>Movement of people between timeslots: {time_track[0]} ⇔ {time_track[1]}</h5>", unsafe_allow_html=True)
     for index, row in od_csv.iterrows():
         origin = row["From"]
         if origin in list_of_rooms:
