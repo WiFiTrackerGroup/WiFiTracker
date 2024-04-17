@@ -8,7 +8,6 @@ from sub.counting_people import *
 from sub.mongoDB_library import *
 from sub.tracking import tracking
 
-TRACKING_TIME = 5400 # time in seconds
 
 class Acquisition:
     def __init__(self):
@@ -77,7 +76,7 @@ class Acquisition:
                         elif self.counter_tracking >= int(TRACKING_TIME/SCHEDULE):
                             dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
                             self.myTrack.insert_records(dataTrack)
-                        # DF at t-1 needed for tracking purpose
+                            # DF at t-1 needed for tracking purpose
                             self.df_t_1 = dataRoom.copy()
                             self.counter_tracking = 1
                         else:
