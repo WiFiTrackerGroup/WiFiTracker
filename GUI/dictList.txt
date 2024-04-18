@@ -1,4 +1,0 @@
-_id
-From
-To
-Timestamp

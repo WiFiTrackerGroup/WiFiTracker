@@ -29,6 +29,8 @@ class mongo_library:
             self.insert_track(df)
         elif self.name == RAWNAME:
             self.insert_raw(df)
+        elif self.name == INPUTNAME:
+            self.insert_true_value(df)
 
     def insert_count(self, df):
         if len(df) > 1:
@@ -87,6 +89,25 @@ class mongo_library:
         else:
             self.error.write(
                 f"Wrong collection contacted: wifiTracker.{self.name} - {datetime.now()}\n"
+            )
+
+    def insert_true_value(self, df):
+        """
+        insert_true_value
+        -----------------
+        Insertion query used to send data of the true value of people counted in a room.
+        Send to the collection:
+        - The true number of people
+        - The room in which the people are counted
+        - The timestamp
+        """
+
+        try:
+            dict = df.to_dict()
+            self.collection.insert_one(dict)
+        except:
+            self.error.write(
+                f"Connection error: wifiTracker.{self.name} unreachable - {datetime.now()}\n"
             )
 
     # ------------------------------------------------------------------------------
@@ -260,8 +281,8 @@ class mongo_library:
         """
         if self.name == TRACKNAME:
             try:
-                timestamp_before = timestamp - timedelta(seconds=(SCHEDULE*6))
-                timestamp_after = timestamp + timedelta(seconds=(SCHEDULE*6))
+                timestamp_before = timestamp - timedelta(seconds=(SCHEDULE * 6))
+                timestamp_after = timestamp + timedelta(seconds=(SCHEDULE * 6))
                 pipeline = [
                     {
                         "$match": {
