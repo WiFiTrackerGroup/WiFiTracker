@@ -307,6 +307,55 @@ def visualizeMap(choice, df):
     buffer.seek(0)
     st.image(buffer, use_column_width=True)
 
+def addData(timestamp):
+    interim = list()
+    groups = list(ROOM_LIST.keys())
+    for group in groups:
+        interim.extend(ROOM_LIST[group]["room_list"])
+    interim.insert(0, "--select--")
+    choice = st.selectbox("Select a room", interim)
+
+    value = st.text_input("Number of people in the room:")
+
+    if st.button("Send"):
+
+        if not value.isdigit():
+
+            container = st.empty()
+            container.markdown(
+                "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #ff5733;'>"
+                "<h3 style='color: #ff5733;'>The number of people in a room should be an integer number!</h3>"
+                "<h4 style='font-style: italic;'>🚨Please insert the right value!🚨</p>"
+                "</div>",
+                unsafe_allow_html=True,
+            )
+
+            return
+        
+        if choice == "--select--":
+
+            container = st.empty()
+            container.markdown(
+                "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #ff5733;'>"
+                "<h3 style='color: #ff5733;'>To add the data, also the room to which the data refers must be selected!</h3>"
+                "<h4 style='font-style: italic;'>🚨Please select a room!🚨</p>"
+                "</div>",
+                unsafe_allow_html=True,
+            )
+
+            return
+        
+        value = int(value)
+
+        dict = {
+            "N_people": [value],
+            "Room": [choice],
+            "Timestamp": [timestamp]
+        }
+
+        df = pd.DataFrame(dict)
+
+        MYINPUT.insert_true_value(df)
 
 def check(date, time):
 
@@ -332,7 +381,7 @@ def selection():
     st.sidebar.title("Settings")
 
     # Select Action
-    act = ["--select--", TIME, FLOW, HEAT]
+    act = ["--select--", TIME, FLOW, HEAT, INPUT]
     action = st.sidebar.selectbox("Select action", act)
 
     # Time selection
@@ -340,7 +389,7 @@ def selection():
     date = datetime.now().date()
     time = datetime.now().time()
 
-    if action != "--select--":
+    if action != "--select--" and action!= INPUT:
         current = st.sidebar.checkbox("See previous data")
         current = not current
         if not current:
@@ -426,6 +475,8 @@ def main():
             visualizeOD(current, timestamp)
         elif action == TIME:
             visualizeTS(choice, current, date)
+        elif action == INPUT:
+            addData(timestamp)
 
 
 if __name__ == "__main__":
