@@ -102,10 +102,12 @@ class mongo_library:
 
         try:
             self.collection.insert_one(df)
+            return True
         except:
             self.error.write(
                 f"Connection error: wifiTracker.{self.name} unreachable - {datetime.now()}\n"
             )
+            return False
 
     # ------------------------------------------------------------------------------
     # FIND METHODS
