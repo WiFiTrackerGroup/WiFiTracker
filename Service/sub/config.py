@@ -12,6 +12,7 @@ DBNAME = "WifiTracker2024"
 COUNTNAME = "counting"
 TRACKNAME = "tracking"
 RAWNAME = "raw_data"
+INPUTNAME = "input_count"
 
 # ----------------------------------------------------------------------------------------
 # Config for local mongoDB

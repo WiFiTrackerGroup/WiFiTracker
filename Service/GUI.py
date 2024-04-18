@@ -26,10 +26,12 @@ CLIENT = MongoClient(URL_DB)
 MYDB = CLIENT[DBNAME]
 MYCOUNT = mongo_library(MYDB[COUNTNAME], COUNTNAME)
 MYTRACKING = mongo_library(MYDB[TRACKNAME], TRACKNAME)
+MYINPUT = mongo_library(MYDB[INPUTNAME], INPUTNAME)
 
 TIME = "Room Occupancy Time Series"
 FLOW = "Distribution Flows"
 HEAT = "Room Occupancy Heat Map"
+INPUT = "Rooms True Value"
 
 
 def getForHeatMap(room, current, timestamp):
@@ -108,7 +110,10 @@ def visualizeTS(choice, current, date):
         st.empty()
         df = df.sort_values(by="Timestamp", ascending=False)
         occupancy = df.iloc[0]["N_people"]
-        st.markdown(f"<h5>Current number of people in the room: {occupancy}</h5>", unsafe_allow_html=True)
+        st.markdown(
+            f"<h5>Current number of people in the room: {occupancy}</h5>",
+            unsafe_allow_html=True,
+        )
 
     df["Timestamp"] = pd.to_datetime(df["Timestamp"])
     st.line_chart(df, x="Timestamp", y="N_people")
@@ -194,7 +199,10 @@ def visualizeOD(current, timestamp):
     dati = np.zeros([len(list_of_rooms), len(list_of_rooms)])
     df = pd.DataFrame(dati, index=list_of_rooms, columns=list_of_rooms)
     time_track = set_tracking_labels(int(timetracking.hour))
-    st.markdown(f"<h5>Movement of people between timeslots: {time_track[0]} ⇔ {time_track[1]}</h5>", unsafe_allow_html=True)
+    st.markdown(
+        f"<h5>Movement of people between timeslots: {time_track[0]} ⇔ {time_track[1]}</h5>",
+        unsafe_allow_html=True,
+    )
     for index, row in od_csv.iterrows():
         origin = row["From"]
         if origin in list_of_rooms:
