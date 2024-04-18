@@ -350,9 +350,7 @@ def addData(timestamp):
 
         dict = {"N_people": [value], "Room": [choice], "Timestamp": [timestamp]}
 
-        try:
-            MYINPUT.insert_true_value(dict)
-        except Exception as e:
+        if not MYINPUT.insert_true_value(dict):
             display_Mongo_not_responding()
             return
 
