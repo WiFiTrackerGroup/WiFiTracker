@@ -101,8 +101,7 @@ class mongo_library:
         """
 
         try:
-            prova = "ciao"
-            self.collection.insert_one(prova)
+            self.collection.insert_one(df)
             return True
         except:
             self.error.write(
