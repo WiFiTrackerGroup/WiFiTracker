@@ -1,4 +1,5 @@
 import pandas as pd
+import time
 import ischedule
 import requests
 import pymongo as pm
@@ -61,21 +62,28 @@ class Acquisition:
                 dataRoom = pd.DataFrame.from_dict(req_data.json())
                 ap_info = pd.DataFrame.from_dict(req_ap_info.json())
                 if len(dataRoom) > 0:
-                    # Insert raw data
-                    self.myRaw.insert_records(dataRoom)
-                    # Counting people
+                    # Merge channel info
                     dataRoom = dataRoom.merge(ap_info, on="name_ap", how="left")
+                    # Insert raw data
+                    stTime = time.time()
+                    self.myRaw.insert_records(dataRoom)
+                    print(f"Raw insertion time:{time.time() - stTime} with {len(dataRoom)} records \n")
+                    # Counting people
                     dataCount = self.countP.main(dataRoom)
                     # The saving is done only if there are people in the rooms
                     if len(dataCount) > 0:
+                        stTime = time.time()
                         self.myCount.insert_records(dataCount)
+                        print(f"Count insertion time:{time.time() - stTime} with {len(dataCount)} records \n")
                         # Tracking people
                         if self.df_t_1.empty:
                             self.df_t_1 = dataRoom
                             self.counter_tracking = 2
                         elif self.counter_tracking >= int(TRACKING_TIME/SCHEDULE):
                             dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
+                            stTime = time.time()
                             self.myTrack.insert_records(dataTrack)
+                            print(f"Track insertion time:{time.time() - stTime} with {len(dataTrack)} records \n")
                             # DF at t-1 needed for tracking purpose
                             self.df_t_1 = dataRoom.copy()
                             self.counter_tracking = 1

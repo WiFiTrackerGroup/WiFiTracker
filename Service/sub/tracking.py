@@ -19,6 +19,9 @@ class tracking:
         df_t_1 = room_division(df_t_1)
         df_t = room_division(df_t)
 
+        df_t_1 = df_t_1.drop_duplicates("user_masked")
+        df_t = df_t.drop_duplicates("user_masked")
+
         df_moved = df_t.merge(df_t_1, on=["user_masked"], how="inner", indicator=True)
         df_moved = df_moved.drop(
             ["name_ap_x", "name_ap_y", "APnum_x", "APnum_y", "_merge"], axis=1
