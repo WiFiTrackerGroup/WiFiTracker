@@ -307,6 +307,7 @@ def visualizeMap(choice, df):
     buffer.seek(0)
     st.image(buffer, use_column_width=True)
 
+
 def addData(timestamp):
     interim = list()
     groups = list(ROOM_LIST.keys())
@@ -331,7 +332,7 @@ def addData(timestamp):
             )
 
             return
-        
+
         if choice == "--select--":
 
             container = st.empty()
@@ -344,31 +345,28 @@ def addData(timestamp):
             )
 
             return
-        
+
         value = int(value)
 
-        dict = {
-            "N_people": [value],
-            "Room": [choice],
-            "Timestamp": [timestamp]
-        }
+        dict = {"N_people": [value], "Room": [choice], "Timestamp": [timestamp]}
 
         df = pd.DataFrame(dict)
 
         try:
-            MYINPUT.insert_true_value(df)
+            MYINPUT.insert_records(df)
         except Exception as e:
             display_Mongo_not_responding()
             return
-        
+
         container = st.empty()
         container.markdown(
-                "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid ##00ff00;'>"
-                "<h3 style='color: #00ff00;'>Data has been succesfully added!</h3>"
-                "<h4 style='font-style: italic;'>🌟 Thank you! 🌟</p>"
-                "</div>",
-                unsafe_allow_html=True,
+            "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid ##00ff00;'>"
+            "<h3 style='color: #00ff00;'>Data has been succesfully added!</h3>"
+            "<h4 style='font-style: italic;'>🌟 Thank you! 🌟</p>"
+            "</div>",
+            unsafe_allow_html=True,
         )
+
 
 def check(date, time):
 
@@ -402,7 +400,7 @@ def selection():
     date = datetime.now().date()
     time = datetime.now().time()
 
-    if action != "--select--" and action!= INPUT:
+    if action != "--select--" and action != INPUT:
         current = st.sidebar.checkbox("See previous data")
         current = not current
         if not current:
