@@ -350,10 +350,8 @@ def addData(timestamp):
 
         dict = {"N_people": [value], "Room": [choice], "Timestamp": [timestamp]}
 
-        df = pd.DataFrame(dict)
-
         try:
-            MYINPUT.insert_records(df)
+            MYINPUT.insert_true_value(dict)
         except Exception as e:
             display_Mongo_not_responding()
             return

@@ -29,8 +29,6 @@ class mongo_library:
             self.insert_track(df)
         elif self.name == RAWNAME:
             self.insert_raw(df)
-        elif self.name == INPUTNAME:
-            self.insert_true_value(df)
 
     def insert_count(self, df):
         if len(df) > 1:
@@ -103,8 +101,7 @@ class mongo_library:
         """
 
         try:
-            dict = df.to_dict()
-            self.collection.insert_one(dict)
+            self.collection.insert_one(df)
         except:
             self.error.write(
                 f"Connection error: wifiTracker.{self.name} unreachable - {datetime.now()}\n"
