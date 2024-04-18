@@ -350,18 +350,20 @@ def addData(timestamp):
 
         dict = {"N_people": [value], "Room": [choice], "Timestamp": [timestamp]}
 
-        if not MYINPUT.insert_true_value(dict):
+        try:
+            MYINPUT.insert_true_value(dict)
+        except Exception as e:
             display_Mongo_not_responding()
             return
-        else:
-            container = st.empty()
-            container.markdown(
-                "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid ##00ff00;'>"
-                "<h3 style='color: #00ff00;'>Data has been succesfully added!</h3>"
-                "<h4 style='font-style: italic;'>🌟 Thank you! 🌟</p>"
-                "</div>",
-                unsafe_allow_html=True,
-            )
+
+        container = st.empty()
+        container.markdown(
+            "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid ##00ff00;'>"
+            "<h3 style='color: #00ff00;'>Data has been succesfully added!</h3>"
+            "<h4 style='font-style: italic;'>🌟 Thank you! 🌟</p>"
+            "</div>",
+            unsafe_allow_html=True,
+        )
 
 
 def check(date, time):
