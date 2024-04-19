@@ -381,6 +381,42 @@ def check(date, time):
     else:
         return True
 
+def showInstruction(action):
+
+    c_notes = st.empty()
+    if action == TIME:
+        c_notes.markdown(
+            "<p style='font-size: 20px;'>Selecting a room in the dashboard on the left, a time series showing the occupancy of the selected room during the day will be displayed. <br> \
+                It is also possible to select a date in the dashboard to obtain the data for the selecetd date. <br>\
+                Passing the mouse on the time series, the number of people at each acquisition slot will be displayed.</p>",
+            unsafe_allow_html=True,
+        )
+    elif action == HEAT:
+        c_notes.markdown(
+            "<p style='font-size: 20px;'>For some blocks of rooms, a heatmap can be visualized by using the selector on the left side of the panel.<br>\
+                The room occupancy changes every 15 minutes. Old data can be shown using the 'See previous data' function and selecting the desired date and time.</p>",
+            unsafe_allow_html=True,
+        )
+    elif action == FLOW:
+        c_notes.markdown(
+            "<p style='font-size: 20px;'>Here it is possible to see a representation of the flow of the people moving within the major area of PoliTo.\
+                The evaluation of the flow is done every 1 hour and a half to better see the travel of the students during the time change.\
+                Old data can be shown using the 'See previous data' function and selecting the desired date and time.\
+                Passing the mouse over the colored part of the room and over the flows in grey, you can see the number of people starting and flowing in the other section of PoliTo.</p>",
+            unsafe_allow_html=True,
+        )
+    elif action == INPUT:
+        c_notes.markdown(
+            "<p style='font-size: 20px;'>Insert true number of people in your room, this will help us in increase the performance of our algorithm.\
+            However pay attention to insert a precise number and not one only 'near' the true number of people otherwise you will create a False value in our ground truth.</p>",
+            unsafe_allow_html=True,
+        )
+    else:
+        c_notes.markdown(
+            "<p style='font-size: 20px;'>   Hello there! 👋<br>   We are a group of ICT4SS students from the Politecnico di Torino! <br>The interface is easy to use, just select the desired data in the menu on the left and enjoy the search!</p>",
+            unsafe_allow_html=True,
+        )
+
 
 def selection():
 
@@ -395,6 +431,9 @@ def selection():
     current = True
     date = datetime.now().date()
     time = datetime.now().time()
+
+    if action != "--select--":
+        showInstruction(action)
 
     if action != "--select--" and action != INPUT:
         current = st.sidebar.checkbox("See previous data")
