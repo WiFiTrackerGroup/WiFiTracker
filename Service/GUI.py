@@ -389,7 +389,7 @@ def showInstruction(action):
                     &::before {\
                     content: '🕒'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
-                    content: '🗓️';}}}<style>\
+                    content: '🗓️';}\
                     &:nth-child(3)::before {\
                     content: '👆🏻';}}}<style>",
             unsafe_allow_html=True,
@@ -397,8 +397,8 @@ def showInstruction(action):
         c_notes.markdown(
             "<p style='font-size: 20px;'> Here it is possible to see the number of people inside a room during a day at intervals of 15 minutes.<br>Keeps in mind that:"
             "<ul class='styled'>\
-                 <li style='font-size: 20px;'>If the '<i>See previous data</i>' function is not used, the data related to the current day are shown.</li>\
-                 <li style='font-size: 20px;'>By using the '<i>See previous data</i>' function and selecting a date in the dashboard, the data for the selecetd date are obtained</li>\
+                 <li style='font-size: 20px;'>If the \"See previous data\" function is not used, the data related to the current day are shown.</li>\
+                 <li style='font-size: 20px;'>By using the \"See previous data\" function and selecting a date in the dashboard, the data for the selecetd date are obtained</li>\
                  <li style='font-size: 20px;'>Passing the mouse on the time series, the number of people at each acquisition slot will be displayed.</li>\
              </ul>",
             unsafe_allow_html=True,
