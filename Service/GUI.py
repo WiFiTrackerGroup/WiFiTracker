@@ -442,7 +442,20 @@ def selection():
             # To select date and time
             date = st.sidebar.date_input("Select date")
             if action != TIME:
-                time = st.sidebar.time_input("Select time")
+                if action==HEAT:
+                    time = st.sidebar.time_input("Select time")
+                if action==FLOW: 
+                    start = datetime.combine(datetime.today(), datetime.min.time()).replace(hour=1, minute=0)
+                    t = []
+                    delta = 90
+                    n = np.floor(24*60/delta)
+                    for i in range(int(n)):
+                        t.append(start.time().strftime('%H:%M'))
+                        start += timedelta(minutes=delta)
+                    t.insert(0, "--select--")
+                    time = st.sidebar.selectbox("Select action", t)
+                    if time != "--select--":
+                        time = datetime.strptime(time, "%H:%M").time()
 
     # Possible room choice and selection
     if action == HEAT:
@@ -498,7 +511,9 @@ def main():
     else:
         c_notes.empty()
     # Wrong date and time warning
-    if not check(date, time):
+    if time == "--select--":
+        pass
+    elif not check(date, time):
         container = st.empty()
 
         # Add styled text to the container
