@@ -20,3 +20,738 @@ Collecting usage statistics. To deactivate, set browser.gatherUsageStats to Fals
   External URL: http://130.192.238.41:8501
 
   Stopping...
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to False.
+
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://192.168.236.153:8501
+  External URL: http://130.192.238.41:8501
+
+2024-04-19 08:10:02.741 MediaFileHandler: Missing file a37eec784f03796c7d37450b3f0035f5dd66b1c9a4669786c0c37f71.png
+2024-04-19 08:10:05.595 MediaFileHandler: Missing file ccc0defd5928790344219f63af60b47c0d8b0c9412cce310eca91346.png
+2024-04-19 08:22:04.084 Session with id 35d6049d-8baf-4e0c-94de-376bedcf3174 is already connected! Connecting to a new session.
+Raw insertion time:0.9928960800170898 with 11488 records 
+
+Count insertion time:0.006084918975830078 with 103 records 
+
+Raw insertion time:0.9694836139678955 with 11400 records 
+
+Count insertion time:0.0055713653564453125 with 101 records 
+
+Raw insertion time:0.8768229484558105 with 11207 records 
+
+Count insertion time:0.005938529968261719 with 100 records 
+
+Raw insertion time:0.9432408809661865 with 11238 records 
+
+Count insertion time:0.005521297454833984 with 103 records 
+
+Raw insertion time:0.9076681137084961 with 11424 records 
+
+Count insertion time:0.005602121353149414 with 105 records 
+
+Raw insertion time:1.0212388038635254 with 11516 records 
+
+Count insertion time:0.005687713623046875 with 105 records 
+
+Track insertion time:0.04219317436218262 with 101 records 
+
+Raw insertion time:0.9579699039459229 with 11382 records 
+
+Count insertion time:0.00626063346862793 with 105 records 
+
+Raw insertion time:0.9682257175445557 with 11330 records 
+
+Count insertion time:0.0057222843170166016 with 104 records 
+
+Raw insertion time:0.8787260055541992 with 10934 records 
+
+Count insertion time:0.07295060157775879 with 105 records 
+
+Raw insertion time:0.8373312950134277 with 10589 records 
+
+Count insertion time:0.006041526794433594 with 104 records 
+
+Raw insertion time:0.7809221744537354 with 10139 records 
+
+Count insertion time:0.0060083866119384766 with 101 records 
+
+Raw insertion time:0.7496113777160645 with 9696 records 
+
+Count insertion time:0.0050961971282958984 with 102 records 
+
+Track insertion time:0.04425668716430664 with 100 records 
+
+Raw insertion time:0.7469775676727295 with 8966 records 
+
+Count insertion time:0.00601506233215332 with 97 records 
+
+Raw insertion time:0.6755073070526123 with 7878 records 
+
+Count insertion time:0.004765987396240234 with 95 records 
+
+Raw insertion time:0.5868113040924072 with 6646 records 
+
+Count insertion time:0.005167722702026367 with 85 records 
+
+Raw insertion time:0.47276926040649414 with 5823 records 
+
+Count insertion time:0.004622936248779297 with 73 records 
+
+Raw insertion time:0.4236717224121094 with 5115 records 
+
+Count insertion time:0.00426483154296875 with 77 records 
+
+Raw insertion time:0.330857515335083 with 4408 records 
+
+Count insertion time:0.003815889358520508 with 70 records 
+
+Track insertion time:0.02855825424194336 with 67 records 
+
+Raw insertion time:0.3456249237060547 with 3760 records 
+
+Count insertion time:0.004306316375732422 with 67 records 
+
+Raw insertion time:0.1757044792175293 with 2981 records 
+
+Count insertion time:0.00431060791015625 with 68 records 
+
+Raw insertion time:0.21665191650390625 with 2214 records 
+
+Count insertion time:0.003850221633911133 with 49 records 
+
+Raw insertion time:0.11170315742492676 with 1644 records 
+
+Count insertion time:0.003623485565185547 with 41 records 
+
+Raw insertion time:0.07590913772583008 with 1154 records 
+
+Count insertion time:0.0029506683349609375 with 30 records 
+
+Raw insertion time:0.1651759147644043 with 839 records 
+
+Count insertion time:0.0020287036895751953 with 21 records 
+
+Track insertion time:0.006691694259643555 with 15 records 
+
+Raw insertion time:0.05352663993835449 with 722 records 
+
+Count insertion time:0.0026540756225585938 with 19 records 
+
+Raw insertion time:0.032747507095336914 with 553 records 
+
+Count insertion time:0.0016317367553710938 with 11 records 
+
+Raw insertion time:0.02421712875366211 with 425 records 
+
+Count insertion time:0.001682281494140625 with 11 records 
+
+Raw insertion time:0.02097296714782715 with 360 records 
+
+Count insertion time:0.0020704269409179688 with 9 records 
+
+Raw insertion time:0.02276921272277832 with 269 records 
+
+Count insertion time:0.002115011215209961 with 7 records 
+
+Raw insertion time:0.019240856170654297 with 188 records 
+
+Count insertion time:0.0026998519897460938 with 9 records 
+
+Track insertion time:0.0024149417877197266 with 2 records 
+
+Raw insertion time:0.011625289916992188 with 114 records 
+
+Count insertion time:0.0013432502746582031 with 2 records 
+
+Raw insertion time:0.012556314468383789 with 101 records 
+
+Count insertion time:0.0024673938751220703 with 2 records 
+
+Raw insertion time:0.010103940963745117 with 100 records 
+
+Count insertion time:0.0013382434844970703 with 2 records 
+
+Raw insertion time:0.011623859405517578 with 96 records 
+
+Count insertion time:0.0019683837890625 with 2 records 
+
+Raw insertion time:0.010357856750488281 with 95 records 
+
+Count insertion time:0.0013842582702636719 with 2 records 
+
+Raw insertion time:0.010015487670898438 with 92 records 
+
+Count insertion time:0.001313924789428711 with 2 records 
+
+Track insertion time:0.0012989044189453125 with 2 records 
+
+Raw insertion time:0.009647846221923828 with 87 records 
+
+Count insertion time:0.001367330551147461 with 2 records 
+
+Raw insertion time:0.009688854217529297 with 84 records 
+
+Count insertion time:0.0016546249389648438 with 3 records 
+
+Raw insertion time:0.011443853378295898 with 123 records 
+
+Count insertion time:0.0019426345825195312 with 4 records 
+
+Raw insertion time:0.013213634490966797 with 157 records 
+
+Count insertion time:0.002062082290649414 with 5 records 
+
+Raw insertion time:0.01970982551574707 with 250 records 
+
+Count insertion time:0.002117156982421875 with 5 records 
+
+Raw insertion time:0.021727561950683594 with 340 records 
+
+Count insertion time:0.0015091896057128906 with 7 records 
+
+Track insertion time:0.0012507438659667969 with 2 records 
+
+Raw insertion time:0.14673161506652832 with 558 records 
+
+Count insertion time:0.0021505355834960938 with 13 records 
+
+Raw insertion time:0.045480966567993164 with 698 records 
+
+Count insertion time:0.006453514099121094 with 15 records 
+
+Raw insertion time:0.057988643646240234 with 848 records 
+
+Count insertion time:0.002805948257446289 with 22 records 
+
+Raw insertion time:0.05818009376525879 with 987 records 
+
+Count insertion time:0.0026149749755859375 with 24 records 
+
+Raw insertion time:0.06688165664672852 with 1192 records 
+
+Count insertion time:0.0022950172424316406 with 24 records 
+
+Raw insertion time:0.1790637969970703 with 1342 records 
+
+Count insertion time:0.0022134780883789062 with 26 records 
+
+Track insertion time:0.003531217575073242 with 7 records 
+
+Raw insertion time:0.09546136856079102 with 1489 records 
+
+Count insertion time:0.002753019332885742 with 28 records 
+
+Raw insertion time:0.0975944995880127 with 1583 records 
+
+Count insertion time:0.0028035640716552734 with 27 records 
+
+Raw insertion time:0.18199896812438965 with 1639 records 
+
+Count insertion time:0.0028853416442871094 with 34 records 
+
+Raw insertion time:0.10917901992797852 with 1710 records 
+
+Count insertion time:0.0030815601348876953 with 31 records 
+
+Raw insertion time:0.11300373077392578 with 1794 records 
+
+Count insertion time:0.002796649932861328 with 29 records 
+
+Raw insertion time:0.20152711868286133 with 1766 records 
+
+Count insertion time:0.003030538558959961 with 29 records 
+
+Track insertion time:0.010350227355957031 with 23 records 
+
+Raw insertion time:0.10642194747924805 with 1704 records 
+
+Count insertion time:0.003518342971801758 with 29 records 
+
+Raw insertion time:0.1044759750366211 with 1619 records 
+
+Count insertion time:0.00275421142578125 with 26 records 
+
+Raw insertion time:0.16506576538085938 with 1554 records 
+
+Count insertion time:0.002295255661010742 with 23 records 
+
+Raw insertion time:0.09341716766357422 with 1462 records 
+
+Count insertion time:0.0028448104858398438 with 26 records 
+
+Raw insertion time:0.07230806350708008 with 1304 records 
+
+Count insertion time:0.002157926559448242 with 22 records 
+
+Raw insertion time:0.13263559341430664 with 1122 records 
+
+Count insertion time:0.002250194549560547 with 22 records 
+
+Track insertion time:0.010438203811645508 with 17 records 
+
+Raw insertion time:0.0726933479309082 with 1069 records 
+
+Count insertion time:0.002727985382080078 with 22 records 
+
+Raw insertion time:0.06011486053466797 with 1001 records 
+
+Count insertion time:0.0023055076599121094 with 23 records 
+
+Raw insertion time:0.06638383865356445 with 1031 records 
+
+Count insertion time:0.0028269290924072266 with 25 records 
+
+Raw insertion time:0.18513178825378418 with 1070 records 
+
+Count insertion time:0.0026400089263916016 with 24 records 
+
+Raw insertion time:0.07607150077819824 with 1121 records 
+
+Count insertion time:0.0025496482849121094 with 25 records 
+
+Raw insertion time:0.06700515747070312 with 1213 records 
+
+Count insertion time:0.002367734909057617 with 26 records 
+
+Track insertion time:0.0077321529388427734 with 17 records 
+
+Raw insertion time:0.07413005828857422 with 1334 records 
+
+Count insertion time:0.002289295196533203 with 26 records 
+
+Raw insertion time:0.20579147338867188 with 1373 records 
+
+Count insertion time:0.0026702880859375 with 24 records 
+
+Raw insertion time:0.07681918144226074 with 1347 records 
+
+Count insertion time:0.0022101402282714844 with 24 records 
+
+Raw insertion time:0.07671833038330078 with 1400 records 
+
+Count insertion time:0.0021483898162841797 with 25 records 
+
+Raw insertion time:0.15027952194213867 with 1380 records 
+
+Count insertion time:0.0024237632751464844 with 26 records 
+
+Raw insertion time:0.0930626392364502 with 1368 records 
+
+Count insertion time:0.0028977394104003906 with 27 records 
+
+Track insertion time:0.011882305145263672 with 22 records 
+
+Raw insertion time:0.08873844146728516 with 1360 records 
+
+Count insertion time:0.0026454925537109375 with 23 records 
+
+Raw insertion time:0.07095217704772949 with 1315 records 
+
+Count insertion time:0.0020761489868164062 with 22 records 
+
+Raw insertion time:0.16263127326965332 with 1266 records 
+
+Count insertion time:0.0020439624786376953 with 19 records 
+
+Raw insertion time:0.06627035140991211 with 1238 records 
+
+Count insertion time:0.0020134449005126953 with 18 records 
+
+Raw insertion time:0.06679081916809082 with 1210 records 
+
+Count insertion time:0.001984119415283203 with 20 records 
+
+Raw insertion time:0.0770559310913086 with 1164 records 
+
+Count insertion time:0.0026519298553466797 with 22 records 
+
+Track insertion time:0.010647058486938477 with 22 records 
+
+Raw insertion time:0.18206334114074707 with 1121 records 
+
+Count insertion time:0.002513885498046875 with 20 records 
+
+Raw insertion time:0.06424164772033691 with 1011 records 
+
+Count insertion time:0.002523660659790039 with 20 records 
+
+Raw insertion time:0.05276894569396973 with 927 records 
+
+Count insertion time:0.0023484230041503906 with 20 records 
+
+Raw insertion time:0.06146693229675293 with 843 records 
+
+Count insertion time:0.0025806427001953125 with 17 records 
+
+Raw insertion time:0.04660964012145996 with 774 records 
+
+Count insertion time:0.0020117759704589844 with 17 records 
+
+Raw insertion time:0.15928983688354492 with 639 records 
+
+Count insertion time:0.0024352073669433594 with 15 records 
+
+Track insertion time:0.006433963775634766 with 13 records 
+
+Raw insertion time:0.034372568130493164 with 499 records 
+
+Count insertion time:0.002294778823852539 with 10 records 
+
+Raw insertion time:0.030893564224243164 with 433 records 
+
+Count insertion time:0.0021047592163085938 with 8 records 
+
+Raw insertion time:0.025155305862426758 with 349 records 
+
+Count insertion time:0.002048492431640625 with 9 records 
+
+Raw insertion time:0.0192568302154541 with 285 records 
+
+Count insertion time:0.002094745635986328 with 9 records 
+
+Raw insertion time:0.018465757369995117 with 248 records 
+
+Count insertion time:0.0016384124755859375 with 10 records 
+
+Raw insertion time:0.01762080192565918 with 221 records 
+
+Count insertion time:0.002183675765991211 with 8 records 
+
+Track insertion time:0.0038521289825439453 with 6 records 
+
+Raw insertion time:0.015712976455688477 with 209 records 
+
+Count insertion time:0.0018990039825439453 with 8 records 
+
+Raw insertion time:0.022390365600585938 with 110 records 
+
+Count insertion time:0.004603385925292969 with 7 records 
+
+Raw insertion time:0.012181282043457031 with 93 records 
+
+Count insertion time:0.0019576549530029297 with 2 records 
+
+Raw insertion time:0.01098322868347168 with 96 records 
+
+Count insertion time:0.0015192031860351562 with 2 records 
+
+Raw insertion time:0.010132312774658203 with 92 records 
+
+Count insertion time:0.0013527870178222656 with 3 records 
+
+Raw insertion time:0.010607004165649414 with 92 records 
+
+Count insertion time:0.0019741058349609375 with 2 records 
+
+Track insertion time:0.002047300338745117 with 2 records 
+
+Raw insertion time:0.009310007095336914 with 84 records 
+
+Count insertion time:0.0012793540954589844 with 2 records 
+
+Raw insertion time:0.011236429214477539 with 86 records 
+
+Count insertion time:0.001951456069946289 with 2 records 
+
+Raw insertion time:0.010523319244384766 with 88 records 
+
+Count insertion time:0.0018954277038574219 with 2 records 
+
+Raw insertion time:0.00941610336303711 with 83 records 
+
+Count insertion time:0.0018439292907714844 with 2 records 
+
+Raw insertion time:0.011023521423339844 with 85 records 
+
+Count insertion time:0.001890420913696289 with 2 records 
+
+Raw insertion time:0.011436939239501953 with 92 records 
+
+Count insertion time:0.0019299983978271484 with 2 records 
+
+Track insertion time:0.002121448516845703 with 2 records 
+
+Raw insertion time:0.010245561599731445 with 94 records 
+
+Count insertion time:0.001954793930053711 with 2 records 
+
+Raw insertion time:0.009812116622924805 with 99 records 
+
+Count insertion time:0.0018668174743652344 with 2 records 
+
+Raw insertion time:0.008432865142822266 with 113 records 
+
+Count insertion time:0.0012557506561279297 with 2 records 
+
+Raw insertion time:0.013833761215209961 with 139 records 
+
+Count insertion time:0.004632711410522461 with 3 records 
+
+Raw insertion time:0.03220534324645996 with 184 records 
+
+Count insertion time:0.002276897430419922 with 6 records 
+
+Raw insertion time:0.016078948974609375 with 247 records 
+
+Count insertion time:0.0015993118286132812 with 9 records 
+
+Track insertion time:0.0012600421905517578 with 2 records 
+
+Raw insertion time:0.02199721336364746 with 352 records 
+
+Count insertion time:0.0018367767333984375 with 9 records 
+
+Raw insertion time:0.03044438362121582 with 432 records 
+
+Count insertion time:0.0023038387298583984 with 12 records 
+
+Raw insertion time:0.033564090728759766 with 458 records 
+
+Count insertion time:0.0024514198303222656 with 13 records 
+
+Raw insertion time:0.14756321907043457 with 478 records 
+
+Count insertion time:0.0023200511932373047 with 13 records 
+
+Raw insertion time:0.02886223793029785 with 499 records 
+
+Count insertion time:0.0025758743286132812 with 14 records 
+
+Raw insertion time:0.03783249855041504 with 519 records 
+
+Count insertion time:0.0025382041931152344 with 13 records 
+
+Track insertion time:0.004607677459716797 with 8 records 
+
+Raw insertion time:0.036580562591552734 with 530 records 
+
+Count insertion time:0.0025436878204345703 with 13 records 
+
+Raw insertion time:0.03017568588256836 with 522 records 
+
+Count insertion time:0.0016360282897949219 with 13 records 
+
+Raw insertion time:0.03285050392150879 with 517 records 
+
+Count insertion time:0.002300262451171875 with 14 records 
+
+Raw insertion time:0.03179764747619629 with 464 records 
+
+Count insertion time:0.002358675003051758 with 14 records 
+
+Raw insertion time:0.02611827850341797 with 369 records 
+
+Count insertion time:0.002307891845703125 with 12 records 
+
+Raw insertion time:0.021837472915649414 with 305 records 
+
+Count insertion time:0.0021452903747558594 with 9 records 
+
+Track insertion time:0.0045070648193359375 with 9 records 
+
+Raw insertion time:0.017055511474609375 with 282 records 
+
+Count insertion time:0.001438140869140625 with 7 records 
+
+Raw insertion time:0.025587797164916992 with 261 records 
+
+Count insertion time:0.00220489501953125 with 8 records 
+
+Raw insertion time:0.016202449798583984 with 244 records 
+
+Count insertion time:0.001451253890991211 with 9 records 
+
+Raw insertion time:0.01765131950378418 with 246 records 
+
+Count insertion time:0.0020906925201416016 with 8 records 
+
+Raw insertion time:0.1288619041442871 with 260 records 
+
+Count insertion time:0.002131938934326172 with 9 records 
+
+Raw insertion time:0.01929306983947754 with 282 records 
+
+Count insertion time:0.0021173954010009766 with 9 records 
+
+Track insertion time:0.00398707389831543 with 7 records 
+
+Raw insertion time:0.02383732795715332 with 311 records 
+
+Count insertion time:0.002188444137573242 with 9 records 
+
+Raw insertion time:0.03295779228210449 with 353 records 
+
+Count insertion time:0.0022673606872558594 with 11 records 
+
+Raw insertion time:0.025500059127807617 with 377 records 
+
+Count insertion time:0.001695871353149414 with 9 records 
+
+Raw insertion time:0.02617669105529785 with 397 records 
+
+Count insertion time:0.0023865699768066406 with 9 records 
+
+Raw insertion time:0.03314399719238281 with 412 records 
+
+Count insertion time:0.0025277137756347656 with 9 records 
+
+Raw insertion time:0.03228139877319336 with 430 records 
+
+Count insertion time:0.0025207996368408203 with 12 records 
+
+Track insertion time:0.006337642669677734 with 10 records 
+
+Raw insertion time:0.030846595764160156 with 447 records 
+
+Count insertion time:0.0023293495178222656 with 14 records 
+
+Raw insertion time:0.029059171676635742 with 439 records 
+
+Count insertion time:0.002395153045654297 with 14 records 
+
+Raw insertion time:0.03958892822265625 with 434 records 
+
+Count insertion time:0.0024874210357666016 with 15 records 
+
+Raw insertion time:0.027902841567993164 with 439 records 
+
+Count insertion time:0.0017354488372802734 with 13 records 
+
+Raw insertion time:0.024264097213745117 with 437 records 
+
+Count insertion time:0.0017726421356201172 with 14 records 
+
+Raw insertion time:0.13602185249328613 with 422 records 
+
+Count insertion time:0.0022437572479248047 with 11 records 
+
+Track insertion time:0.005545854568481445 with 9 records 
+
+Raw insertion time:0.030030250549316406 with 420 records 
+
+Count insertion time:0.0021462440490722656 with 9 records 
+
+Raw insertion time:0.02954268455505371 with 416 records 
+
+Count insertion time:0.0020751953125 with 9 records 
+
+Raw insertion time:0.022998809814453125 with 384 records 
+
+Count insertion time:0.0015115737915039062 with 6 records 
+
+Raw insertion time:0.019676685333251953 with 325 records 
+
+Count insertion time:0.0014722347259521484 with 8 records 
+
+Raw insertion time:0.025495052337646484 with 314 records 
+
+Count insertion time:0.002279043197631836 with 10 records 
+
+Raw insertion time:0.021123886108398438 with 294 records 
+
+Count insertion time:0.002241373062133789 with 8 records 
+
+Track insertion time:0.0037779808044433594 with 6 records 
+
+Raw insertion time:0.018146753311157227 with 265 records 
+
+Count insertion time:0.0021157264709472656 with 8 records 
+
+Raw insertion time:0.01674628257751465 with 249 records 
+
+Count insertion time:0.0021860599517822266 with 9 records 
+
+Raw insertion time:0.019318819046020508 with 249 records 
+
+Count insertion time:0.002185821533203125 with 9 records 
+
+Raw insertion time:0.018369674682617188 with 242 records 
+
+Count insertion time:0.002237081527709961 with 9 records 
+
+Raw insertion time:0.014381170272827148 with 228 records 
+
+Count insertion time:0.0014431476593017578 with 9 records 
+
+Raw insertion time:0.01421046257019043 with 202 records 
+
+Count insertion time:0.002112150192260742 with 8 records 
+
+Track insertion time:0.004868268966674805 with 7 records 
+
+Raw insertion time:0.016767263412475586 with 175 records 
+
+Count insertion time:0.0018849372863769531 with 3 records 
+
+Raw insertion time:0.011669158935546875 with 150 records 
+
+Count insertion time:0.0020508766174316406 with 5 records 
+
+Raw insertion time:0.010601997375488281 with 140 records 
+
+Count insertion time:0.0017805099487304688 with 2 records 
+
+Raw insertion time:0.014466047286987305 with 122 records 
+
+Traceback (most recent call last):
+  File "/home/vm-admin/WiFiTracker/Service/Acquisition.py", line 122, in <module>
+    aq.main()
+  File "/home/vm-admin/WiFiTracker/Service/Acquisition.py", line 115, in main
+    ischedule.run_loop()
+  File "/home/vm-admin/.local/lib/python3.10/site-packages/ischedule/ischedule.py", line 107, in run_loop
+    run_pending()
+  File "/home/vm-admin/.local/lib/python3.10/site-packages/ischedule/ischedule.py", line 80, in run_pending
+    task.func()
+  File "/home/vm-admin/WiFiTracker/Service/Acquisition.py", line 72, in request
+    dataCount = self.countP.main(dataRoom)
+  File "/home/vm-admin/WiFiTracker/Service/sub/counting_people.py", line 120, in main
+    dataRoom = self.random_forest_regr(dataRoom)
+  File "/home/vm-admin/WiFiTracker/Service/sub/counting_people.py", line 84, in random_forest_regr
+    df_features = self.feature_extraction(dataRoom)
+  File "/home/vm-admin/WiFiTracker/Service/sub/counting_people.py", line 48, in feature_extraction
+    df_dist_ap = df_room.drop_duplicates(subset="APnum")
+  File "/home/vm-admin/.local/lib/python3.10/site-packages/pandas/core/frame.py", line 6802, in drop_duplicates
+    result = self[-self.duplicated(subset, keep=keep)]
+  File "/home/vm-admin/.local/lib/python3.10/site-packages/pandas/core/frame.py", line 6934, in duplicated
+    raise KeyError(Index(diff))
+KeyError: Index(['APnum'], dtype='object')
+  Stopping...
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to False.
+
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://192.168.236.153:8501
+  External URL: http://130.192.238.41:8501
+
+  Stopping...
+  Stopping...
+Exception ignored in: <module 'threading' from '/usr/lib/python3.10/threading.py'>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1567, in _shutdown
+    lock.acquire()
+  File "/home/vm-admin/.local/lib/python3.10/site-packages/streamlit/web/bootstrap.py", line 55, in signal_handler
+    server.stop()
+  File "/home/vm-admin/.local/lib/python3.10/site-packages/streamlit/web/server/server.py", line 405, in stop
+    self._runtime.stop()
+  File "/home/vm-admin/.local/lib/python3.10/site-packages/streamlit/runtime/runtime.py", line 309, in stop
+    async_objs.eventloop.call_soon_threadsafe(stop_on_eventloop)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 798, in call_soon_threadsafe
+    self._check_closed()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 515, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to False.
+
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://192.168.236.153:8501
+  External URL: http://130.192.238.41:8501
+
+  Stopping...
