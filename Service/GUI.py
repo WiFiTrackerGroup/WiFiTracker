@@ -199,10 +199,6 @@ def visualizeOD(current, timestamp):
     dati = np.zeros([len(list_of_rooms), len(list_of_rooms)])
     df = pd.DataFrame(dati, index=list_of_rooms, columns=list_of_rooms)
     time_track = set_tracking_labels(int(timetracking.hour))
-    st.markdown(
-        f"<h5>Movement of people between timeslots: {time_track[0]} ⇔ {time_track[1]}</h5>",
-        unsafe_allow_html=True,
-    )
     for index, row in od_csv.iterrows():
         origin = row["From"]
         if origin in list_of_rooms:
@@ -254,7 +250,7 @@ def visualizeOD(current, timestamp):
             )
         ]
     )
-
+    fig.update_layout(title_text=f"Movement of people between timeslots: {time_track[0]} ⇔ {time_track[1]}",  title_font=dict(size=20))
     st.plotly_chart(fig)
 
 
@@ -382,11 +378,16 @@ def check(date, time):
         return True
 
 def showInstruction(action):
-
+    st.markdown("<style>.styled {list-style: none; padding-left: 0; margin: 0;li {margin-bottom: 10px;display: flex;;align-items: flex-start; \
+    &::before {\
+      content: '⏳'; margin-right: 10px;}\
+    &:nth-child(2)::before {\
+      content: '👆🏻';}}}<style>", unsafe_allow_html=True)
     c_notes = st.empty()
     if action == TIME:
         c_notes.markdown(
-            "<p style='font-size: 20px;'>Selecting a room in the dashboard on the left, a time series showing the occupancy of the selected room during the day will be displayed. <br> \
+            "<p style='font-size: 20px;'> Here it is possible to see the number of people inside a room during a day.<br>Keeps in mind:\
+                Selecting a room in the dashboard on the left, a time series showing the occupancy of the selected room during the day will be displayed. <br> \
                 It is also possible to select a date in the dashboard to obtain the data for the selecetd date. <br>\
                 Passing the mouse on the time series, the number of people at each acquisition slot will be displayed.</p>",
             unsafe_allow_html=True,
@@ -394,15 +395,18 @@ def showInstruction(action):
     elif action == HEAT:
         c_notes.markdown(
             "<p style='font-size: 20px;'>For some blocks of rooms, a heatmap can be visualized by using the selector on the left side of the panel.<br>\
-                The room occupancy changes every 15 minutes. Old data can be shown using the 'See previous data' function and selecting the desired date and time.</p>",
+                The room occupancy changes every 15 minutes. Old data can be shown using the '<i>See previous data</i>' function and selecting the desired date and time.</p>",
             unsafe_allow_html=True,
         )
     elif action == FLOW:
         c_notes.markdown(
             "<p style='font-size: 20px;'>Here it is possible to see a representation of the flow of the people moving within the major area of PoliTo.\
                 The evaluation of the flow is done every 1 hour and a half to better see the travel of the students during the time change.\
-                Old data can be shown using the 'See previous data' function and selecting the desired date and time.\
-                Passing the mouse over the colored part of the room and over the flows in grey, you can see the number of people starting and flowing in the other section of PoliTo.</p>",
+                To a better experience on the website.<br>Keep in mind that:</p>"
+             "<ul class='styled'>\
+                 <li style='font-size: 20px;'>Old data can be shown using the \"See previous data\" function and selecting the desired date and time.</li>\
+                 <li style='font-size: 20px;'>Passing the mouse over the colored part of the room and over the flows in grey, you can see the number of people starting and flowing in the other section of PoliTo.</li>\
+             </ul>",
             unsafe_allow_html=True,
         )
     elif action == INPUT:
@@ -484,8 +488,6 @@ def main():
         """,
         unsafe_allow_html=True,
     )
-    # Select available rooms from constants file
-
     # take the choice of the user and visualize it
     action, choice, current, date, time = selection()
     # visualization(choice, date, time)

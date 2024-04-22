@@ -59,38 +59,38 @@ class Acquisition:
                 print("Exception! Error occured during server request!")
 
             if req_data.ok and req_ap_info.ok:
-                dataRoom = pd.DataFrame.from_dict(req_data.json())
-                ap_info = pd.DataFrame.from_dict(req_ap_info.json())
-                if len(dataRoom) > 0:
-                    # Merge channel info
-                    dataRoom = dataRoom.merge(ap_info, on="name_ap", how="left")
-                    # Insert raw data
-                    stTime = time.time()
-                    self.myRaw.insert_records(dataRoom)
-                    print(f"Raw insertion time:{time.time() - stTime} with {len(dataRoom)} records \n")
-                    # Counting people
-                    dataCount = self.countP.main(dataRoom)
-                    # The saving is done only if there are people in the rooms
-                    if len(dataCount) > 0:
+                try:
+                    dataRoom = pd.DataFrame.from_dict(req_data.json())
+                    ap_info = pd.DataFrame.from_dict(req_ap_info.json())
+                    if len(dataRoom) > 0:
+                        # Merge channel info
+                        dataRoom = dataRoom.merge(ap_info, on="name_ap", how="left")
+                        # Insert raw data
                         stTime = time.time()
-                        self.myCount.insert_records(dataCount)
-                        print(f"Count insertion time:{time.time() - stTime} with {len(dataCount)} records \n")
-                        # Tracking people
-                        if self.df_t_1.empty:
-                            self.df_t_1 = dataRoom
-                            self.counter_tracking = 2
-                        elif self.counter_tracking >= int(TRACKING_TIME/SCHEDULE):
-                            dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
+                        self.myRaw.insert_records(dataRoom)
+                        # Counting people
+                        dataCount = self.countP.main(dataRoom)
+                        # The saving is done only if there are people in the rooms
+                        if len(dataCount) > 0:
                             stTime = time.time()
-                            self.myTrack.insert_records(dataTrack)
-                            print(f"Track insertion time:{time.time() - stTime} with {len(dataTrack)} records \n")
-                            # DF at t-1 needed for tracking purpose
-                            self.df_t_1 = dataRoom.copy()
-                            self.counter_tracking = 1
+                            self.myCount.insert_records(dataCount)
+                            # Tracking people
+                            if self.df_t_1.empty:
+                                self.df_t_1 = dataRoom
+                                self.counter_tracking = 2
+                            elif self.counter_tracking >= int(TRACKING_TIME/SCHEDULE):
+                                dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
+                                stTime = time.time()
+                                self.myTrack.insert_records(dataTrack)
+                                # DF at t-1 needed for tracking purpose
+                                self.df_t_1 = dataRoom.copy()
+                                self.counter_tracking = 1
+                            else:
+                                self.counter_tracking += 1
                         else:
-                            self.counter_tracking += 1
-                    else:
-                        self.df_t_1 = self.df_t_1.iloc[0:0]
+                            self.df_t_1 = self.df_t_1.iloc[0:0]
+                except:
+                    print(f"Unknown error occurred during the data Processing. No data is saved on mongoDB at {dt.now()}.")
 
     def check_time(self):
         """

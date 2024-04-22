@@ -4,7 +4,7 @@ PORT = "8282"
 
 # Seconds to wait before asking another acquisition
 SCHEDULE = 900
-TRACKING_TIME = 5 * SCHEDULE  # time in seconds
+TRACKING_TIME = 6 * SCHEDULE  # time in seconds
 PRINT = False
 
 # MONGODB config
