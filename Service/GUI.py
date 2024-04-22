@@ -250,7 +250,10 @@ def visualizeOD(current, timestamp):
             )
         ]
     )
-    fig.update_layout(title_text=f"Movement of people between timeslots: {time_track[0]} ⇔ {time_track[1]}",  title_font=dict(size=20))
+    fig.update_layout(
+        title_text=f"Movement of people between timeslots: {time_track[0]} ⇔ {time_track[1]}",
+        title_font=dict(size=20),
+    )
     st.plotly_chart(fig)
 
 
@@ -377,19 +380,27 @@ def check(date, time):
     else:
         return True
 
+
 def showInstruction(action):
-    st.markdown("<style>.styled {list-style: none; padding-left: 0; margin: 0;li {margin-bottom: 10px;display: flex;;align-items: flex-start; \
-    &::before {\
-      content: '⏳'; margin-right: 10px;}\
-    &:nth-child(2)::before {\
-      content: '👆🏻';}}}<style>", unsafe_allow_html=True)
     c_notes = st.empty()
     if action == TIME:
+        st.markdown(
+            "<style>.styled {list-style: none; padding-left: 0; margin: 0;li {margin-bottom: 10px;display: flex;;align-items: flex-start; \
+                    &::before {\
+                    content: '🕒'; margin-right: 10px;}\
+                    &:nth-child(2)::before {\
+                    content: '🗓️';}}}<style>\
+                    &:nth-child(3)::before {\
+                    content: '👆🏻';}}}<style>",
+            unsafe_allow_html=True,
+        )
         c_notes.markdown(
-            "<p style='font-size: 20px;'> Here it is possible to see the number of people inside a room during a day.<br>Keeps in mind:\
-                Selecting a room in the dashboard on the left, a time series showing the occupancy of the selected room during the day will be displayed. <br> \
-                It is also possible to select a date in the dashboard to obtain the data for the selecetd date. <br>\
-                Passing the mouse on the time series, the number of people at each acquisition slot will be displayed.</p>",
+            "<p style='font-size: 20px;'> Here it is possible to see the number of people inside a room during a day at intervals of 15 minutes.<br>Keeps in mind that:"
+            "<ul class='styled'>\
+                 <li style='font-size: 20px;'>If the '<i>See previous data</i>' function is not used, the data related to the current day are shown.</li>\
+                 <li style='font-size: 20px;'>By using the '<i>See previous data</i>' function and selecting a date in the dashboard, the data for the selecetd date are obtained</li>\
+                 <li style='font-size: 20px;'>Passing the mouse on the time series, the number of people at each acquisition slot will be displayed.</li>\
+             </ul>",
             unsafe_allow_html=True,
         )
     elif action == HEAT:
@@ -399,11 +410,19 @@ def showInstruction(action):
             unsafe_allow_html=True,
         )
     elif action == FLOW:
+        st.markdown(
+            "<style>.styled {list-style: none; padding-left: 0; margin: 0;li {margin-bottom: 10px;display: flex;;align-items: flex-start; \
+                    &::before {\
+                    content: '⏳'; margin-right: 10px;}\
+                    &:nth-child(2)::before {\
+                    content: '👆🏻';}}}<style>",
+            unsafe_allow_html=True,
+        )
         c_notes.markdown(
             "<p style='font-size: 20px;'>Here it is possible to see a representation of the flow of the people moving within the major area of PoliTo.\
                 The evaluation of the flow is done every 1 hour and a half to better see the travel of the students during the time change.\
                 To a better experience on the website.<br>Keep in mind that:</p>"
-             "<ul class='styled'>\
+            "<ul class='styled'>\
                  <li style='font-size: 20px;'>Old data can be shown using the \"See previous data\" function and selecting the desired date and time.</li>\
                  <li style='font-size: 20px;'>Passing the mouse over the colored part of the room and over the flows in grey, you can see the number of people starting and flowing in the other section of PoliTo.</li>\
              </ul>",
