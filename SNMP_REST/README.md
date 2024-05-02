@@ -4,7 +4,16 @@ The first step of the WiFi-Tracker application starts with the acquisition modul
 Moreover, the Politecnico network is composed of more than 900 access points located in all its different venues, and to manage it all a controller is needed. The work of this first module is in fact to communicate with the AP controller to acquire all the different data, aggregate it, anonymize the critical information, and then send it to the next module.
 
 ## Configuration
-The code of the SNMP_REST folder can run only on a VM connected to the Politecnico network.
+First of all, if the machine that will run the code does note have installed the snmp module run:
+```
+sudo apt-get install snmp
+```
+Then create a virtual environment and install the packages with:
+```
+pip install -r requirements.txt
+```
+
+Moreover, the code of the SNMP_REST folder can run only on a VM connected to the Politecnico network.
 To configure the server properly make sure to change the **COMMUNITY** and **IP_WLC** field in the *config.py* file.
 Once this is done the server is ready to use.
 
