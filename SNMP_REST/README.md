@@ -20,10 +20,14 @@ As said before if the **COMMUNITY** and **IP_WLC** are not correct the AP contro
 ### Requests from client
 #### GET
 - **/AP**:
+
   contains the information about the AP MAC and its relative name, which will usually consist of the name of the room in which it is positioned.
 - **/data**:
+
   contains all the devices’ needed information, which includes the MAC of the device, the e-mail used for the authentication, the SNR and RSSI of the connection, the amount of data transmitted/received, the type of the client (used to know if the client is connected to the 2.4 or 5 GHz frequency) and the MAC of the AP to which it is connected.
 - **/APChannelInfo**:
+
   consists of all the relevant information about the AP channels, which is additional information that will be next used in the Random Forest Regression to increase the performance of the people-counting segment of the project. The information contained in this case is the MAC of the AP, plus the number of devices connected to each network (2.4 and 5 GHz), the channel used, the noise over the channel, and the percentage of utilization of it(amount of traffic is passing through the channel in %, where 100% is the maximum utilization). This is used to give more features to the ML model for the prediction. The baseline can extrapolate the number of people in the rooms without this data.
 - **/test**:
-  consist of a test query used to check if the aggregation part of the /data GET is working. Usually is unused.
+
+  consist of a test query used to check if the aggregation part of the /data GET is working. Usually it is unused.
