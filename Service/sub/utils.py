@@ -5,13 +5,8 @@ import pytz
 
 
 def room_division(dataRoom):
-    """
-    room_division
-    -------------
-    take all the data and divide the rooms of all PoliTo
-    ### Output:
-        - the dataframe with the room divided
-    """
+    """Divide entries on rooms, not on AP number"""
+
     Ap = "AP-AULA"
     dataRoom = dataRoom[dataRoom["name_ap"].notnull()]
     dataRoom = dataRoom[dataRoom["name_ap"].str.contains(Ap)]
@@ -90,21 +85,22 @@ def is_legal_time():
 
     return local_now.dst() != timedelta(0)
 
+
 def set_tracking_labels(hour):
     dict_labels = {
-        7:("hearly-morning", "8.30 - 10.00"),
-        8:("8.30 - 10.00", "10.00 - 11.30"),
-        9:("8.30 - 10.00", "10.00 - 11.30"),
-        10:("10.00 - 11.30", "11.30 - 13.00"),
-        11:("10.00 - 11.30", "11.30 - 13.00"),
+        7: ("hearly-morning", "8.30 - 10.00"),
+        8: ("8.30 - 10.00", "10.00 - 11.30"),
+        9: ("8.30 - 10.00", "10.00 - 11.30"),
+        10: ("10.00 - 11.30", "11.30 - 13.00"),
+        11: ("10.00 - 11.30", "11.30 - 13.00"),
         12: ("11.30 - 13.00", "13.00 - 14.30"),
-        13:("13.00 - 14.30", "14.30 - 16.00"),
-        14:("14.30 - 16.00", "16.00 - 17.30"),
+        13: ("13.00 - 14.30", "14.30 - 16.00"),
+        14: ("14.30 - 16.00", "16.00 - 17.30"),
         15: ("14.30 - 16.00", "16.00 - 17.30"),
-        16:("16.00 - 17.30", "17.30 - 19.00"),
-        17:("17.30 - 19.00", "evening"),
+        16: ("16.00 - 17.30", "17.30 - 19.00"),
+        17: ("17.30 - 19.00", "evening"),
     }
     try:
-     return dict_labels[hour]
+        return dict_labels[hour]
     except:
-        return ("Not during lessons","PoliTO closed")
+        return ("Not during lessons", "PoliTO closed")
