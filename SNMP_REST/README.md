@@ -18,7 +18,7 @@ python3 snmp_rest.py
 As said before if the **COMMUNITY** and **IP_WLC** are not correct the AP controller cannot be contacted and then the application will probably return an empty JSON or an error message.
 
 ### Requests from client
-#### GET
+#### GET available
 - **/AP**:
 
   contains the information about the AP MAC and its relative name, which will usually consist of the name of the room in which it is positioned.
