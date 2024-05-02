@@ -1,14 +1,15 @@
 #!/bin/bash
-IP = ""
-PORT = ""
-LOGS_PATH = "./logs"
+IP=''
+PORT=''
+LOGS_PATH='./logs'
+
 echo -e "\nSet room name:"
 read room_name
 echo -e "\nSet number of people in $room_name:"
 read n_people
 
 date=$(date +%m_%d_%Y_%H_%M_%S)
-file_path_user="${LOGS_PATH}/${date}_${room_name}_${n_people}"
+file_path_user="$LOGS_PATH/${date}_${room_name}_${n_people}"
 
 echo -e "\nRetrieving data..."
 status_code=$(curl "http://${IP}:${PORT}/data" -o "${file_path_user}.json" -w '%{http_code}\n')

@@ -59,4 +59,4 @@ FILE_N_CLIENT = "snmp_data/n_client.txt"
 FILE_CLIENT_TYPE = "snmp_data/client_type.txt"
 
 # File error file directory
-FILE_ERRORS = "sub/logs/error_log.txt"
+FILE_ERRORS = "logs/error_log.txt"
