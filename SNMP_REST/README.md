@@ -15,6 +15,7 @@ pip install -r requirements.txt
 
 Moreover, the code of the SNMP_REST folder can run only on a VM connected to the Politecnico network.
 To configure the server properly make sure to change the **COMMUNITY** and **IP_WLC** field in the *config.py* file.
+
 Once this is done the server is ready to use.
 
 ## Usage
