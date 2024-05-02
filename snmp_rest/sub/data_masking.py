@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 import hashlib
-import numpy as np
+
 
 class DataMasking:
-    def __init__(self):
-        pass
-
     def hashing_SHA256(self, mac_lst: list, user_lst: list, salt: bytes):
         """hashing with SHA256"""
         assert len(mac_lst) == len(
@@ -18,10 +15,10 @@ class DataMasking:
                 mac = mac_lst[i].encode()
                 macs_digest.append(hashlib.sha256(mac + salt).hexdigest())
             else:
-                macs_digest.append(float('nan'))
+                macs_digest.append(float("nan"))
             if type(user_lst[i]) == str:
                 user = user_lst[i].encode()
                 users_digest.append(hashlib.sha256(user + salt).hexdigest())
             else:
-                users_digest.append(float('nan'))
+                users_digest.append(float("nan"))
         return macs_digest, users_digest

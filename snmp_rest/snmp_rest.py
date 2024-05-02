@@ -1,6 +1,5 @@
 import cherrypy
 import requests
-from cherrypy.lib import auth_digest
 import schedule
 import os
 import time
@@ -31,7 +30,7 @@ class SnmpRest:
     def GET(self, *uri):
         if len(uri) == 1:
             if uri[0] == "AP":
-                # self.data_acq.acquier_AP()
+                self.data_acq.acquier_AP()
                 try:
                     df_ap = self.data_aggr.aggregate_AP()
                 except:
@@ -40,7 +39,7 @@ class SnmpRest:
 
             elif uri[0] == "data":
                 if self.ts[0] < (time.time() - TIME_BUFF):
-                    # self.data_acq.acquier()
+                    self.data_acq.acquier()
                     try:
                         df_data = self.data_aggr.aggregate()
                     except:
@@ -63,34 +62,8 @@ class SnmpRest:
 
                 return js.dumps(self.df_data.to_dict())
 
-            elif uri[0] == "test":
-                # self.data_acq.acquier()
-                df_ap = self.data_aggr.aggregate_AP()
-                user = pd.DataFrame(self.data_aggr.open_username())
-                rssi = pd.DataFrame(self.data_aggr.open_rssi())
-                snr = pd.DataFrame(self.data_aggr.open_snr())
-                byte_rx = pd.DataFrame(self.data_aggr.open_bytes_rx())
-                byte_tx = pd.DataFrame(self.data_aggr.open_bytes_tx())
-                ap_mac = pd.DataFrame(self.data_aggr.open_ap_mac())
-
-                l1, l2 = self.data_mask.hashing_SHA256(
-                    list(user["mac_user"]), list(user["username"]), self._salt
-                )
-
-                output = {
-                    "MAC_masked": list(l1),
-                    "user_masked": list(l2),
-                    "rssi": list(rssi.rssi),
-                    "snr": list(snr.snr),
-                    "byte_rx": list(byte_rx.byte_rx),
-                    "byte_tx": list(byte_tx.byte_tx),
-                    "ap_name": list(ap_mac.name_ap),
-                }
-
-                return js.dumps(output)
-
             elif uri[0] == "APChannelInfo":
-                # self.data_acq.acquier_AP_info()
+                self.data_acq.acquier_AP_info()
                 try:
                     df_APdata = self.data_aggr.aggregate_channel_info()
                 except:
@@ -104,8 +77,6 @@ class SnmpRest:
                 return js.dumps(df_APdata.to_dict())
 
 
-# USERS = {"jon": "secret"}
-
 if __name__ == "__main__":
     conf = {
         "/": {
@@ -113,17 +84,6 @@ if __name__ == "__main__":
             "tools.sessions.on": True,
         }
     }
-
-    #   conf = {
-    #       "/": {
-    #           "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
-    #           "tools.auth_digest.on": True,
-    #           "tools.auth_digest.realm": "localhost",
-    #           "tools.auth_digest.get_ha1": auth_digest.get_ha1_dict_plain(USERS),
-    #           "tools.auth_digest.key": "a565c27146791cfb",
-    #           "tools.auth_digest.accept_charset": "UTF-8",
-    #       },
-    #   }
 
     web_service = SnmpRest()
     cherrypy.tree.mount(web_service, "/", conf)
