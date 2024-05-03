@@ -75,7 +75,7 @@ def getOccupancy(room_list, current, timestamp):
 def getOD(current, timestamp):
     try:
         if current == True:
-            df_tracking = MYTRACKING.findLast_forTracking()
+            df_tracking = MYTRACKING.findTimestamp_forTracking(timestamp)
         else:
             df_tracking = MYTRACKING.findTimestamp_forTracking(timestamp)
     except Exception as e:
@@ -164,7 +164,7 @@ def display_no_data():
     # Add styled text to the container
     container.markdown(
         "<div style = 'padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #0066ff;'>"
-        "<h3 style='color: #0066ff;'>Sorry, no one found for the considered time period</h3>"
+        "<h3 style='color: #0066ff;'>Sorry, no data found for the considered time period</h3>"
         "<h4 style='font-style: italic;'>🚀Please, try inserting a new period🚀</p>"
         "</div>",
         unsafe_allow_html=True,
@@ -198,7 +198,7 @@ def visualizeOD(current, timestamp):
 
     dati = np.zeros([len(list_of_rooms), len(list_of_rooms)])
     df = pd.DataFrame(dati, index=list_of_rooms, columns=list_of_rooms)
-    time_track = set_tracking_labels(int(timetracking.hour))
+    time_track = set_tracking_labels(int(timestamp.hour))
     for index, row in od_csv.iterrows():
         origin = row["From"]
         if origin in list_of_rooms:
@@ -390,7 +390,7 @@ def showInstruction(action):
                     content: '✅'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
                     content: '🕒';}\
-                    :nth-child(3)::before {\
+                    &:nth-child(3)::before {\
                     content: '🗓️';}\
                     &:nth-child(4)::before {\
                     content: '👆🏻';}}}<style>",
@@ -401,8 +401,8 @@ def showInstruction(action):
                 <br>To a better experience on the website keep in mind that:</p>"
             "<ul class='styled'>\
                  <li style='font-size: 20px;'>By using the selector on the left side of the panel, it is possible to define the room and day to inspect.</li>\
-                 <li style='font-size: 20px;'>If the '<i>See previous data</i>' function is not used, the data related to the current day are shown.</li>\
-                 <li style='font-size: 20px;'>By using the '<i>See previous data</i>' function and selecting a date in the dashboard, the data for the selecetd date are obtained</li>\
+                 <li style='font-size: 20px;'>If the \"See previous data\" function is not used, the data related to the current day are shown.</li>\
+                 <li style='font-size: 20px;'>By using the \"See previous data\" function and selecting a date in the dashboard, the data for the selecetd date are obtained</li>\
                  <li style='font-size: 20px;'>Passing the mouse on the time series, the number of people at each acquisition slot will be displayed.</li>\
              </ul>",
             unsafe_allow_html=True,
@@ -414,7 +414,7 @@ def showInstruction(action):
                     content: '✅'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
                     content: '⏳';}\
-                    &:nth-child(2)::before {\
+                    &:nth-child(3)::before {\
                     content: '🔄';}}}<style>",
             unsafe_allow_html=True,
         )
@@ -423,7 +423,7 @@ def showInstruction(action):
                 <br>To a better experience on the website keep in mind that:</p>"
             "<ul class='styled'>\
                  <li style='font-size: 20px;'>By using the selector on the left side of the panel, it is possible to select the block of rooms to inspect.</li>\
-                 <li style='font-size: 20px;'>Old data can be shown using the '<i>See previous data</i>' function and selecting the desired date and time.</li>\
+                 <li style='font-size: 20px;'>Old data can be shown using the \"See previous data\" function and selecting the desired date and time.</li>\
                  <li style='font-size: 20px;'>The room occupancy changes every 15 minutes.</li>\
              </ul>",
             unsafe_allow_html=True,
@@ -435,7 +435,7 @@ def showInstruction(action):
                     content: '✅'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
                     content: '⏳';}\
-                    &:nth-child(2)::before {\
+                    &:nth-child(3)::before {\
                     content: '👆🏻';}}}<style>",
             unsafe_allow_html=True,
         )
@@ -451,6 +451,16 @@ def showInstruction(action):
             unsafe_allow_html=True,
         )
     elif action == INPUT:
+        st.markdown(
+            "<style>.styled {list-style: none; padding-left: 0; margin: 0;li {margin-bottom: 10px;display: flex;;align-items: flex-start; \
+                    &::before {\
+                    content: '✌️'; margin-right: 10px;}\
+                    &:nth-child(2)::before {\
+                    content: '🎯';}\
+                    &:nth-child(3)::before {\
+                    content: '⚠️';}}<style>",
+            unsafe_allow_html=True,
+        )
         c_notes.markdown(
             "<p style='font-size: 20px;'>Insert true number of people in your room, this will help us in increase the performance of our algorithm.\
             <br>Beware, follow the subsequent safety guidelines:</p>"
@@ -458,7 +468,7 @@ def showInstruction(action):
              <li style='font-size: 20px;'>Count at least two times the number of people in the room.</li>\
                  <li style='font-size: 20px;'>Insert a precise number and not one only 'near' the true number of people.</li>\
                  <li style='font-size: 20px;'>Double check the name of room in which you are.</li>\
-             </ul>",
+             </ul>"
             "<p style='font-size: 20px;'>Otherwise you will create a False value in our ground truth.</p>",
             unsafe_allow_html=True,
         )
@@ -480,9 +490,23 @@ def selection():
 
     # Time selection
     current = True
-    date = datetime.now().date()
+    date = datetime.now(pytz.timezone("Europe/Rome")).date()
     time = datetime.now().time()
+    time2 = datetime.now()
+    if is_legal_time():
+        time2 += timedelta(hours=2)
+    else:
+        time2 += timedelta(hours=1)
+    current_time = datetime.strptime("10:00", "%H:%M")
+    dates = []
+    for _ in range(8):
+        dates.append(datetime.combine(date, current_time.time()))
+        current_time += timedelta(minutes=90)
 
+    for i in range(1,len(dates)+1):
+        if time2 > dates[-i]:
+            time = dates[-i].time()
+            break
     if action != "--select--":
         showInstruction(action)
 
@@ -496,19 +520,18 @@ def selection():
                 if action==HEAT:
                     time = st.sidebar.time_input("Select time")
                 if action==FLOW: 
-                    start = datetime.combine(datetime.today(), datetime.min.time()).replace(hour=1, minute=0)
+                    start = datetime.combine(datetime.today(), datetime.min.time()).replace(hour=10, minute=0)
                     t = []
                     delta = 90
-                    n = np.floor(24*60/delta)
+                    n = 8
                     for i in range(int(n)):
                         t.append(start.time().strftime('%H:%M'))
                         start += timedelta(minutes=delta)
                     t.insert(0, "--select--")
-                    time = st.sidebar.selectbox("Select action", t)
+                    time = st.sidebar.selectbox("Select timeslot", t)
                     if time != "--select--":
                         time = datetime.strptime(time, "%H:%M").time()
-
-    # Possible room choice and selection
+                        # Possible room choice and selection
     if action == HEAT:
         rooms = list(ROOMS.keys())
         rooms_name = list()

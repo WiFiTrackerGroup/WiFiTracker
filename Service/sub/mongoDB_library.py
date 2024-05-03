@@ -280,14 +280,14 @@ class mongo_library:
         """
         if self.name == TRACKNAME:
             try:
-                timestamp_before = timestamp - timedelta(seconds=(SCHEDULE * 6))
-                timestamp_after = timestamp + timedelta(seconds=(SCHEDULE * 6))
+                timestamp_before = timestamp - timedelta(seconds=(SCHEDULE * 7))
+                #timestamp_after = timestamp + timedelta(seconds=(SCHEDULE * 6))
                 pipeline = [
                     {
                         "$match": {
                             "Timestamp": {
                                 "$gte": timestamp_before,
-                                "$lte": timestamp_after,
+                                "$lte": timestamp,
                             },
                         }
                     },
