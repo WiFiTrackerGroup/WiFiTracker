@@ -1,14 +1,14 @@
 import pandas as pd
 import numpy as np
 from .config import *
-from utils import room_division
+from .utils import room_division
 from datetime import datetime
 import pickle
 
 
 class Counting_P:
     def __init__(self):
-        model_path = "Service/sub/ml_models/random_forest.sav"
+        model_path = "sub/ml_models/random_forest.sav"
         self.rndForest_regr = pickle.load(open(model_path, "rb"))
 
     def baseline(self, dataRoom):

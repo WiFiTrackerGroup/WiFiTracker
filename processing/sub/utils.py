@@ -1,5 +1,5 @@
 import pandas as pd
-from config import *
+from .config import *
 from datetime import datetime, timedelta
 import pytz
 
