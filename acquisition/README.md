@@ -1,4 +1,4 @@
-# SNMP REST Interface
+# Acquisition module
 The first step of the WiFi-Tracker application starts with the acquisition module, which is responsible for the collection of all the raw data from the AP. This module can be contacted only via an authorized IP through a REST interface because it will manage private data. To be GDPR compliant indeed this data has to be anonymized.
 
 Moreover, the Politecnico network is composed of more than 900 access points located in all its different venues, and to manage it all a controller is needed. The work of this first module is in fact to communicate with the AP controller to acquire all the different data, aggregate it, anonymize the critical information, and then send it to the next module.
