@@ -1,0 +1,6 @@
+ischedule==1.2.7
+numpy==1.26.4
+pandas==2.2.2
+pymongo==4.6.1
+pytz==2023.3.post1
+Requests==2.31.0
