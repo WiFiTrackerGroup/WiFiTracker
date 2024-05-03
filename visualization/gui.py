@@ -1,14 +1,12 @@
 from pymongo import MongoClient
 import streamlit as st
-import folium
 from folium.plugins import HeatMap
 from datetime import datetime, timedelta
 from sub.config import *
-from sub.config_gui import *
+from sub.rooms_conf import *
 from sub.utils import *
 from PIL import Image
 import pandas as pd
-import ast
 import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
@@ -17,10 +15,6 @@ import io
 import os
 import numpy as np
 from sub.mongoDB_library import *
-
-# from tracking import *
-# from DummyTestForHeatMap import *
-from shapely.geometry import Point, Polygon
 
 CLIENT = MongoClient(URL_DB)
 MYDB = CLIENT[DBNAME]
@@ -493,15 +487,17 @@ def selection():
             # To select date and time
             date = st.sidebar.date_input("Select date")
             if action != TIME:
-                if action==HEAT:
+                if action == HEAT:
                     time = st.sidebar.time_input("Select time")
-                if action==FLOW: 
-                    start = datetime.combine(datetime.today(), datetime.min.time()).replace(hour=1, minute=0)
+                if action == FLOW:
+                    start = datetime.combine(
+                        datetime.today(), datetime.min.time()
+                    ).replace(hour=1, minute=0)
                     t = []
                     delta = 90
-                    n = np.floor(24*60/delta)
+                    n = np.floor(24 * 60 / delta)
                     for i in range(int(n)):
-                        t.append(start.time().strftime('%H:%M'))
+                        t.append(start.time().strftime("%H:%M"))
                         start += timedelta(minutes=delta)
                     t.insert(0, "--select--")
                     time = st.sidebar.selectbox("Select action", t)

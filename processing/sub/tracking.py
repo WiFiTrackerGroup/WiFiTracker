@@ -1,6 +1,5 @@
 import pandas as pd
-import numpy as np
-from .utils import room_division
+from utils import room_division
 
 
 class tracking:

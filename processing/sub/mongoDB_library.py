@@ -1,7 +1,6 @@
 import pandas
-from sub.config import *
+from config import *
 from datetime import datetime, timedelta
-import time
 
 
 class mongo_library:

@@ -1,5 +1,4 @@
 import pandas as pd
-import time
 import ischedule
 import requests
 import pymongo as pm
@@ -66,21 +65,20 @@ class Acquisition:
                         # Merge channel info
                         dataRoom = dataRoom.merge(ap_info, on="name_ap", how="left")
                         # Insert raw data
-                        stTime = time.time()
                         self.myRaw.insert_records(dataRoom)
                         # Counting people
                         dataCount = self.countP.main(dataRoom)
                         # The saving is done only if there are people in the rooms
                         if len(dataCount) > 0:
-                            stTime = time.time()
                             self.myCount.insert_records(dataCount)
                             # Tracking people
                             if self.df_t_1.empty:
                                 self.df_t_1 = dataRoom
                                 self.counter_tracking = 2
-                            elif self.counter_tracking >= int(TRACKING_TIME/SCHEDULE):
-                                dataTrack = self.track.eval_od_matrix(self.df_t_1, dataRoom)
-                                stTime = time.time()
+                            elif self.counter_tracking >= int(TRACKING_TIME / SCHEDULE):
+                                dataTrack = self.track.eval_od_matrix(
+                                    self.df_t_1, dataRoom
+                                )
                                 self.myTrack.insert_records(dataTrack)
                                 # DF at t-1 needed for tracking purpose
                                 self.df_t_1 = dataRoom.copy()
@@ -90,7 +88,9 @@ class Acquisition:
                         else:
                             self.df_t_1 = self.df_t_1.iloc[0:0]
                 except:
-                    print(f"Unknown error occurred during the data Processing. No data is saved on mongoDB at {dt.now()}.")
+                    print(
+                        f"Unknown error occurred during the data Processing. No data is saved on mongoDB at {dt.now()}."
+                    )
 
     def check_time(self):
         """
@@ -110,11 +110,8 @@ class Acquisition:
             return True
 
     def main(self):
-        #try:
         ischedule.schedule(self.request, interval=SCHEDULE)
         ischedule.run_loop()
-        #except Exception as error:
-           # print("Error:", error)
 
 
 if __name__ == "__main__":
