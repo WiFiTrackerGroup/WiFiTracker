@@ -20,9 +20,9 @@ Once this is done the server is ready to use.
 
 ## Usage
 ### Running the webservice
-Make sure to run the code from the *SNMP_REST* folder.
+Make sure to run the code from the *acquisition* folder.
 ```
-cd SNMP_REST
+cd acquisition
 python3 snmp_rest.py
 ```
 As said before if the **COMMUNITY** and **IP_WLC** are not correct the AP controller cannot be contacted and then the application will probably return an empty JSON or an error message.
@@ -38,6 +38,3 @@ As said before if the **COMMUNITY** and **IP_WLC** are not correct the AP contro
 - **/APChannelInfo**:
 
   consists of all the relevant information about the AP channels, which is additional information that will be next used in the Random Forest Regression to increase the performance of the people-counting segment of the project. The information contained in this case is the MAC of the AP, plus the number of devices connected to each network (2.4 and 5 GHz), the channel used, the noise over the channel, and the percentage of utilization of it(amount of traffic is passing through the channel in %, where 100% is the maximum utilization). This is used to give more features to the ML model for the prediction. The baseline can extrapolate the number of people in the rooms without this data.
-- **/test**:
-
-  consist of a test query used to check if the aggregation part of the /data GET is working. Usually it is unused.
