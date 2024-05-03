@@ -23,7 +23,7 @@ PORT_MONGODB = "27017"
 URL_DB = f"mongodb://{USER_MONGODB}:{PSW_MONGODB}@{HOST_MONGODB}:{PORT_MONGODB}"
 # ----------------------------------------------------------------------------------------
 
-FILE_ERRORS = "Service/sub/log/mongoDB_log.txt"
+FILE_ERRORS = "sub/log/mongoDB_log.txt"
 
 # Set the hours when to reduce the acquisition
 # Default : 21
