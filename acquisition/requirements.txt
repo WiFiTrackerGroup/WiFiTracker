@@ -1,0 +1,5 @@
+CherryPy==18.8.0
+pandas==2.2.2
+parse==1.20.0
+Requests==2.31.0
+schedule==1.2.1
