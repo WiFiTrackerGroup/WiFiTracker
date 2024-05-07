@@ -8,41 +8,14 @@
   <img src="https://github.com/BDRVinICT4SS/WiFiTracker/assets/118899936/3c11ef63-5948-4ff1-8ee8-c322b31fc75e" width="400"/>
 </p>
 
-
-
-
-
-### Original Creators
-
-<table>
-<tr>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/AlessandroRedi>
-            <img src=https://avatars.githubusercontent.com/u/115104662?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=Alessandro Redi/>
-            <br />
-            <sub style="font-size:14px"><b>Alessandro Redi</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/federicovolponi>
-            <img src=https://avatars.githubusercontent.com/u/102225576?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=Federico Volponi/>
-            <br />
-            <sub style="font-size:14px"><b>Federico Volponi</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/GioviDetto>
-            <img src=https://avatars.githubusercontent.com/u/118899936?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=Giovanni Dettori/>
-            <br />
-            <sub style="font-size:14px"><b>Giovanni Dettori</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/umberto150301>
-            <img src=https://avatars.githubusercontent.com/u/80624267?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=Umberto Brozzo Doda/>
-            <br />
-            <sub style="font-size:14px"><b>Umberto Brozzo Doda</b></sub>
-        </a>
-    </td>
-</tr>
-</table>
+# What is WiFi tracker?
+WiFiTracker is an application that aims to estimate the number of people inside rooms and track the movements of people between areas exploiting the Wi-Fi infrastucture.
+Universities and other public places often offer Wi-Fi access for free by logging in with private credentials, opening the possibility to query the controller of the network to obtain information on the devices connected. However, the number of devices is usually different from the actual number of people inside a building, especially in universities or workplaces where people have more than one device.
+The idea of the Wi-FiTracker is to use Machine Learning to estimate the real number of people inside a building.
+Since this project started in Politecnico di Torino we used the Wi-Fi architecture present in the campus.
+# High-level architecture
+![image]()
+The application is structured in three different modules:
+1. Acquisition module: is responsible to query the Access points (APs) controller through the SNMP protocol and perform data anonymization and preprocessing.
+2. Processing module: is where the number of people is estimated using a Random Forest Regression and where the flows of people are calculated.
+3. Visualization module: is a web interface, developed using [Streamlit](https://github.com/streamlit/streamlit), to easily visualize the processed data.
