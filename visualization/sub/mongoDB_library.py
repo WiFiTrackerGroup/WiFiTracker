@@ -107,7 +107,7 @@ class mongo_library:
                 datetime.now(),
             )
             try:
-                raw_data.drop(columns=["_id", "Timestamp_x"])
+                raw_data.drop(columns=["_id", "Timestamp_x"], inplace=True)
             except:
                 pass
             list_of_dicts = raw_data.to_dict("records")
