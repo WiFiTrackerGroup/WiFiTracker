@@ -103,8 +103,8 @@ class mongo_library:
         try:
             raw_data = retrieve_rawData(
                 df["Room"],
-                df["Timestamp"] - timedelta(seconds=SCHEDULE),
-                df["Timestamp"],
+                datetime.now() - timedelta(seconds=SCHEDULE),
+                datetime.now(),
             )
             list_of_dicts = raw_data.to_dict("records")
             list_of_string = [str(d) for d in list_of_dicts]
