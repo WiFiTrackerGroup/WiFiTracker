@@ -1,6 +1,7 @@
 import pandas
 from .config import *
 from datetime import datetime, timedelta
+from utils import *
 
 
 class mongo_library:
@@ -100,7 +101,7 @@ class mongo_library:
         """
 
         try:
-            raw_data = self.findRawDataBy_period(
+            raw_data = retrieve_rawData(
                 df["Room"],
                 df["Timestamp"] - timedelta(seconds=SCHEDULE),
                 df["Timestamp"],

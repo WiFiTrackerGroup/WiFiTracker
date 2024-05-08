@@ -2,6 +2,8 @@ import pandas as pd
 from .config import *
 from datetime import datetime, timedelta
 import pytz
+from mongoDB_library import *
+from pymongo import MongoClient
 
 
 def room_division(dataRoom):
@@ -104,3 +106,10 @@ def set_tracking_labels(hour):
         return dict_labels[hour]
     except:
         return ("Not during lessons", "PoliTO closed")
+
+
+def retrieve_rawData(room, init_date, final_date):
+    client = MongoClient(URL_DB)
+    MYDB = client[DBNAME]
+    myinput = mongo_library(MYDB[INPUTNAME], INPUTNAME)
+    data = myinput.findRawDataBy_period(room, init_date, final_date)
