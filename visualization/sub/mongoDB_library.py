@@ -106,8 +106,13 @@ class mongo_library:
                 datetime.now() - timedelta(seconds=SCHEDULE),
                 datetime.now(),
             )
+            try:
+                raw_data.drop(columns=["_id", "Timestamp_x"])
+            except:
+                pass
             list_of_dicts = raw_data.to_dict("records")
             list_of_string = [str(d) for d in list_of_dicts]
+            df["Timestamp"] = datetime.now()
             df["Features"] = list_of_string
             self.collection.insert_one(df)
             return True
