@@ -365,5 +365,5 @@ class mongo_library:
 def retrieve_rawData(room, init_date, final_date):
     client = MongoClient(URL_DB)
     mydb = client[DBNAME]
-    mytracking = mongo_library(mydb[TRACKNAME], TRACKNAME)
+    mytracking = mongo_library(mydb[RAWNAME], RAWNAME)
     return mytracking.findRawDataBy_period(room, init_date, final_date)
