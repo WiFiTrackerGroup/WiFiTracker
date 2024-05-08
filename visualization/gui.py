@@ -341,7 +341,7 @@ def addData(timestamp):
 
         value = int(value)
 
-        dict = {"N_people": [value], "Room": [choice], "Timestamp": [timestamp]}
+        dict = {"N_people": value, "Room": choice, "Timestamp": timestamp}
 
         if not MYINPUT.insert_true_value(dict):
             display_Mongo_not_responding()

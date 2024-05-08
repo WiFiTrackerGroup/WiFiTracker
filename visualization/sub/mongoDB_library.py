@@ -100,6 +100,12 @@ class mongo_library:
         """
 
         try:
+            raw_data = self.findRawDataBy_period(
+                df["Room"],
+                df["Timestamp"] - timedelta(seconds=SCHEDULE),
+                df["Timestamp"],
+            )
+            df["Features"] = raw_data
             self.collection.insert_one(df)
             return True
         except:
@@ -280,7 +286,7 @@ class mongo_library:
         if self.name == TRACKNAME:
             try:
                 timestamp_before = timestamp - timedelta(seconds=(SCHEDULE * 7))
-                #timestamp_after = timestamp + timedelta(seconds=(SCHEDULE * 6))
+                # timestamp_after = timestamp + timedelta(seconds=(SCHEDULE * 6))
                 pipeline = [
                     {
                         "$match": {
@@ -318,7 +324,7 @@ class mongo_library:
             )
         return df_response
 
-    def findRawDataBy_period(self, init_date, final_date):
+    def findRawDataBy_period(self, room, init_date, final_date):
         """
         findRawDataBy_period
         --------------------
@@ -336,6 +342,7 @@ class mongo_library:
                     {
                         "$match": {
                             "Timestamp": {"$gte": init_date, "$lte": final_date},
+                            "Room": room,
                         }
                     }
                 ]
