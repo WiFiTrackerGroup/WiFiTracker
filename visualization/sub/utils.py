@@ -106,10 +106,3 @@ def set_tracking_labels(hour):
         return dict_labels[hour]
     except:
         return ("Not during lessons", "PoliTO closed")
-
-
-def retrieve_rawData(room, init_date, final_date):
-    client = MongoClient(URL_DB)
-    MYDB = client[DBNAME]
-    myinput = mongo_library(MYDB[INPUTNAME], INPUTNAME)
-    return myinput.findRawDataBy_period(room, init_date, final_date)

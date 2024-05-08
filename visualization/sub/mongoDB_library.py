@@ -1,8 +1,7 @@
 import pandas
 from .config import *
 from datetime import datetime, timedelta
-from .utils import *
-
+from pymongo import MongoClient
 
 class mongo_library:
 
@@ -359,3 +358,10 @@ class mongo_library:
                 f"Wrong collection contacted: wifiTracker.{self.name} - {datetime.now()}\n"
             )
         return df_response
+
+## STATIC FUNCTIONS
+def retrieve_rawData(room, init_date, final_date):
+    client = MongoClient(URL_DB)
+    MYDB = client[DBNAME]
+    myinput = mongo_library(MYDB[INPUTNAME], INPUTNAME)
+    return myinput.findRawDataBy_period(room, init_date, final_date)
