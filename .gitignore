@@ -164,5 +164,4 @@ cython_debug/
 
 # Folders
 Service/history
-processing/sub/config.py
-visualization/sub/config.py
+
