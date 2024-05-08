@@ -341,7 +341,7 @@ def addData(timestamp):
 
         value = int(value)
 
-        dict = {"N_people": [value], "Room": [choice], "Timestamp": [timestamp]}
+        dict = {"N_people": value, "Room": choice, "Timestamp": timestamp}
 
         if not MYINPUT.insert_true_value(dict):
             display_Mongo_not_responding()
@@ -384,7 +384,7 @@ def showInstruction(action):
                     content: '✅'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
                     content: '🕒';}\
-                    :nth-child(3)::before {\
+                    &:nth-child(3)::before {\
                     content: '🗓️';}\
                     &:nth-child(4)::before {\
                     content: '👆🏻';}}}<style>",
@@ -395,8 +395,8 @@ def showInstruction(action):
                 <br>To a better experience on the website keep in mind that:</p>"
             "<ul class='styled'>\
                  <li style='font-size: 20px;'>By using the selector on the left side of the panel, it is possible to define the room and day to inspect.</li>\
-                 <li style='font-size: 20px;'>If the '<i>See previous data</i>' function is not used, the data related to the current day are shown.</li>\
-                 <li style='font-size: 20px;'>By using the '<i>See previous data</i>' function and selecting a date in the dashboard, the data for the selecetd date are obtained</li>\
+                 <li style='font-size: 20px;'>If the \"See previous data\" function is not used, the data related to the current day are shown.</li>\
+                 <li style='font-size: 20px;'>By using the \"See previous data\" function and selecting a date in the dashboard, the data for the selecetd date are obtained</li>\
                  <li style='font-size: 20px;'>Passing the mouse on the time series, the number of people at each acquisition slot will be displayed.</li>\
              </ul>",
             unsafe_allow_html=True,
@@ -408,7 +408,7 @@ def showInstruction(action):
                     content: '✅'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
                     content: '⏳';}\
-                    &:nth-child(2)::before {\
+                    &:nth-child(3)::before {\
                     content: '🔄';}}}<style>",
             unsafe_allow_html=True,
         )
@@ -417,7 +417,7 @@ def showInstruction(action):
                 <br>To a better experience on the website keep in mind that:</p>"
             "<ul class='styled'>\
                  <li style='font-size: 20px;'>By using the selector on the left side of the panel, it is possible to select the block of rooms to inspect.</li>\
-                 <li style='font-size: 20px;'>Old data can be shown using the '<i>See previous data</i>' function and selecting the desired date and time.</li>\
+                 <li style='font-size: 20px;'>Old data can be shown using the \"See previous data\" function and selecting the desired date and time.</li>\
                  <li style='font-size: 20px;'>The room occupancy changes every 15 minutes.</li>\
              </ul>",
             unsafe_allow_html=True,
@@ -429,7 +429,7 @@ def showInstruction(action):
                     content: '✅'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
                     content: '⏳';}\
-                    &:nth-child(2)::before {\
+                    &:nth-child(3)::before {\
                     content: '👆🏻';}}}<style>",
             unsafe_allow_html=True,
         )
@@ -445,6 +445,16 @@ def showInstruction(action):
             unsafe_allow_html=True,
         )
     elif action == INPUT:
+        st.markdown(
+            "<style>.styled {list-style: none; padding-left: 0; margin: 0;li {margin-bottom: 10px;display: flex;;align-items: flex-start; \
+                    &::before {\
+                    content: '✌'; margin-right: 10px;}\
+                    &:nth-child(2)::before {\
+                    content: '🎯';}\
+                    &:nth-child(3)::before {\
+                    content: '⚠️';}}}<style>",
+            unsafe_allow_html=True,
+        )
         c_notes.markdown(
             "<p style='font-size: 20px;'>Insert true number of people in your room, this will help us in increase the performance of our algorithm.\
             <br>Beware, follow the subsequent safety guidelines:</p>"
@@ -452,7 +462,7 @@ def showInstruction(action):
              <li style='font-size: 20px;'>Count at least two times the number of people in the room.</li>\
                  <li style='font-size: 20px;'>Insert a precise number and not one only 'near' the true number of people.</li>\
                  <li style='font-size: 20px;'>Double check the name of room in which you are.</li>\
-             </ul>",
+             </ul>"
             "<p style='font-size: 20px;'>Otherwise you will create a False value in our ground truth.</p>",
             unsafe_allow_html=True,
         )

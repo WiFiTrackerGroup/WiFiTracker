@@ -5,7 +5,7 @@ PORT = "8282"
 # Seconds to wait before asking another acquisition
 SCHEDULE = 900
 TRACKING_TIME = 6 * SCHEDULE  # time in seconds
-PRINT = True
+PRINT = False
 
 # MONGODB config
 DBNAME = "WifiTracker2024"
@@ -16,7 +16,7 @@ INPUTNAME = "input_count"
 
 # ----------------------------------------------------------------------------------------
 # Config for local mongoDB
-PSW_MONGODB = "ciao"
+PSW_MONGODB = ""  # to be inserted
 USER_MONGODB = "root"
 HOST_MONGODB = "127.0.0.1"
 PORT_MONGODB = "27017"

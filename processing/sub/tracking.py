@@ -15,8 +15,8 @@ class tracking:
         Output:
         - OD_matr: the OD matrix
         """
-        df_t_1 = room_division(df_t_1)
-        df_t = room_division(df_t)
+        # df_t_1 = room_division(df_t_1)
+        # df_t = room_division(df_t)
 
         df_t_1 = df_t_1.drop_duplicates("user_masked")
         df_t = df_t.drop_duplicates("user_masked")

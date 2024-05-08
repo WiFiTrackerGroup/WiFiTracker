@@ -1,6 +1,7 @@
 import pandas
 from .config import *
 from datetime import datetime, timedelta
+from pymongo import MongoClient
 
 
 class mongo_library:
@@ -100,6 +101,19 @@ class mongo_library:
         """
 
         try:
+            raw_data = retrieve_rawData(
+                df["Room"],
+                datetime.now() - timedelta(seconds=SCHEDULE),
+                datetime.now(),
+            )
+            try:
+                raw_data.drop(columns=["_id", "Timestamp_x"], inplace=True)
+            except:
+                pass
+            list_of_dicts = raw_data.to_dict("records")
+            list_of_string = [str(d) for d in list_of_dicts]
+            df["Timestamp"] = datetime.now()
+            df["Features"] = list_of_string
             self.collection.insert_one(df)
             return True
         except:
@@ -280,7 +294,7 @@ class mongo_library:
         if self.name == TRACKNAME:
             try:
                 timestamp_before = timestamp - timedelta(seconds=(SCHEDULE * 7))
-                #timestamp_after = timestamp + timedelta(seconds=(SCHEDULE * 6))
+                # timestamp_after = timestamp + timedelta(seconds=(SCHEDULE * 6))
                 pipeline = [
                     {
                         "$match": {
@@ -318,7 +332,7 @@ class mongo_library:
             )
         return df_response
 
-    def findRawDataBy_period(self, init_date, final_date):
+    def findRawDataBy_period(self, room, init_date, final_date):
         """
         findRawDataBy_period
         --------------------
@@ -336,6 +350,7 @@ class mongo_library:
                     {
                         "$match": {
                             "Timestamp": {"$gte": init_date, "$lte": final_date},
+                            "Room": room,
                         }
                     }
                 ]
@@ -351,3 +366,11 @@ class mongo_library:
                 f"Wrong collection contacted: wifiTracker.{self.name} - {datetime.now()}\n"
             )
         return df_response
+
+
+## STATIC FUNCTIONS
+def retrieve_rawData(room, init_date, final_date):
+    client = MongoClient(URL_DB)
+    mydb = client[DBNAME]
+    mytracking = mongo_library(mydb[RAWNAME], RAWNAME)
+    return mytracking.findRawDataBy_period(room, init_date, final_date)

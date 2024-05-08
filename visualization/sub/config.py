@@ -16,7 +16,7 @@ INPUTNAME = "input_count"
 
 # ----------------------------------------------------------------------------------------
 # Config for local mongoDB
-PSW_MONGODB = "ciao"
+PSW_MONGODB = ""  # to be inserted
 USER_MONGODB = "root"
 HOST_MONGODB = "127.0.0.1"
 PORT_MONGODB = "27017"
