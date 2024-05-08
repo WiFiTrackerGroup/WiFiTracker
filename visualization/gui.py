@@ -384,7 +384,7 @@ def showInstruction(action):
                     content: '✅'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
                     content: '🕒';}\
-                    :nth-child(3)::before {\
+                    &:nth-child(3)::before {\
                     content: '🗓️';}\
                     &:nth-child(4)::before {\
                     content: '👆🏻';}}}<style>",
@@ -408,7 +408,7 @@ def showInstruction(action):
                     content: '✅'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
                     content: '⏳';}\
-                    &:nth-child(2)::before {\
+                    &:nth-child(3)::before {\
                     content: '🔄';}}}<style>",
             unsafe_allow_html=True,
         )
@@ -429,7 +429,7 @@ def showInstruction(action):
                     content: '✅'; margin-right: 10px;}\
                     &:nth-child(2)::before {\
                     content: '⏳';}\
-                    &:nth-child(2)::before {\
+                    &:nth-child(3)::before {\
                     content: '👆🏻';}}}<style>",
             unsafe_allow_html=True,
         )
@@ -445,6 +445,16 @@ def showInstruction(action):
             unsafe_allow_html=True,
         )
     elif action == INPUT:
+        st.markdown(
+            "<style>.styled {list-style: none; padding-left: 0; margin: 0;li {margin-bottom: 10px;display: flex;;align-items: flex-start; \
+                    &::before {\
+                    content: '✌'; margin-right: 10px;}\
+                    &:nth-child(2)::before {\
+                    content: '🎯';}\
+                    &:nth-child(3)::before {\
+                    content: '✅';}}}<style>",
+            unsafe_allow_html=True,
+        )
         c_notes.markdown(
             "<p style='font-size: 20px;'>Insert true number of people in your room, this will help us in increase the performance of our algorithm.\
             <br>Beware, follow the subsequent safety guidelines:</p>"
