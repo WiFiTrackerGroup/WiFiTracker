@@ -2,7 +2,7 @@ import pandas as pd
 from .config import *
 from datetime import datetime, timedelta
 import pytz
-from mongoDB_library import *
+from .mongoDB_library import *
 from pymongo import MongoClient
 
 
