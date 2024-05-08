@@ -106,7 +106,9 @@ class mongo_library:
                 df["Timestamp"] - timedelta(seconds=SCHEDULE),
                 df["Timestamp"],
             )
-            df["Features"] = raw_data
+            list_of_dicts = raw_data.to_dict("records")
+            list_of_string = [str(d) for d in list_of_dicts]
+            df["Features"] = list_of_string
             self.collection.insert_one(df)
             return True
         except:
