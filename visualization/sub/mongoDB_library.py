@@ -3,6 +3,7 @@ from .config import *
 from datetime import datetime, timedelta
 from pymongo import MongoClient
 
+
 class mongo_library:
 
     def __init__(self, coll, name):
@@ -359,9 +360,10 @@ class mongo_library:
             )
         return df_response
 
+
 ## STATIC FUNCTIONS
 def retrieve_rawData(room, init_date, final_date):
     client = MongoClient(URL_DB)
-    MYDB = client[DBNAME]
-    myinput = mongo_library(MYDB[INPUTNAME], INPUTNAME)
-    return myinput.findRawDataBy_period(room, init_date, final_date)
+    mydb = client[DBNAME]
+    mytracking = mongo_library(mydb[TRACKNAME], TRACKNAME)
+    return mytracking.findRawDataBy_period(room, init_date, final_date)
