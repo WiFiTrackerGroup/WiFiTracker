@@ -112,4 +112,4 @@ def retrieve_rawData(room, init_date, final_date):
     client = MongoClient(URL_DB)
     MYDB = client[DBNAME]
     myinput = mongo_library(MYDB[INPUTNAME], INPUTNAME)
-    data = myinput.findRawDataBy_period(room, init_date, final_date)
+    return myinput.findRawDataBy_period(room, init_date, final_date)
