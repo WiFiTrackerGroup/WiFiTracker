@@ -452,7 +452,7 @@ def showInstruction(action):
                     &:nth-child(2)::before {\
                     content: '🎯';}\
                     &:nth-child(3)::before {\
-                    content: '✅';}}}<style>",
+                    content: '⚠️';}}}<style>",
             unsafe_allow_html=True,
         )
         c_notes.markdown(
