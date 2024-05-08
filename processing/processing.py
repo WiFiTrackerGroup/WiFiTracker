@@ -65,6 +65,7 @@ class Acquisition:
                     if len(dataRoom) > 0:
                         # Merge channel info
                         dataRoom = dataRoom.merge(ap_info, on="name_ap", how="left")
+                        dataRoom = room_division(dataRoom)
                         # Insert raw data
                         self.myRaw.insert_records(dataRoom)
                         # Counting people

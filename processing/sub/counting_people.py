@@ -115,7 +115,6 @@ class Counting_P:
         return dataRoom
 
     def main(self, dataRoom):
-        dataRoom = room_division(dataRoom)
         dataRoom = self.filter(dataRoom)
         dataRoom = self.random_forest_regr(dataRoom)
         return dataRoom
